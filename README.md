@@ -1,0 +1,2 @@
+# FINT Skjema Configuration Service
+
