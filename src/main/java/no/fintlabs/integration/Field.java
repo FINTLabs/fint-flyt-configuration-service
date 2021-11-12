@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Field {
-    private String valueBuildStrategy;
+    private ValueBuildStrategy valueBuildStrategy;
     private String field;
     private ValueBuilder valueBuilder;
 }

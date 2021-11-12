@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class Property {
-    private String source;
+    private ValueSource source;
     private String key;
     private int order;
 }

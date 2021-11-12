@@ -7,6 +7,6 @@ import java.util.List;
 
 @Data
 public class CaseConfiguration {
-    private String creationStrategy;
+    private CaseCreationStrategy caseCreationStrategy;
     private List<Field> fields = new ArrayList<>();
 }
