@@ -1,4 +1,4 @@
-package no.fintlabs.integration;
+package no.fintlabs.integration.model;
 
 public enum CaseCreationStrategy {
     NEW,

@@ -1,4 +1,4 @@
-package no.fintlabs.integration;
+package no.fintlabs.integration.model;
 
 public enum ValueBuildStrategy {
     FIXED_ARCHIVE_CODE_VALUE,
