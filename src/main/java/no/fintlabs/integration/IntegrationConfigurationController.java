@@ -1,9 +1,8 @@
 package no.fintlabs.integration;
 
-import no.fintlabs.integration.model.*;
+import no.fintlabs.integration.model.IntegrationConfiguration;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.web.bind.annotation.*;
@@ -33,22 +32,40 @@ public class IntegrationConfigurationController {
                                                               ServerHttpRequest httpRequest) {
         IntegrationConfiguration savedIntegrationConfiguration = integrationConfigurationService.newIntegrationConfiguration(integrationConfiguration);
         return ResponseEntity.created(UriComponentsBuilder
-                .fromHttpRequest(httpRequest)
-                .path("/" + savedIntegrationConfiguration.getId())
-                .build()
-                .toUri())
+                        .fromHttpRequest(httpRequest)
+                        .path("/" + savedIntegrationConfiguration.getId())
+                        .build()
+                        .toUri())
                 .build();
 
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<List<IntegrationConfiguration>> getIntegrationConfigurationsById(@PathVariable String id) {
-        List<IntegrationConfiguration> integrationConfigurations= integrationConfigurationService.getIntegrationConfigurationById(id);
+        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationService.getIntegrationConfigurationById(id);
 
         if (integrationConfigurations.size() > 0) {
             return ResponseEntity.ok(integrationConfigurations);
         }
 
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{id}/{version}")
+    public ResponseEntity<IntegrationConfiguration> getIntegrationConfigurationsByIdAndVersion(
+            @PathVariable String id,
+            @PathVariable int version) {
+
+        return ResponseEntity.ok(
+                integrationConfigurationService
+                        .getIntegrationConfigurationByIdAndVersion(id, version)
+                        .orElseThrow(IntegrationConfigurationVersionNotFound::new)
+        );
+
+    }
+
+    @ExceptionHandler(IntegrationConfigurationVersionNotFound.class)
+    public ResponseEntity<Void> handleIntegrationConfigurationVersionNotFound() {
         return ResponseEntity.notFound().build();
     }
 }
