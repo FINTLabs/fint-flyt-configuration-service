@@ -10,5 +10,5 @@ import java.util.List;
 public interface IntegrationConfigurationRepository extends MongoRepository<IntegrationConfiguration, String> {
     List<IntegrationConfiguration> getIntegrationConfigurationById(String id);
     IntegrationConfiguration getIntegrationConfigurationByIdAndVersion(String id, int version);
-    IntegrationConfiguration getIntegrationConfigurationByIdOrderByVersion(String id);
+    List<IntegrationConfiguration> getIntegrationConfigurationByIdOrderByVersionDesc(String id);
 }

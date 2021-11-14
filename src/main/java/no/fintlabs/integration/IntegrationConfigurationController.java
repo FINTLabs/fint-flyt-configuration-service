@@ -41,9 +41,12 @@ public class IntegrationConfigurationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> addNewIntegrationConfigurationVersion(@RequestBody IntegrationConfiguration integrationConfiguration) {
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(integrationConfiguration);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> addNewIntegrationConfigurationVersion(
+            @PathVariable String id,
+            @RequestBody IntegrationConfiguration integrationConfiguration) {
+
+            integrationConfigurationService.addNewIntegrationConfigurationVersion(id, integrationConfiguration);
+            return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}")
@@ -66,6 +69,16 @@ public class IntegrationConfigurationController {
                 integrationConfigurationService
                         .getIntegrationConfigurationByIdAndVersion(id, version)
                         .orElseThrow(IntegrationConfigurationVersionNotFound::new)
+        );
+
+    }
+
+    @GetMapping("/{id}/latest")
+    public ResponseEntity<IntegrationConfiguration> getLatestIntegrationConfigurations(@PathVariable String id) {
+
+        return ResponseEntity.ok(
+                integrationConfigurationService
+                        .getLatestIntegrationConfigurationById(id)
         );
 
     }

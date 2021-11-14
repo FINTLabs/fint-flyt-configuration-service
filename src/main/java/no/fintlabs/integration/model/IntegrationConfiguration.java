@@ -26,5 +26,7 @@ public class IntegrationConfiguration {
     private CaseConfiguration caseConfiguration;
     private ApplicantConfiguration applicantConfiguration;
 
-
+    public boolean isSameAs(String otherId) {
+        return id.equals(otherId);
+    }
 }

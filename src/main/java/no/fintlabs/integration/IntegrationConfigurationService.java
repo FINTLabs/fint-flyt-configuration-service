@@ -25,22 +25,31 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
-    public void addNewIntegrationConfigurationVersion(IntegrationConfiguration integrationConfiguration) {
-        integrationConfiguration.setVersion(integrationConfiguration.getVersion() + 1);
-        integrationConfiguration.setDocumentId(null);
+    public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {
+        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(integrationConfiguration.getId());
 
-        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationRepository.getIntegrationConfigurationById(integrationConfiguration.getId());
-
-        if (integrationConfigurations.size() > 0) {
+        if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
+            integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
+            integrationConfiguration.setDocumentId(null);
             integrationConfigurationRepository.save(integrationConfiguration);
-            return;
+        } else {
+            throw new IntegrationConfigurationNotFound();
         }
-
-        throw new IntegrationConfigurationNotFound();
     }
 
     public List<IntegrationConfiguration> getIntegrationConfigurationById(String id) {
         return integrationConfigurationRepository.getIntegrationConfigurationById(id);
+    }
+
+    public IntegrationConfiguration getLatestIntegrationConfigurationById(String id) {
+        List<IntegrationConfiguration> latest = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
+
+        if (latest.size() > 0) {
+            return latest.get(0);
+        }
+
+        throw new IntegrationConfigurationNotFound();
+
     }
 
     public Page<IntegrationConfiguration> getAllIntegrationConfiguration(Pageable pageable) {
