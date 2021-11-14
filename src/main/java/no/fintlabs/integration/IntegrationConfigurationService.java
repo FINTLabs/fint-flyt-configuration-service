@@ -25,6 +25,20 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
+    public void updateIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        integrationConfiguration.setVersion(integrationConfiguration.getVersion() + 1);
+        integrationConfiguration.setDocumentId(null);
+
+        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationRepository.getIntegrationConfigurationById(integrationConfiguration.getId());
+
+        if (integrationConfigurations.size() > 0) {
+            integrationConfigurationRepository.save(integrationConfiguration);
+            return;
+        }
+
+        throw new IntegrationConfigurationNotFound();
+    }
+
     public List<IntegrationConfiguration> getIntegrationConfigurationById(String id) {
         return integrationConfigurationRepository.getIntegrationConfigurationById(id);
     }

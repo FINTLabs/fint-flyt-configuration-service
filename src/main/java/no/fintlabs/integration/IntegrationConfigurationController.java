@@ -40,6 +40,14 @@ public class IntegrationConfigurationController {
 
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Void> updateIntegrationConfiguration(@RequestBody IntegrationConfiguration integrationConfiguration,
+                                                              ServerHttpRequest httpRequest) {
+        integrationConfigurationService.updateIntegrationConfiguration(integrationConfiguration);
+        return ResponseEntity.ok().build();
+
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<List<IntegrationConfiguration>> getIntegrationConfigurationsById(@PathVariable String id) {
         List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationService.getIntegrationConfigurationById(id);
@@ -62,6 +70,11 @@ public class IntegrationConfigurationController {
                         .orElseThrow(IntegrationConfigurationVersionNotFound::new)
         );
 
+    }
+
+    @ExceptionHandler(IntegrationConfigurationNotFound.class)
+    public ResponseEntity<Void> handleIntegrationConfigurationNotFound() {
+        return ResponseEntity.notFound().build();
     }
 
     @ExceptionHandler(IntegrationConfigurationVersionNotFound.class)
