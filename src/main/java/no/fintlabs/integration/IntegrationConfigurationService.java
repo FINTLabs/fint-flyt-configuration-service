@@ -25,7 +25,7 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
-    public void updateIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+    public void addNewIntegrationConfigurationVersion(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(integrationConfiguration.getVersion() + 1);
         integrationConfiguration.setDocumentId(null);
 

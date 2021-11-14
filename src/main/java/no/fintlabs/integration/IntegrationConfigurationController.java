@@ -41,11 +41,9 @@ public class IntegrationConfigurationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateIntegrationConfiguration(@RequestBody IntegrationConfiguration integrationConfiguration,
-                                                              ServerHttpRequest httpRequest) {
-        integrationConfigurationService.updateIntegrationConfiguration(integrationConfiguration);
+    public ResponseEntity<Void> addNewIntegrationConfigurationVersion(@RequestBody IntegrationConfiguration integrationConfiguration) {
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(integrationConfiguration);
         return ResponseEntity.ok().build();
-
     }
 
     @GetMapping("/{id}")
