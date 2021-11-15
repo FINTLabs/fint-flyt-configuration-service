@@ -37,6 +37,10 @@ public class IntegrationConfigurationService {
         }
     }
 
+    public void deleteIntegrationConfigurationById(String id) {
+        integrationConfigurationRepository.deleteIntegrationConfigurationById(id);
+    }
+
     public List<IntegrationConfiguration> getIntegrationConfigurationById(String id) {
         return integrationConfigurationRepository.getIntegrationConfigurationById(id);
     }

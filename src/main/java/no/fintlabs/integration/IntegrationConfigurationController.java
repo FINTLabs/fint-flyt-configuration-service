@@ -49,6 +49,13 @@ public class IntegrationConfigurationController {
             return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteIntegrationConfigurationById(@PathVariable String id) {
+        integrationConfigurationService.deleteIntegrationConfigurationById(id);
+
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<List<IntegrationConfiguration>> getIntegrationConfigurationsById(@PathVariable String id) {
         List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationService.getIntegrationConfigurationById(id);

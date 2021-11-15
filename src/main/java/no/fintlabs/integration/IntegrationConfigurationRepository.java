@@ -11,4 +11,5 @@ public interface IntegrationConfigurationRepository extends MongoRepository<Inte
     List<IntegrationConfiguration> getIntegrationConfigurationById(String id);
     IntegrationConfiguration getIntegrationConfigurationByIdAndVersion(String id, int version);
     List<IntegrationConfiguration> getIntegrationConfigurationByIdOrderByVersionDesc(String id);
+    void deleteIntegrationConfigurationById(String id);
 }
