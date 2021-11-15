@@ -21,16 +21,23 @@ public class IntegrationConfigurationController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<IntegrationConfiguration>> getIntegrationConfigurations(@RequestParam(value = "page", defaultValue = "0") int pageIndex,
-                                                                                       @RequestParam(value = "size", defaultValue = "50") int pageSize) {
+    public ResponseEntity<Page<IntegrationConfiguration>> getLatestIntegrationConfigurations(
+            @RequestParam(value = "page", defaultValue = "0") int pageIndex,
+            @RequestParam(value = "size", defaultValue = "50") int pageSize) {
 
-        return ResponseEntity.ok(integrationConfigurationService.getAllIntegrationConfiguration(PageRequest.of(pageIndex, pageSize)));
+        return ResponseEntity.ok(
+                integrationConfigurationService
+                        .getLatestIntegrationConfigurations(PageRequest.of(pageIndex, pageSize))
+        );
     }
 
     @PostMapping
-    public ResponseEntity<String> newIntegrationConfiguration(@RequestBody IntegrationConfiguration integrationConfiguration,
-                                                              ServerHttpRequest httpRequest) {
-        IntegrationConfiguration savedIntegrationConfiguration = integrationConfigurationService.newIntegrationConfiguration(integrationConfiguration);
+    public ResponseEntity<String> newIntegrationConfiguration(
+            @RequestBody IntegrationConfiguration integrationConfiguration,
+            ServerHttpRequest httpRequest) {
+
+        IntegrationConfiguration savedIntegrationConfiguration
+                = integrationConfigurationService.newIntegrationConfiguration(integrationConfiguration);
         return ResponseEntity.created(UriComponentsBuilder
                         .fromHttpRequest(httpRequest)
                         .path("/" + savedIntegrationConfiguration.getId())
@@ -45,8 +52,8 @@ public class IntegrationConfigurationController {
             @PathVariable String id,
             @RequestBody IntegrationConfiguration integrationConfiguration) {
 
-            integrationConfigurationService.addNewIntegrationConfigurationVersion(id, integrationConfiguration);
-            return ResponseEntity.ok().build();
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(id, integrationConfiguration);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
@@ -58,7 +65,8 @@ public class IntegrationConfigurationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<List<IntegrationConfiguration>> getIntegrationConfigurationsById(@PathVariable String id) {
-        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationService.getIntegrationConfigurationById(id);
+        List<IntegrationConfiguration> integrationConfigurations
+                = integrationConfigurationService.getIntegrationConfigurationById(id);
 
         if (integrationConfigurations.size() > 0) {
             return ResponseEntity.ok(integrationConfigurations);

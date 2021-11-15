@@ -2,12 +2,14 @@ package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.IntegrationConfiguration;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class IntegrationConfigurationService {
@@ -26,7 +28,8 @@ public class IntegrationConfigurationService {
     }
 
     public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {
-        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(integrationConfiguration.getId());
+        List<IntegrationConfiguration> integrationConfigurations
+                = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(integrationConfiguration.getId());
 
         if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
@@ -45,8 +48,19 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository.getIntegrationConfigurationById(id);
     }
 
+    public Page<IntegrationConfiguration> getLatestIntegrationConfigurations(Pageable pageable) {
+
+        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationRepository.findAll()
+                .stream()
+                .map(ic -> getLatestIntegrationConfigurationById(ic.getId()))
+                .collect(Collectors.toList());
+
+        return new PageImpl<>(integrationConfigurations, pageable, integrationConfigurations.size());
+    }
+
     public IntegrationConfiguration getLatestIntegrationConfigurationById(String id) {
-        List<IntegrationConfiguration> latest = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
+        List<IntegrationConfiguration> latest
+                = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
 
         if (latest.size() > 0) {
             return latest.get(0);
