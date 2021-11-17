@@ -45,14 +45,14 @@ public class IntegrationConfigurationService {
     }
 
     public List<IntegrationConfiguration> getIntegrationConfigurationById(String id) {
-        return integrationConfigurationRepository.getIntegrationConfigurationById(id);
+        return integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
     }
 
     public Page<IntegrationConfiguration> getLatestIntegrationConfigurations(Pageable pageable) {
 
         List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationRepository.findAll()
                 .stream()
-                .map(ic -> getLatestIntegrationConfigurationById(ic.getId()))
+                .filter(ic -> getLatestIntegrationConfigurationById(ic.getId()).getVersion() == ic.getVersion())
                 .collect(Collectors.toList());
 
         return new PageImpl<>(integrationConfigurations, pageable, integrationConfigurations.size());
@@ -79,4 +79,5 @@ public class IntegrationConfigurationService {
                 integrationConfigurationRepository.getIntegrationConfigurationByIdAndVersion(id, version)
         );
     }
+
 }

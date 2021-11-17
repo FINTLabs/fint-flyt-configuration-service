@@ -38,6 +38,7 @@ public class IntegrationConfigurationController {
 
         IntegrationConfiguration savedIntegrationConfiguration
                 = integrationConfigurationService.newIntegrationConfiguration(integrationConfiguration);
+
         return ResponseEntity.created(UriComponentsBuilder
                         .fromHttpRequest(httpRequest)
                         .path("/" + savedIntegrationConfiguration.getId())
@@ -95,7 +96,6 @@ public class IntegrationConfigurationController {
                 integrationConfigurationService
                         .getLatestIntegrationConfigurationById(id)
         );
-
     }
 
     @ExceptionHandler(IntegrationConfigurationNotFound.class)
