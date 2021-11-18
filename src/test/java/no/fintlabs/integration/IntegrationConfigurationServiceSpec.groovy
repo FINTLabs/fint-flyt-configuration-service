@@ -65,7 +65,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         versionsAfterDelete == 0
     }
 
-    def "Get integration configuration should return all versions"() {
+    def "Get integration configuration by id should return all versions"() {
         given:
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
@@ -77,7 +77,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         versions == 2
     }
 
-    def "Get latest i ntegration configurations should only return a list of latest configurations"() {
+    def "Get latest integration configurations should only return a list of latest configurations"() {
 
         def configuration1 = integrationConfigurationService
                 .newIntegrationConfiguration(new IntegrationConfiguration())
@@ -88,14 +88,14 @@ class IntegrationConfigurationServiceSpec extends Specification {
 
         when:
         def allIntegrationConfigurations = integrationConfigurationService
-                .getAllIntegrationConfiguration(PageRequest.of(0, 10))
+                .getAllIntegrationConfiguration()
         def latestIntegrationConfigurations = integrationConfigurationService
-                .getLatestIntegrationConfigurations(PageRequest.of(0, 10))
+                .getLatestIntegrationConfigurations()
 
         then:
         allIntegrationConfigurations.size() == 4
         latestIntegrationConfigurations.size() == 2
-        latestIntegrationConfigurations.getContent().get(0).getVersion() == 2
-        latestIntegrationConfigurations.getContent().get(1).getVersion() == 2
+        latestIntegrationConfigurations.get(0).getVersion() == 2
+        latestIntegrationConfigurations.get(1).getVersion() == 2
     }
 }

@@ -1,9 +1,6 @@
 package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.IntegrationConfiguration;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,17 +45,17 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
     }
 
-    public Page<IntegrationConfiguration> getLatestIntegrationConfigurations(Pageable pageable) {
+    public List<IntegrationConfiguration> getLatestIntegrationConfigurations() {
 
-        List<IntegrationConfiguration> integrationConfigurations = integrationConfigurationRepository.findAll()
+        return integrationConfigurationRepository
+                .findAll()
                 .stream()
                 .filter(ic -> getLatestIntegrationConfigurationById(ic.getId()).getVersion() == ic.getVersion())
                 .collect(Collectors.toList());
-
-        return new PageImpl<>(integrationConfigurations, pageable, integrationConfigurations.size());
     }
 
     public IntegrationConfiguration getLatestIntegrationConfigurationById(String id) {
+
         List<IntegrationConfiguration> latest
                 = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
 
@@ -67,11 +64,10 @@ public class IntegrationConfigurationService {
         }
 
         throw new IntegrationConfigurationNotFound();
-
     }
 
-    public Page<IntegrationConfiguration> getAllIntegrationConfiguration(Pageable pageable) {
-        return integrationConfigurationRepository.findAll(pageable);
+    public List<IntegrationConfiguration> getAllIntegrationConfiguration() {
+        return integrationConfigurationRepository.findAll();
     }
 
     public Optional<IntegrationConfiguration> getIntegrationConfigurationByIdAndVersion(String id, int version) {

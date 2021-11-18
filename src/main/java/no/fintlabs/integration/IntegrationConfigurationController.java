@@ -2,6 +2,7 @@ package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.IntegrationConfiguration;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.reactive.ServerHttpRequest;
@@ -25,9 +26,15 @@ public class IntegrationConfigurationController {
             @RequestParam(value = "page", defaultValue = "0") int pageIndex,
             @RequestParam(value = "size", defaultValue = "50") int pageSize) {
 
+        List<IntegrationConfiguration> latestIntegrationConfigurations
+                = integrationConfigurationService.getLatestIntegrationConfigurations();
+
         return ResponseEntity.ok(
-                integrationConfigurationService
-                        .getLatestIntegrationConfigurations(PageRequest.of(pageIndex, pageSize))
+                new PageImpl<>(
+                        latestIntegrationConfigurations,
+                        PageRequest.of(pageIndex, pageSize),
+                        latestIntegrationConfigurations.size()
+                )
         );
     }
 
@@ -86,7 +93,6 @@ public class IntegrationConfigurationController {
                         .getIntegrationConfigurationByIdAndVersion(id, version)
                         .orElseThrow(IntegrationConfigurationVersionNotFound::new)
         );
-
     }
 
     @GetMapping("/{id}/latest")
