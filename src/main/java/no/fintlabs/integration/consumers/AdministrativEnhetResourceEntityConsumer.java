@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.model.resource.Link;
 import no.fint.model.resource.arkiv.noark.AdministrativEnhetResource;
-import no.fintlabs.integration.cache.FintCacheManager;
-import no.fintlabs.kafka.TopicNameService;
+import no.fintlabs.kafka.consumer.EntityConsumer;
+import no.fintlabs.kafka.consumer.cache.FintCacheManager;
+import no.fintlabs.kafka.topic.DomainContext;
+import no.fintlabs.kafka.topic.TopicNameService;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -42,7 +44,7 @@ public class AdministrativEnhetResourceEntityConsumer extends EntityConsumer<Adm
 
     @Bean
     String administrativEnhetResourceEntityTopicName(TopicNameService topicNameService) {
-        return topicNameService.generateEntityTopicName(this.getResourceReference());
+        return topicNameService.generateEntityTopicName(DomainContext.SKJEMA, this.getResourceReference());
     }
 
     @KafkaListener(topics = "#{administrativEnhetResourceEntityTopicName}")
