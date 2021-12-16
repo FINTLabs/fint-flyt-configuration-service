@@ -12,3 +12,6 @@ springdata:
     database: skjema-configuration
 server:
   port: 8082
+logging:
+  level:
+    no.fintlabs.kafka.consumer.cache: WARN
