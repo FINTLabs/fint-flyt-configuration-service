@@ -1,9 +1,8 @@
 package no.fintlabs.integration.consumers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import no.fint.model.resource.Link;
-import no.fint.model.resource.arkiv.noark.AdministrativEnhetResource;
+import no.fint.model.resource.arkiv.kodeverk.DokumentStatusResource;
 import no.fintlabs.kafka.consumer.EntityConsumer;
 import no.fintlabs.kafka.consumer.cache.FintCacheManager;
 import no.fintlabs.kafka.topic.DomainContext;
@@ -17,26 +16,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Slf4j
 @Component
-public class AdministrativEnhetResourceEntityConsumer extends EntityConsumer<AdministrativEnhetResource> {
+public class DokumentStatusResourceEntityConsumer extends EntityConsumer<DokumentStatusResource> {
 
-    protected AdministrativEnhetResourceEntityConsumer(ObjectMapper objectMapper, FintCacheManager fintCacheManager) {
+    protected DokumentStatusResourceEntityConsumer(ObjectMapper objectMapper, FintCacheManager fintCacheManager) {
         super(objectMapper, fintCacheManager);
     }
 
     @Override
     protected String getResourceReference() {
-        return "arkiv.noark.administrativenhet";
+        return "arkiv.kodeverk.dokumentstatus";
     }
 
     @Override
-    protected Class<AdministrativEnhetResource> getResourceClass() {
-        return AdministrativEnhetResource.class;
+    protected Class<DokumentStatusResource> getResourceClass() {
+        return DokumentStatusResource.class;
     }
 
     @Override
-    protected List<String> getKeys(AdministrativEnhetResource resource) {
+    protected List<String> getKeys(DokumentStatusResource resource) {
         return Stream.concat(
                 Stream.of(resource.getSystemId().getIdentifikatorverdi()),
                 resource.getSelfLinks().stream().map(Link::getHref)
@@ -44,12 +42,12 @@ public class AdministrativEnhetResourceEntityConsumer extends EntityConsumer<Adm
     }
 
     @Bean
-    String administrativEnhetResourceEntityTopicName(TopicNameService topicNameService) {
+    String dokumentStatusResourceEntityTopicName(TopicNameService topicNameService) {
         return topicNameService.generateEntityTopicName(DomainContext.SKJEMA, this.getResourceReference());
     }
 
     @Override
-    @KafkaListener(topics = "#{administrativEnhetResourceEntityTopicName}")
+    @KafkaListener(topics = "#{dokumentStatusResourceEntityTopicName}")
     protected void consume(ConsumerRecord<String, String> consumerRecord) {
         this.processMessage(consumerRecord);
     }

@@ -1,9 +1,8 @@
 package no.fintlabs.integration.consumers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.slf4j.Slf4j;
 import no.fint.model.resource.Link;
-import no.fint.model.resource.arkiv.noark.AdministrativEnhetResource;
+import no.fint.model.resource.arkiv.noark.KlassifikasjonssystemResource;
 import no.fintlabs.kafka.consumer.EntityConsumer;
 import no.fintlabs.kafka.consumer.cache.FintCacheManager;
 import no.fintlabs.kafka.topic.DomainContext;
@@ -17,26 +16,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Slf4j
 @Component
-public class AdministrativEnhetResourceEntityConsumer extends EntityConsumer<AdministrativEnhetResource> {
+public class KlassifikasjonssystemResourceEntityConsumer extends EntityConsumer<KlassifikasjonssystemResource> {
 
-    protected AdministrativEnhetResourceEntityConsumer(ObjectMapper objectMapper, FintCacheManager fintCacheManager) {
+    protected KlassifikasjonssystemResourceEntityConsumer(ObjectMapper objectMapper, FintCacheManager fintCacheManager) {
         super(objectMapper, fintCacheManager);
     }
 
     @Override
     protected String getResourceReference() {
-        return "arkiv.noark.administrativenhet";
+        return "arkiv.noark.klassifikasjonssystem";
     }
 
     @Override
-    protected Class<AdministrativEnhetResource> getResourceClass() {
-        return AdministrativEnhetResource.class;
+    protected Class<KlassifikasjonssystemResource> getResourceClass() {
+        return KlassifikasjonssystemResource.class;
     }
 
     @Override
-    protected List<String> getKeys(AdministrativEnhetResource resource) {
+    protected List<String> getKeys(KlassifikasjonssystemResource resource) {
         return Stream.concat(
                 Stream.of(resource.getSystemId().getIdentifikatorverdi()),
                 resource.getSelfLinks().stream().map(Link::getHref)
@@ -44,12 +42,12 @@ public class AdministrativEnhetResourceEntityConsumer extends EntityConsumer<Adm
     }
 
     @Bean
-    String administrativEnhetResourceEntityTopicName(TopicNameService topicNameService) {
+    String klassifikasjonssystemResourceEntityTopicName(TopicNameService topicNameService) {
         return topicNameService.generateEntityTopicName(DomainContext.SKJEMA, this.getResourceReference());
     }
 
     @Override
-    @KafkaListener(topics = "#{administrativEnhetResourceEntityTopicName}")
+    @KafkaListener(topics = "#{klassifikasjonssystemResourceEntityTopicName}")
     protected void consume(ConsumerRecord<String, String> consumerRecord) {
         this.processMessage(consumerRecord);
     }
