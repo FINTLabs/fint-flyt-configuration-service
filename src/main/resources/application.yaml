@@ -1,5 +1,17 @@
+fint:
+  org-id: fintlabs.no
+spring:
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: group_id
 springdata:
   mongodb:
     host: localhost
     port: 27017
     database: skjema-configuration
+server:
+  port: 8082
+logging:
+  level:
+    no.fintlabs.kafka.consumer.cache: WARN
