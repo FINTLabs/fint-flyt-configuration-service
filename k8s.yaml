@@ -35,7 +35,8 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.${BUILD_NUMBER}_${GIT_COMMIT}
+        #- image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.${BUILD_NUMBER}_${GIT_COMMIT}
+        - image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.7_666ad4060b87c8f2a4f0a02d8f53956584670934
           name: fint-skjema-configuration-service
           resources:
             limits:
@@ -47,7 +48,7 @@ spec:
           ports:
             - containerPort: 8080
           env:
-            - name: TZ
-              value: Europe/Oslo
-            - name: JAVA_TOOL_OPTIONS
-              value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'
+            - {name: TZ, value: Europe/Oslo}
+            #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
+            - {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M'}
+            - {name: spring.kafka.bootstrap-servers, value: 'kafka-0.kafka-headless.default.svc.cluster.local:9092'}
