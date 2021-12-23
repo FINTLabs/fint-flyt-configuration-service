@@ -7,5 +7,6 @@ import java.util.List;
 
 @Data
 public class ApplicantConfiguration {
+    private String organisationNumber;
     private List<Field> fields = new ArrayList<>();
 }
