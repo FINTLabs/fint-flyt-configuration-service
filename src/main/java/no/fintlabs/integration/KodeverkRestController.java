@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
@@ -41,6 +42,17 @@ public class KodeverkRestController {
                 .getAllDistinct()
                 .stream()
                 .map(klassifikasjonssystemResource -> this.mapToResourceReference(klassifikasjonssystemResource, klassifikasjonssystemResource::getTittel))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("klasse")
+    public Collection<ResourceReference> getKlasse(String klassifikasjonssystemLink) {
+        return fintCacheManager
+                .getCache("arkiv.noark.klassifikasjonssystem", String.class, KlassifikasjonssystemResource.class)
+                .get(klassifikasjonssystemLink)
+                .getKlasse()
+                .stream()
+                .map(klasse -> new ResourceReference(klasse.getKlasseId(), klasse.getTittel()))
                 .collect(Collectors.toList());
     }
 
@@ -126,7 +138,11 @@ public class KodeverkRestController {
 
     private ResourceReference mapToResourceReference(FintLinks resource, Supplier<String> getDisplayName) {
         return new ResourceReference(
-                resource.getSelfLinks().stream().findFirst().orElseThrow().getHref(),
+                resource.getSelfLinks()
+                        .stream()
+                        .findFirst()
+                        .orElseThrow(() -> new NoSuchElementException("Resource has no self link: " + resource))
+                        .getHref(),
                 getDisplayName.get()
         );
     }

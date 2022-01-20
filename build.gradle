@@ -52,20 +52,20 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation("no.fintlabs:fint-kafka:0.0.2-rc-44")
+
+    implementation("no.fint:fint-arkiv-resource-model-java:3.9.0")
+
+    //testImplementation 'org.springframework.kafka:spring-kafka-test'
+    //testImplementation 'org.springframework.security:spring-security-test'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
     testImplementation 'cglib:cglib-nodep:3.3.0'
     testImplementation 'org.spockframework:spock-spring:2.0-groovy-3.0'
     testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
     testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
-
-    implementation 'org.springframework.kafka:spring-kafka'
-    implementation("no.fintlabs:fint-kafka:0.0.2-rc-41")
-
-    implementation("no.fint:fint-arkiv-resource-model-java:3.9.0")
-
-    //testImplementation 'org.springframework.kafka:spring-kafka-test'
-    //testImplementation 'org.springframework.security:spring-security-test'
 }
 
 test {
