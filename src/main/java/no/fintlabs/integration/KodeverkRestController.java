@@ -28,7 +28,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getAdministrativEnheter() {
         return fintCacheManager
                 .getCache("arkiv.noark.administrativenhet", String.class, AdministrativEnhetResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(administrativEnhetResource -> this.mapToResourceReference(administrativEnhetResource, administrativEnhetResource::getNavn))
                 .collect(Collectors.toList());
@@ -38,7 +38,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getKlassifikasjonssystem() {
         return fintCacheManager
                 .getCache("arkiv.noark.klassifikasjonssystem", String.class, KlassifikasjonssystemResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(klassifikasjonssystemResource -> this.mapToResourceReference(klassifikasjonssystemResource, klassifikasjonssystemResource::getTittel))
                 .collect(Collectors.toList());
@@ -48,7 +48,7 @@ public class KodeverkRestController {
 //    public Collection<ResourceReference> getRolle() {
 //        return fintCacheManager
 //                .getCache("arkiv.noark.rolle", String.class, RolleResource.class)
-//                .getAll()
+//                .getAllDistinct()()
 //                .stream()
 //                .map(rolleResource -> this.mapToResourceReference(rolleResource, rolleResource::getNavn))
 //                .collect(Collectors.toList());
@@ -58,7 +58,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getSakstatus() {
         return fintCacheManager
                 .getCache("arkiv.kodeverk.saksstatus", String.class, SaksstatusResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(saksstatusResource -> this.mapToResourceReference(saksstatusResource, saksstatusResource::getNavn))
                 .collect(Collectors.toList());
@@ -68,7 +68,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getArkivdel() {
         return fintCacheManager
                 .getCache("arkiv.noark.arkivdel", String.class, ArkivdelResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(arkivdelResource -> this.mapToResourceReference(arkivdelResource, arkivdelResource::getTittel))
                 .collect(Collectors.toList());
@@ -78,7 +78,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getSkjermingshjemmel() {
         return fintCacheManager
                 .getCache("arkiv.kodeverk.skjermingshjemmel", String.class, SkjermingshjemmelResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(skjermingshjemmelResource -> this.mapToResourceReference(skjermingshjemmelResource, skjermingshjemmelResource::getNavn))
                 .collect(Collectors.toList());
@@ -88,7 +88,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getTilgangsrestriksjon() {
         return fintCacheManager
                 .getCache("arkiv.kodeverk.tilgangsrestriksjon", String.class, TilgangsrestriksjonResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(tilgangsrestriksjonResource -> this.mapToResourceReference(tilgangsrestriksjonResource, tilgangsrestriksjonResource::getNavn))
                 .collect(Collectors.toList());
@@ -98,7 +98,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getKlassifikasjonstype() {
         return fintCacheManager
                 .getCache("arkiv.kodeverk.klassifikasjonstype", String.class, KlassifikasjonstypeResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(klassifikasjonstypeResource -> this.mapToResourceReference(klassifikasjonstypeResource, klassifikasjonstypeResource::getNavn))
                 .collect(Collectors.toList());
@@ -108,7 +108,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getDokumentstatus() {
         return fintCacheManager
                 .getCache("arkiv.kodeverk.dokumentstatus", String.class, DokumentStatusResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(dokumentStatusResource -> this.mapToResourceReference(dokumentStatusResource, dokumentStatusResource::getNavn))
                 .collect(Collectors.toList());
@@ -118,7 +118,7 @@ public class KodeverkRestController {
     public Collection<ResourceReference> getDokumenttype() {
         return fintCacheManager
                 .getCache("arkiv.kodeverk.dokumenttype", String.class, DokumentTypeResource.class)
-                .getAll()
+                .getAllDistinct()
                 .stream()
                 .map(dokumentTypeResource -> this.mapToResourceReference(dokumentTypeResource, dokumentTypeResource::getNavn))
                 .collect(Collectors.toList());
