@@ -1,28 +1,34 @@
 package no.fintlabs.integration;
 
+import lombok.extern.slf4j.Slf4j;
 import no.fint.model.resource.FintLinks;
 import no.fint.model.resource.arkiv.kodeverk.*;
 import no.fint.model.resource.arkiv.noark.AdministrativEnhetResource;
 import no.fint.model.resource.arkiv.noark.ArkivdelResource;
+import no.fint.model.resource.arkiv.noark.ArkivressursResource;
 import no.fint.model.resource.arkiv.noark.KlassifikasjonssystemResource;
 import no.fintlabs.integration.model.ResourceReference;
 import no.fintlabs.kafka.consumer.cache.FintCacheManager;
+import no.fintlabs.kafka.util.links.ResourceLinkUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @RequestMapping("api/kodeverk/")
 public class KodeverkRestController {
     private final FintCacheManager fintCacheManager;
+    private final ArkivressursReferenceMapper arkivressursReferenceMapper;
 
-    public KodeverkRestController(FintCacheManager fintCacheManager) {
+    public KodeverkRestController(FintCacheManager fintCacheManager, ArkivressursReferenceMapper arkivressursReferenceMapper) {
         this.fintCacheManager = fintCacheManager;
+        this.arkivressursReferenceMapper = arkivressursReferenceMapper;
     }
 
     @GetMapping("administrativenhet")
@@ -55,16 +61,6 @@ public class KodeverkRestController {
                 .map(klasse -> new ResourceReference(klasse.getKlasseId(), klasse.getTittel()))
                 .collect(Collectors.toList());
     }
-
-//    @GetMapping("rolle")
-//    public Collection<ResourceReference> getRolle() {
-//        return fintCacheManager
-//                .getCache("arkiv.noark.rolle", String.class, RolleResource.class)
-//                .getAllDistinct()()
-//                .stream()
-//                .map(rolleResource -> this.mapToResourceReference(rolleResource, rolleResource::getNavn))
-//                .collect(Collectors.toList());
-//    }
 
     @GetMapping("sakstatus")
     public Collection<ResourceReference> getSakstatus() {
@@ -136,14 +132,20 @@ public class KodeverkRestController {
                 .collect(Collectors.toList());
     }
 
-    private ResourceReference mapToResourceReference(FintLinks resource, Supplier<String> getDisplayName) {
-        return new ResourceReference(
-                resource.getSelfLinks()
-                        .stream()
-                        .findFirst()
-                        .orElseThrow(() -> new NoSuchElementException("Resource has no self link: " + resource))
-                        .getHref(),
-                getDisplayName.get()
-        );
+    @GetMapping("arkivressurs")
+    public Collection<ResourceReference> getArkivressurs() {
+        return fintCacheManager
+                .getCache("arkiv.noark.arkivressurs", String.class, ArkivressursResource.class)
+                .getAllDistinct()
+                .stream()
+                .map(this.arkivressursReferenceMapper::map)
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .collect(Collectors.toList());
     }
+
+    private ResourceReference mapToResourceReference(FintLinks resource, Supplier<String> getDisplayName) {
+        return new ResourceReference(ResourceLinkUtil.getFirstSelfLink(resource), getDisplayName.get());
+    }
+
 }
