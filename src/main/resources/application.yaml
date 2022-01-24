@@ -1,6 +1,9 @@
 fint:
   org-id: fintlabs.no
+  application-id: fint-skjema-configuration-service
   kafka:
+    logging:
+      logToKafka: true
     cache:
       defaultCacheEntryTimeToLiveMillis: 518400000
       defaultCacheHeapSize: 1000000
@@ -18,4 +21,6 @@ server:
   port: 8082
 logging:
   level:
+    root: INFO
+    org.apache.kafka: INFO
     no.fintlabs.kafka.consumer.cache: WARN
