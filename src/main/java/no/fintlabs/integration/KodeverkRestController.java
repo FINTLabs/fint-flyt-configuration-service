@@ -11,6 +11,7 @@ import no.fintlabs.integration.model.ResourceReference;
 import no.fintlabs.kafka.consumer.cache.FintCacheManager;
 import no.fintlabs.kafka.util.links.ResourceLinkUtil;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,8 +52,8 @@ public class KodeverkRestController {
                 .collect(Collectors.toList());
     }
 
-    @GetMapping("klasse")
-    public Collection<ResourceReference> getKlasse(String klassifikasjonssystemLink) {
+    @GetMapping("klasse/{klassifikasjonssystemLink}")
+    public Collection<ResourceReference> getKlasse(@PathVariable String klassifikasjonssystemLink) {
         return fintCacheManager
                 .getCache("arkiv.noark.klassifikasjonssystem", String.class, KlassifikasjonssystemResource.class)
                 .get(klassifikasjonssystemLink)
@@ -99,16 +100,6 @@ public class KodeverkRestController {
                 .getAllDistinct()
                 .stream()
                 .map(tilgangsrestriksjonResource -> this.mapToResourceReference(tilgangsrestriksjonResource, tilgangsrestriksjonResource::getNavn))
-                .collect(Collectors.toList());
-    }
-
-    @GetMapping("klassifikasjonstype")
-    public Collection<ResourceReference> getKlassifikasjonstype() {
-        return fintCacheManager
-                .getCache("arkiv.kodeverk.klassifikasjonstype", String.class, KlassifikasjonstypeResource.class)
-                .getAllDistinct()
-                .stream()
-                .map(klassifikasjonstypeResource -> this.mapToResourceReference(klassifikasjonstypeResource, klassifikasjonstypeResource::getNavn))
                 .collect(Collectors.toList());
     }
 
