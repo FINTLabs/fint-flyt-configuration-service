@@ -132,6 +132,26 @@ public class KodeverkRestController {
                 .collect(Collectors.toList());
     }
 
+    @GetMapping("journalstatus")
+    public Collection<ResourceReference> getJournalstatus() {
+        return fintCacheManager
+                .getCache("arkiv.kodeverk.journalstatus", String.class, JournalStatusResource.class)
+                .getAllDistinct()
+                .stream()
+                .map(journalStatusResource -> this.mapToResourceReference(journalStatusResource, journalStatusResource::getNavn))
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("variantformat")
+    public Collection<ResourceReference> getVariantformat() {
+        return fintCacheManager
+                .getCache("arkiv.kodeverk.variantformat", String.class, VariantformatResource.class)
+                .getAllDistinct()
+                .stream()
+                .map(variantformatResource -> this.mapToResourceReference(variantformatResource, variantformatResource::getNavn))
+                .collect(Collectors.toList());
+    }
+
     @GetMapping("arkivressurs")
     public Collection<ResourceReference> getArkivressurs() {
         return fintCacheManager

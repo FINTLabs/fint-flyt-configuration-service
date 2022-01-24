@@ -128,6 +128,28 @@ public class EntityConsumersConfiguration {
     }
 
     @Bean
+    ConcurrentMessageListenerContainer<String, String> journalstatusResourceEntityConsumer(EntityConsumerFactory entityConsumerFactory) {
+        return entityConsumerFactory.createEntityConsumer(
+                DomainContext.SKJEMA,
+                "arkiv.kodeverk.journalstatus",
+                JournalStatusResource.class,
+                ResourceLinkUtil::getSelfLinks,
+                true
+        );
+    }
+
+    @Bean
+    ConcurrentMessageListenerContainer<String, String> variantformatResourceEntityConsumer(EntityConsumerFactory entityConsumerFactory) {
+        return entityConsumerFactory.createEntityConsumer(
+                DomainContext.SKJEMA,
+                "arkiv.kodeverk.variantformat",
+                VariantformatResource.class,
+                ResourceLinkUtil::getSelfLinks,
+                true
+        );
+    }
+
+    @Bean
     ConcurrentMessageListenerContainer<String, String> personalressursResourceEntityConsumer(EntityConsumerFactory entityConsumerFactory) {
         return entityConsumerFactory.createEntityConsumer(
                 DomainContext.SKJEMA,
