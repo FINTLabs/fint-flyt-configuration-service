@@ -33,14 +33,14 @@ public class ArkivressursReferenceMapper {
         try {
             return Optional.of(new ResourceReference(
                     ResourceLinkUtil.getFirstSelfLink(arkivressursResource),
-                    this.getPersonnavn(arkivressursResource)
+                    this.getDisplayText(arkivressursResource)
             ));
         } catch (NoSuchLinkException | NoSuchCacheException | NoSuchCacheEntryException e) {
             return Optional.empty();
         }
     }
 
-    private String getPersonnavn(ArkivressursResource arkivressursResource) {
+    private String getDisplayText(ArkivressursResource arkivressursResource) {
         String personalressursResourceHref = this.getPersonalressursResourceHref(arkivressursResource);
         PersonalressursResource personalressursResource = this.getPersonalressursResource(personalressursResourceHref);
 
@@ -51,12 +51,16 @@ public class ArkivressursReferenceMapper {
         if (personnavn == null) {
             throw new IllegalStateException("Person resource contains no name");
         }
-        return Stream.of(
+        String personnavnString = Stream.of(
                         personnavn.getFornavn(),
                         personnavn.getMellomnavn(),
                         personnavn.getEtternavn()
                 ).filter(Objects::nonNull)
                 .collect(Collectors.joining(" "));
+
+        String ansattnummerString = personalressursResource.getAnsattnummer().getIdentifikatorverdi();
+
+        return String.format("%s (%s)", personnavnString, ansattnummerString);
     }
 
     private String getPersonalressursResourceHref(ArkivressursResource arkivressursResource) {

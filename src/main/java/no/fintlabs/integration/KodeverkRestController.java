@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,7 +37,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.noark.administrativenhet", String.class, AdministrativEnhetResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(administrativEnhetResource -> this.mapToResourceReference(administrativEnhetResource, administrativEnhetResource::getNavn))
+                .map(administrativEnhetResource -> this.mapToResourceReference(administrativEnhetResource, administrativEnhetResource.getNavn()))
                 .collect(Collectors.toList());
     }
 
@@ -48,7 +47,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.noark.klassifikasjonssystem", String.class, KlassifikasjonssystemResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(klassifikasjonssystemResource -> this.mapToResourceReference(klassifikasjonssystemResource, klassifikasjonssystemResource::getTittel))
+                .map(klassifikasjonssystemResource -> this.mapToResourceReference(klassifikasjonssystemResource, klassifikasjonssystemResource.getTittel()))
                 .collect(Collectors.toList());
     }
 
@@ -69,7 +68,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.kodeverk.saksstatus", String.class, SaksstatusResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(saksstatusResource -> this.mapToResourceReference(saksstatusResource, saksstatusResource::getNavn))
+                .map(saksstatusResource -> this.mapToResourceReference(saksstatusResource, saksstatusResource.getNavn()))
                 .collect(Collectors.toList());
     }
 
@@ -79,7 +78,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.noark.arkivdel", String.class, ArkivdelResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(arkivdelResource -> this.mapToResourceReference(arkivdelResource, arkivdelResource::getTittel))
+                .map(arkivdelResource -> this.mapToResourceReference(arkivdelResource, arkivdelResource.getTittel()))
                 .collect(Collectors.toList());
     }
 
@@ -89,7 +88,10 @@ public class KodeverkRestController {
                 .getCache("arkiv.kodeverk.skjermingshjemmel", String.class, SkjermingshjemmelResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(skjermingshjemmelResource -> this.mapToResourceReference(skjermingshjemmelResource, skjermingshjemmelResource::getNavn))
+                .map(skjermingshjemmelResource -> this.mapToResourceReference(
+                        skjermingshjemmelResource,
+                        String.format("%s (%s)", skjermingshjemmelResource.getNavn(), skjermingshjemmelResource.getSystemId())
+                ))
                 .collect(Collectors.toList());
     }
 
@@ -99,7 +101,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.kodeverk.tilgangsrestriksjon", String.class, TilgangsrestriksjonResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(tilgangsrestriksjonResource -> this.mapToResourceReference(tilgangsrestriksjonResource, tilgangsrestriksjonResource::getNavn))
+                .map(tilgangsrestriksjonResource -> this.mapToResourceReference(tilgangsrestriksjonResource, tilgangsrestriksjonResource.getNavn()))
                 .collect(Collectors.toList());
     }
 
@@ -109,7 +111,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.kodeverk.dokumentstatus", String.class, DokumentStatusResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(dokumentStatusResource -> this.mapToResourceReference(dokumentStatusResource, dokumentStatusResource::getNavn))
+                .map(dokumentStatusResource -> this.mapToResourceReference(dokumentStatusResource, dokumentStatusResource.getNavn()))
                 .collect(Collectors.toList());
     }
 
@@ -119,7 +121,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.kodeverk.dokumenttype", String.class, DokumentTypeResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(dokumentTypeResource -> this.mapToResourceReference(dokumentTypeResource, dokumentTypeResource::getNavn))
+                .map(dokumentTypeResource -> this.mapToResourceReference(dokumentTypeResource, dokumentTypeResource.getNavn()))
                 .collect(Collectors.toList());
     }
 
@@ -129,7 +131,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.kodeverk.journalstatus", String.class, JournalStatusResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(journalStatusResource -> this.mapToResourceReference(journalStatusResource, journalStatusResource::getNavn))
+                .map(journalStatusResource -> this.mapToResourceReference(journalStatusResource, journalStatusResource.getNavn()))
                 .collect(Collectors.toList());
     }
 
@@ -139,7 +141,7 @@ public class KodeverkRestController {
                 .getCache("arkiv.kodeverk.variantformat", String.class, VariantformatResource.class)
                 .getAllDistinct()
                 .stream()
-                .map(variantformatResource -> this.mapToResourceReference(variantformatResource, variantformatResource::getNavn))
+                .map(variantformatResource -> this.mapToResourceReference(variantformatResource, variantformatResource.getNavn()))
                 .collect(Collectors.toList());
     }
 
@@ -155,8 +157,8 @@ public class KodeverkRestController {
                 .collect(Collectors.toList());
     }
 
-    private ResourceReference mapToResourceReference(FintLinks resource, Supplier<String> getDisplayName) {
-        return new ResourceReference(ResourceLinkUtil.getFirstSelfLink(resource), getDisplayName.get());
+    private ResourceReference mapToResourceReference(FintLinks resource, String displayName) {
+        return new ResourceReference(ResourceLinkUtil.getFirstSelfLink(resource), displayName);
     }
 
 }
