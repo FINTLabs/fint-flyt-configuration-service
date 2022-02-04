@@ -19,6 +19,7 @@ public class IntegrationConfiguration {
     private String id;
     private String name;
     private String description;
+    private String selectedForm;
     private int version;
 
     private RecordConfiguration recordConfiguration;
