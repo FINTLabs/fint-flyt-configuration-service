@@ -19,6 +19,7 @@ public class IntegrationConfiguration {
     private String id;
     private String name;
     private String description;
+    private String sourceApplication;
     private String sourceApplicationIntegrationID;
     private int version;
 
