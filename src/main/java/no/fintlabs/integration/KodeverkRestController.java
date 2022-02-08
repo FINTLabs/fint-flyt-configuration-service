@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("api/kodeverk/")
 public class KodeverkRestController {
     private final FintCacheManager fintCacheManager;
