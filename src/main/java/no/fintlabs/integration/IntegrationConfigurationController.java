@@ -12,7 +12,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/integration/configuration")
 public class IntegrationConfigurationController {
 
