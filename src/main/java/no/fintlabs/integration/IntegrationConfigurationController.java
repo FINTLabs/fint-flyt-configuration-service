@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/integration/configuration")
 public class IntegrationConfigurationController {
 
@@ -21,6 +22,7 @@ public class IntegrationConfigurationController {
         this.integrationConfigurationService = integrationConfigurationService;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping
     public ResponseEntity<Page<IntegrationConfiguration>> getLatestIntegrationConfigurations(
             @RequestParam(value = "page", defaultValue = "0") int pageIndex,
@@ -38,6 +40,7 @@ public class IntegrationConfigurationController {
         );
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping
     public ResponseEntity<String> newIntegrationConfiguration(
             @RequestBody IntegrationConfiguration integrationConfiguration,
@@ -48,13 +51,14 @@ public class IntegrationConfigurationController {
 
         return ResponseEntity.created(UriComponentsBuilder
                         .fromHttpRequest(httpRequest)
-                        .path("/" + savedIntegrationConfiguration.getId())
+                        .path("/" + savedIntegrationConfiguration.getIntegrationId())
                         .build()
                         .toUri())
                 .build();
 
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @PutMapping("/{id}")
     public ResponseEntity<Void> addNewIntegrationConfigurationVersion(
             @PathVariable String id,
