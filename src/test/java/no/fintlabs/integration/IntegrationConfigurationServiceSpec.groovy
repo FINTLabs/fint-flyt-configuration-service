@@ -27,11 +27,11 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        def configurations = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId())
+        def configurations = integrationConfigurationService.getIntegrationConfigurationById(configuration.getId())
 
         then:
         configurations.size() == 1
-        StringUtils.hasText(configurations.get(0).getIntegrationId())
+        StringUtils.hasText(configurations.get(0).getId())
         configurations.get(0).getVersion() == 1
     }
 
@@ -40,8 +40,8 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), configuration)
-        def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId())
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getId(), configuration)
+        def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getId())
 
         then:
         versions.size() == 2
@@ -54,10 +54,10 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), configuration)
-        def versionsBerforeDelete = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId()).size()
-        integrationConfigurationService.deleteIntegrationConfigurationById(configuration.getIntegrationId())
-        def versionsAfterDelete = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId()).size()
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getId(), configuration)
+        def versionsBerforeDelete = integrationConfigurationService.getIntegrationConfigurationById(configuration.getId()).size()
+        integrationConfigurationService.deleteIntegrationConfigurationById(configuration.getId())
+        def versionsAfterDelete = integrationConfigurationService.getIntegrationConfigurationById(configuration.getId()).size()
 
         then:
         versionsBerforeDelete == 2
@@ -69,8 +69,8 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), configuration)
-        def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId()).size()
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getId(), configuration)
+        def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getId()).size()
 
         then:
         versions == 2
@@ -80,10 +80,10 @@ class IntegrationConfigurationServiceSpec extends Specification {
 
         def configuration1 = integrationConfigurationService
                 .newIntegrationConfiguration(new IntegrationConfiguration())
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration1.getIntegrationId(), configuration1)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration1.getId(), configuration1)
         def configuration2 = integrationConfigurationService
                 .newIntegrationConfiguration(new IntegrationConfiguration())
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration2.getIntegrationId(), configuration2)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration2.getId(), configuration2)
 
         when:
         def allIntegrationConfigurations = integrationConfigurationService

@@ -12,6 +12,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/integration/configuration")
 public class IntegrationConfigurationController {
 
@@ -48,7 +49,7 @@ public class IntegrationConfigurationController {
 
         return ResponseEntity.created(UriComponentsBuilder
                         .fromHttpRequest(httpRequest)
-                        .path("/" + savedIntegrationConfiguration.getIntegrationId())
+                        .path("/" + savedIntegrationConfiguration.getId())
                         .build()
                         .toUri())
                 .build();

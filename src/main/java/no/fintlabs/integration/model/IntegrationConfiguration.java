@@ -16,7 +16,7 @@ public class IntegrationConfiguration {
     @CreatedDate
     private LocalDateTime documentCreatedDate;
 
-    private String integrationId;
+    private String id;
     private String name;
     private String description;
     private String sourceApplication;
@@ -30,6 +30,6 @@ public class IntegrationConfiguration {
     private ApplicantConfiguration applicantConfiguration;
 
     public boolean isSameAs(String otherId) {
-        return integrationId.equals(otherId);
+        return id.equals(otherId);
     }
 }

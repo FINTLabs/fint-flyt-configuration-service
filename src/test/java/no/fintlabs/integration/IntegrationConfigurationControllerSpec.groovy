@@ -56,7 +56,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
 
         then:
         integrationConfigurationRepository.save(_ as IntegrationConfiguration)
-                >> new IntegrationConfiguration(integrationId: "123")
+                >> new IntegrationConfiguration(id: "123")
 
         response.expectStatus()
                 .isCreated()
@@ -69,7 +69,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         def response = client
                 .put()
                 .uri("/api/integration/configuration/123")
-                .body(Mono.just(new IntegrationConfiguration(integrationId: "123")), IntegrationConfiguration.class)
+                .body(Mono.just(new IntegrationConfiguration(id: "123")), IntegrationConfiguration.class)
                 .exchange()
 
         then:
@@ -88,7 +88,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         def response = client
                 .put()
                 .uri("/api/integration/configuration/321")
-                .body(Mono.just(new IntegrationConfiguration(integrationId: "123")), IntegrationConfiguration.class)
+                .body(Mono.just(new IntegrationConfiguration(id: "123")), IntegrationConfiguration.class)
                 .exchange()
 
         then:

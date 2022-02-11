@@ -19,14 +19,14 @@ public class IntegrationConfigurationService {
 
     public IntegrationConfiguration newIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(1);
-        integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
+        integrationConfiguration.setId(UUID.randomUUID().toString());
 
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
     public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {
         List<IntegrationConfiguration> integrationConfigurations
-                = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(integrationConfiguration.getIntegrationId());
+                = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(integrationConfiguration.getId());
 
         if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
@@ -50,7 +50,7 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository
                 .findAll()
                 .stream()
-                .filter(ic -> getLatestIntegrationConfigurationById(ic.getIntegrationId()).getVersion() == ic.getVersion())
+                .filter(ic -> getLatestIntegrationConfigurationById(ic.getId()).getVersion() == ic.getVersion())
                 .collect(Collectors.toList());
     }
 
