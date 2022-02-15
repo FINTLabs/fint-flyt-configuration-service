@@ -56,7 +56,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
 
         then:
         integrationConfigurationRepository.save(_ as IntegrationConfiguration)
-                >> new IntegrationConfiguration(id: "123")
+                >> new IntegrationConfiguration(integrationId: "123")
 
         response.expectStatus()
                 .isCreated()
@@ -69,13 +69,13 @@ class IntegrationConfigurationControllerSpec extends Specification {
         def response = client
                 .put()
                 .uri("/api/integration/configuration/123")
-                .body(Mono.just(new IntegrationConfiguration(id: "123")), IntegrationConfiguration.class)
+                .body(Mono.just(new IntegrationConfiguration(integrationId: "123")), IntegrationConfiguration.class)
                 .exchange()
 
         then:
         integrationConfigurationRepository.save(_ as IntegrationConfiguration)
                 >> new IntegrationConfiguration()
-        integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(_ as String)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(_ as String)
                 >> [new IntegrationConfiguration()]
 
         response
@@ -88,13 +88,13 @@ class IntegrationConfigurationControllerSpec extends Specification {
         def response = client
                 .put()
                 .uri("/api/integration/configuration/321")
-                .body(Mono.just(new IntegrationConfiguration(id: "123")), IntegrationConfiguration.class)
+                .body(Mono.just(new IntegrationConfiguration(integrationId: "123")), IntegrationConfiguration.class)
                 .exchange()
 
         then:
         integrationConfigurationRepository.save(_ as IntegrationConfiguration)
                 >> new IntegrationConfiguration()
-        integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(_ as String)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(_ as String)
                 >> [new IntegrationConfiguration()]
 
         response
@@ -120,7 +120,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
                 .exchange()
 
         then:
-        integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(_ as String)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(_ as String)
                 >> [new IntegrationConfiguration()]
 
         response
@@ -136,7 +136,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
                 .exchange()
 
         then:
-        integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(_ as String)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(_ as String)
                 >> []
 
         response
@@ -152,7 +152,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
                 .exchange()
 
         then:
-        integrationConfigurationRepository.getIntegrationConfigurationByIdAndVersion(_ as String, _ as Integer)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdAndVersion(_ as String, _ as Integer)
                 >> new IntegrationConfiguration()
 
         response
@@ -168,7 +168,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
                 .exchange()
 
         then:
-        integrationConfigurationRepository.getIntegrationConfigurationByIdAndVersion(_ as String, _ as Integer)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdAndVersion(_ as String, _ as Integer)
                 >> null
 
         response
@@ -184,7 +184,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
                 .exchange()
 
         then:
-        integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(_ as String)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(_ as String)
                 >> [new IntegrationConfiguration()]
 
         response
@@ -200,7 +200,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
                 .exchange()
 
         then:
-        integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(_ as String)
+        integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(_ as String)
                 >> []
 
         response

@@ -8,11 +8,11 @@ import java.util.List;
 
 @Repository
 public interface IntegrationConfigurationRepository extends MongoRepository<IntegrationConfiguration, String> {
-    List<IntegrationConfiguration> getIntegrationConfigurationById(String id);
+    List<IntegrationConfiguration> getIntegrationConfigurationByIntegrationId(String id);
 
-    IntegrationConfiguration getIntegrationConfigurationByIdAndVersion(String id, int version);
+    IntegrationConfiguration getIntegrationConfigurationByIntegrationIdAndVersion(String id, int version);
 
-    List<IntegrationConfiguration> getIntegrationConfigurationByIdOrderByVersionDesc(String id);
+    List<IntegrationConfiguration> getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(String id);
 
-    void deleteIntegrationConfigurationById(String id);
+    void deleteIntegrationConfigurationByIntegrationId(String id);
 }

@@ -49,7 +49,7 @@ public class IntegrationConfigurationController {
 
         return ResponseEntity.created(UriComponentsBuilder
                         .fromHttpRequest(httpRequest)
-                        .path("/" + savedIntegrationConfiguration.getId())
+                        .path("/" + savedIntegrationConfiguration.getIntegrationId())
                         .build()
                         .toUri())
                 .build();
