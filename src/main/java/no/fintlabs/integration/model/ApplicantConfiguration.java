@@ -8,5 +8,6 @@ import java.util.List;
 @Data
 public class ApplicantConfiguration {
     private String organisationNumber;
+    private String socialSecurityNumber;
     private List<Field> fields = new ArrayList<>();
 }
