@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Slf4j
 @RestController
-@RequestMapping("sak")
+@RequestMapping("api/sak")
 public class SakController {
 
     private final SakRequestService sakRequestService;
