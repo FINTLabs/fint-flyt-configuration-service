@@ -10,10 +10,7 @@ import no.fint.model.resource.arkiv.noark.KlassifikasjonssystemResource;
 import no.fintlabs.integration.model.ResourceReference;
 import no.fintlabs.kafka.consumer.cache.FintCacheManager;
 import no.fintlabs.kafka.util.links.ResourceLinkUtil;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.Optional;

@@ -16,10 +16,14 @@ public class IntegrationConfiguration {
     @CreatedDate
     private LocalDateTime documentCreatedDate;
 
-    private String id;
+    private String integrationId;
     private String name;
     private String description;
+    private String sourceApplication;
+    private String sourceApplicationIntegrationId;
+    private String orgId;
     private int version;
+    private boolean isPublished;
 
     private RecordConfiguration recordConfiguration;
     private DocumentConfiguration documentConfiguration;
@@ -27,6 +31,6 @@ public class IntegrationConfiguration {
     private ApplicantConfiguration applicantConfiguration;
 
     public boolean isSameAs(String otherId) {
-        return id.equals(otherId);
+        return integrationId.equals(otherId);
     }
 }

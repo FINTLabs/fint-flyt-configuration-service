@@ -19,14 +19,14 @@ public class IntegrationConfigurationService {
 
     public IntegrationConfiguration newIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(1);
-        integrationConfiguration.setId(UUID.randomUUID().toString());
+        integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
 
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
     public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {
         List<IntegrationConfiguration> integrationConfigurations
-                = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(integrationConfiguration.getId());
+                = integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(integrationConfiguration.getIntegrationId());
 
         if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
@@ -38,11 +38,11 @@ public class IntegrationConfigurationService {
     }
 
     public void deleteIntegrationConfigurationById(String id) {
-        integrationConfigurationRepository.deleteIntegrationConfigurationById(id);
+        integrationConfigurationRepository.deleteIntegrationConfigurationByIntegrationId(id);
     }
 
     public List<IntegrationConfiguration> getIntegrationConfigurationById(String id) {
-        return integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
+        return integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(id);
     }
 
     public List<IntegrationConfiguration> getLatestIntegrationConfigurations() {
@@ -50,14 +50,14 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository
                 .findAll()
                 .stream()
-                .filter(ic -> getLatestIntegrationConfigurationById(ic.getId()).getVersion() == ic.getVersion())
+                .filter(ic -> getLatestIntegrationConfigurationById(ic.getIntegrationId()).getVersion() == ic.getVersion())
                 .collect(Collectors.toList());
     }
 
     public IntegrationConfiguration getLatestIntegrationConfigurationById(String id) {
 
         List<IntegrationConfiguration> latest
-                = integrationConfigurationRepository.getIntegrationConfigurationByIdOrderByVersionDesc(id);
+                = integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(id);
 
         if (latest.size() > 0) {
             return latest.get(0);
@@ -72,7 +72,7 @@ public class IntegrationConfigurationService {
 
     public Optional<IntegrationConfiguration> getIntegrationConfigurationByIdAndVersion(String id, int version) {
         return Optional.ofNullable(
-                integrationConfigurationRepository.getIntegrationConfigurationByIdAndVersion(id, version)
+                integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdAndVersion(id, version)
         );
     }
 
