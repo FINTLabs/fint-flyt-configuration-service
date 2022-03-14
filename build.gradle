@@ -6,11 +6,12 @@ plugins {
 }
 
 group = 'no.fintlabs'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 jar {
-    enabled = false
+    enabled = true
+    archiveVersion = ""
+    archiveClassifier = ""
 }
 
 configurations {
