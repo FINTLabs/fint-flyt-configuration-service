@@ -68,4 +68,3 @@ spec:
             - { name: TZ, value: Europe/Oslo }
             #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
-            - { name: spring.kafka.bootstrap-servers, value: 'kafka-0.kafka-headless.default.svc.cluster.local:9092' }
