@@ -1,3 +1,10 @@
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: aiven-kafka
+spec:
+  itemPath: "vaults/aks-alpha-vault/items/aiven-kafka"
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -34,6 +41,10 @@ spec:
         io.kompose.service: fint-skjema-configuration-service
     spec:
       restartPolicy: Always
+      volumes:
+        - name: credentials
+          secret:
+            secretName: aiven-kafka-certificates
       containers:
         #- image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.${BUILD_NUMBER}_${GIT_COMMIT}
         - image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.7_666ad4060b87c8f2a4f0a02d8f53956584670934
@@ -47,6 +58,9 @@ spec:
               cpu: "100m"
           ports:
             - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: aiven-kafka
           env:
             - {name: TZ, value: Europe/Oslo}
             #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
