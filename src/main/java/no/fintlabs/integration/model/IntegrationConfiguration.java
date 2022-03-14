@@ -22,6 +22,7 @@ public class IntegrationConfiguration {
     private String sourceApplication;
     private String sourceApplicationIntegrationId;
     private String orgId;
+    private String destination;
     private int version;
     private boolean isPublished;
 
