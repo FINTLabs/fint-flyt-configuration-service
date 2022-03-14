@@ -20,8 +20,7 @@ public class SakController {
         this.sakRequestService = sakRequestService;
     }
 
-    // TODO: 14/03/2022 Title at end of the URI
-    @GetMapping("tittel/mappeid/{caseYear}/{caseNumber}")
+    @GetMapping("mappeid/{caseYear}/{caseNumber}/tittel")
     public String getSakTittel(@PathVariable String caseYear, @PathVariable String caseNumber) {
         String mappeId = caseYear + "/" + caseNumber;
         return sakRequestService.getByMappeId(mappeId)

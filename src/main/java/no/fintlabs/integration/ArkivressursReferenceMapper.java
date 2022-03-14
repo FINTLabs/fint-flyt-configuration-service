@@ -6,11 +6,11 @@ import no.fint.model.resource.administrasjon.personal.PersonalressursResource;
 import no.fint.model.resource.arkiv.noark.ArkivressursResource;
 import no.fint.model.resource.felles.PersonResource;
 import no.fintlabs.integration.model.ResourceReference;
-import no.fintlabs.kafka.consumer.cache.FintCacheManager;
-import no.fintlabs.kafka.consumer.cache.exceptions.NoSuchCacheEntryException;
-import no.fintlabs.kafka.consumer.cache.exceptions.NoSuchCacheException;
-import no.fintlabs.kafka.util.links.NoSuchLinkException;
-import no.fintlabs.kafka.util.links.ResourceLinkUtil;
+import no.fintlabs.cache.FintCacheManager;
+import no.fintlabs.cache.exceptions.NoSuchCacheEntryException;
+import no.fintlabs.cache.exceptions.NoSuchCacheException;
+import no.fintlabs.links.NoSuchLinkException;
+import no.fintlabs.links.ResourceLinkUtil;
 import org.springframework.stereotype.Service;
 
 import java.util.Objects;

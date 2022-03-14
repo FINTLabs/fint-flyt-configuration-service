@@ -8,8 +8,8 @@ import no.fint.model.resource.arkiv.noark.ArkivdelResource;
 import no.fint.model.resource.arkiv.noark.ArkivressursResource;
 import no.fint.model.resource.arkiv.noark.KlassifikasjonssystemResource;
 import no.fintlabs.integration.model.ResourceReference;
-import no.fintlabs.kafka.consumer.cache.FintCacheManager;
-import no.fintlabs.kafka.util.links.ResourceLinkUtil;
+import no.fintlabs.cache.FintCacheManager;
+import no.fintlabs.links.ResourceLinkUtil;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
