@@ -20,7 +20,7 @@ spring:
 #    port: 27017
 #    database: skjema-configuration
 server:
-  port: 8082
+  port: 8080
 logging:
   level:
     root: INFO
