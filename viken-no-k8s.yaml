@@ -5,6 +5,13 @@ metadata:
 spec:
   itemPath: "vaults/aks-alpha-vault/items/aiven-kafka"
 ---
+apiVersion: onepassword.com/v1
+kind: OnePasswordItem
+metadata:
+  name: fint-mongo-uri
+spec:
+  itemPath: "vaults/aks-alpha-vault/items/fint-mongo-uri"
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -99,8 +106,11 @@ spec:
           envFrom:
             - secretRef:
                 name: aiven-kafka
+            - secretRef:
+                name: fint-mongo-uri
           env:
             - { name: TZ, value: Europe/Oslo }
             #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
             - { name: spring.webflux.base-path, value: "/viken-no" }
+            - { name: spring.data.mongodb.database, value: "viken-no-skjema" }
