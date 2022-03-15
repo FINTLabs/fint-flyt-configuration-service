@@ -28,7 +28,7 @@ metadata:
   labels:
     io.kompose.service: fint-skjema-configuration-service
   name: fint-skjema-configuration-service
-  namespace: viken-no
+  #namespace: viken-no
 spec:
   replicas: 1
   strategy:
