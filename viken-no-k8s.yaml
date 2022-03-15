@@ -23,7 +23,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: skjema-ingress
-  namespace: viken-no
+  #namespace: viken-no
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -103,4 +103,4 @@ spec:
             - { name: TZ, value: Europe/Oslo }
             #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
-            - { name: spring.webflux.base-path, value: viken-no }
+            - { name: spring.webflux.base-path, value: "/viken-no" }
