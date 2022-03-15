@@ -33,7 +33,7 @@ spec:
   rules:
     - http:
         paths:
-          - path: /api/integration/configuration(/|$)(.*)
+          - path: /viken-no/api/integration/configuration(/|$)(.*)
             pathType: Prefix
             backend:
               service:
