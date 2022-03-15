@@ -4,22 +4,22 @@ metadata:
   name: aiven-kafka
 spec:
   itemPath: "vaults/aks-alpha-vault/items/aiven-kafka"
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-  labels:
-    io.kompose.service: fint-skjema-configuration-service
-  name: fint-skjema-configuration-service
-spec:
-  ports:
-    - name: "8080"
-      port: 8080
-  type: LoadBalancer
-  selector:
-    io.kompose.service: fint-skjema-configuration-service
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  annotations:
+#    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+#  labels:
+#    io.kompose.service: fint-skjema-configuration-service
+#  name: fint-skjema-configuration-service
+#spec:
+#  ports:
+#    - name: "8080"
+#      port: 8080
+#  type: LoadBalancer
+#  selector:
+#    io.kompose.service: fint-skjema-configuration-service
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -28,6 +28,7 @@ metadata:
   labels:
     io.kompose.service: fint-skjema-configuration-service
   name: fint-skjema-configuration-service
+  namespace: viken-no
 spec:
   replicas: 1
   strategy:
@@ -47,7 +48,7 @@ spec:
             secretName: aiven-kafka-certificates
       containers:
         #- image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.${BUILD_NUMBER}_${GIT_COMMIT}
-        - image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.7_666ad4060b87c8f2a4f0a02d8f53956584670934
+        - image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:dummy
           name: fint-skjema-configuration-service
           volumeMounts:
             - name: credentials
@@ -68,3 +69,4 @@ spec:
             - { name: TZ, value: Europe/Oslo }
             #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
+            - { name: spring.webflux.base-path, value: viken-no }
