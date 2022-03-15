@@ -4,22 +4,20 @@ metadata:
   name: aiven-kafka
 spec:
   itemPath: "vaults/aks-alpha-vault/items/aiven-kafka"
-#---
-#apiVersion: v1
-#kind: Service
-#metadata:
-#  annotations:
-#    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
-#  labels:
-#    io.kompose.service: fint-skjema-configuration-service
-#  name: fint-skjema-configuration-service
-#spec:
-#  ports:
-#    - name: "8080"
-#      port: 8080
-#  type: LoadBalancer
-#  selector:
-#    io.kompose.service: fint-skjema-configuration-service
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: fint-skjema-configuration-service
+  name: fint-skjema-configuration-service
+spec:
+  ports:
+    #- name: "8080"
+    - port: 8080
+  type: ClusterIP
+  selector:
+    io.kompose.service: fint-skjema-configuration-service
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
