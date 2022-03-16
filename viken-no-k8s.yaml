@@ -29,7 +29,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: skjema-ingress
+  name: ingress-fint-skjema-configuration-service
   #namespace: viken-no
   annotations:
     kubernetes.io/ingress.class: nginx
@@ -40,27 +40,27 @@ spec:
   rules:
     - http:
         paths:
-          - path: /viken-no(/|$)(.*)/api/integration/configuration
+          - path: /viken-no(/api/integration/configuration/.*)
             pathType: Prefix
             backend:
               service:
                 name: fint-skjema-configuration-service
                 port:
                   number: 8080
-#          - path: /hello-world-two(/|$)(.*)
-#            pathType: Prefix
-#            backend:
-#              service:
-#                name: ingress-demo
-#                port:
-#                  number: 80
-#          - path: /(.*)
-#            pathType: Prefix
-#            backend:
-#              service:
-#                name: aks-helloworld
-#                port:
-#                  number: 80
+          - path: /viken-no(/api/kodeverk/.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: fint-skjema-configuration-service
+                port:
+                  number: 8080
+          - path: /viken-no(/api/sak/.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: fint-skjema-configuration-service
+                port:
+                  number: 8080
 ---
 apiVersion: apps/v1
 kind: Deployment
