@@ -20,7 +20,6 @@ metadata:
   name: fint-skjema-configuration-service
 spec:
   ports:
-    #- name: "8080"
     - port: 8080
   type: ClusterIP
   selector:
@@ -30,32 +29,31 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-fint-skjema-configuration-service
-  #namespace: viken-no
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/use-regex: "true"
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
+    #nginx.ingress.kubernetes.io/use-regex: "true"
+    #nginx.ingress.kubernetes.io/rewrite-target: $1
 spec:
   rules:
-    - host: "skjema.vigoiks.no"
+    - host: "viken-no.skjema.vigoiks.no"
       http:
         paths:
-          - path: /viken-no(/api/integration/configuration.*)
+          - path: /api/integration/configuration
             pathType: Prefix
             backend:
               service:
                 name: fint-skjema-configuration-service
                 port:
                   number: 8080
-          - path: /viken-no(/api/kodeverk.*)
+          - path: /api/kodeverk
             pathType: Prefix
             backend:
               service:
                 name: fint-skjema-configuration-service
                 port:
                   number: 8080
-          - path: /viken-no(/api/sak.*)
+          - path: /api/sak
             pathType: Prefix
             backend:
               service:
@@ -70,7 +68,6 @@ metadata:
   labels:
     io.kompose.service: fint-skjema-configuration-service
   name: fint-skjema-configuration-service
-  #namespace: viken-no
 spec:
   replicas: 1
   strategy:
@@ -89,7 +86,6 @@ spec:
           secret:
             secretName: aiven-kafka-certificates
       containers:
-        #- image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:build.${BUILD_NUMBER}_${GIT_COMMIT}
         - image: fintlabsacr.azurecr.io/fint-skjema-configuration-service:dummy
           name: fint-skjema-configuration-service
           volumeMounts:
@@ -111,7 +107,5 @@ spec:
                 name: fint-mongo-uri
           env:
             - { name: TZ, value: Europe/Oslo }
-            #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
-            #- { name: spring.webflux.base-path, value: "/viken-no" }
             - { name: spring.data.mongodb.database, value: "viken-no-skjema" }
