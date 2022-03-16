@@ -34,13 +34,13 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
-    #nginx.ingress.kubernetes.io/use-regex: "true"
-    #nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   rules:
     - http:
         paths:
-          - path: /viken-no/api/integration/configuration
+          - path: /viken-no(/|$)(.*)/api/integration/configuration
             pathType: Prefix
             backend:
               service:
@@ -112,5 +112,5 @@ spec:
             - { name: TZ, value: Europe/Oslo }
             #- {name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M -verbose:gc'}
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
-            - { name: spring.webflux.base-path, value: "/viken-no" }
+            #- { name: spring.webflux.base-path, value: "/viken-no" }
             - { name: spring.data.mongodb.database, value: "viken-no-skjema" }
