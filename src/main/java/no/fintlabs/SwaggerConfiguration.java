@@ -18,7 +18,6 @@ public class SwaggerConfiguration {
                 .select()
                 .apis(withClassAnnotation(RestController.class))
                 .build()
-                //.apiInfo(apiInfo())
                 .ignoredParameterTypes(
                         ServerHttpRequest.class
                 );
