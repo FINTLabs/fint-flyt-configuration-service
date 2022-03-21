@@ -26,3 +26,6 @@ logging:
     root: INFO
     org.apache.kafka: INFO
     no.fintlabs.cache: WARN
+    org:
+      springframework:
+        security: DEBUG
