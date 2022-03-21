@@ -14,11 +14,11 @@ spring:
     mongodb:
       database: skjema-configuration
       uri: mongodb://localhost:27017
-#springdata:
-#  mongodb:
-#    host: localhost
-#    port: 27017
-#    database: skjema-configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.felleskomponent.no/nidp/oauth/nam
 server:
   port: 8080
 logging:
