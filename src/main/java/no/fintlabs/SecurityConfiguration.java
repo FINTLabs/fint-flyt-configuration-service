@@ -1,9 +1,14 @@
 package no.fintlabs;
 
+import no.fintlabs.integration.AccessTokenAlterFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.preauth.AbstractPreAuthenticatedProcessingFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -22,7 +27,7 @@ public class SecurityConfiguration {
                         .hasAnyAuthority(getScopeAuthority())
                         .anyExchange()
                         .authenticated()
-                )
+                ).addFilterBefore(new AccessTokenAlterFilter(), SecurityWebFiltersOrder.AUTHENTICATION)
                 .oauth2ResourceServer((resourceServer) -> resourceServer
                         .jwt(withDefaults())
                 );
