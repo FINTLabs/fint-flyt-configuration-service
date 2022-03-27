@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.5.5'
+    id 'org.springframework.boot' version '2.6.5'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'groovy'
@@ -42,11 +42,8 @@ dependencies {
     implementation 'org.ehcache:ehcache:3.1.0'
     implementation 'net.sf.ehcache:ehcache:2.10.9.2'
 
+    implementation 'no.fintlabs:fint-resource-server-security:1.1.0'
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-    //implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    //implementation 'org.springframework.boot:spring-boot-starter-security'
-    //implementation 'org.apache.kafka:kafka-streams'
-    //implementation 'org.springframework.kafka:spring-kafka'
 
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
     implementation 'io.springfox:springfox-swagger-ui:3.0.0'
