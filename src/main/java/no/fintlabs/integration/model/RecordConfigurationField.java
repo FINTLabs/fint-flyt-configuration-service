@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Table(name = "record_configuration")
-public class RecordConfiguration extends Field {
+public class RecordConfigurationField extends Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)

@@ -36,10 +36,10 @@ public class IntegrationConfiguration {
     private boolean isPublished;
 
     @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RecordConfiguration> recordConfiguration = new LinkedHashSet<>();
+    private Set<RecordConfigurationField> recordConfiguration = new LinkedHashSet<>();
 
     @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<DocumentConfiguration> documentConfiguration = new LinkedHashSet<>();
+    private Set<DocumentConfigurationField> documentConfiguration = new LinkedHashSet<>();
 
     //private CaseConfiguration caseConfiguration;
     //private ApplicantConfiguration applicantConfiguration;
