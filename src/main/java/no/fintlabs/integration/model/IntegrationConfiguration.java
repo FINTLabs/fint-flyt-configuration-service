@@ -1,7 +1,10 @@
 package no.fintlabs.integration.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
@@ -43,7 +46,9 @@ public class IntegrationConfiguration {
 
     @Embedded
     private CaseConfiguration caseConfiguration;
-    //private ApplicantConfiguration applicantConfiguration;
+
+    @Embedded
+    private ApplicantConfiguration applicantConfiguration;
 
     public boolean isSameAs(String otherId) {
         return integrationId.equals(otherId);
