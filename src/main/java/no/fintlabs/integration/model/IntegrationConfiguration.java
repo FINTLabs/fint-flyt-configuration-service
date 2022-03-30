@@ -41,7 +41,8 @@ public class IntegrationConfiguration {
     @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<DocumentConfigurationField> documentConfiguration = new LinkedHashSet<>();
 
-    //private CaseConfiguration caseConfiguration;
+    @Embedded
+    private CaseConfiguration caseConfiguration;
     //private ApplicantConfiguration applicantConfiguration;
 
     public boolean isSameAs(String otherId) {

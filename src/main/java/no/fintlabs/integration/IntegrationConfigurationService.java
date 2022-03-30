@@ -22,6 +22,7 @@ public class IntegrationConfigurationService {
         integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
         integrationConfiguration.getRecordConfiguration().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
         integrationConfiguration.getDocumentConfiguration().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        integrationConfiguration.getCaseConfiguration().getFields().forEach( field -> field.setIntegrationConfiguration(integrationConfiguration) );
         //integrationConfiguration.getRecordConfiguration().forEach(field -> field.getValueBuilder().getProperties().forEach(property -> property.setValueBuilder(field.getValueBuilder())));
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
