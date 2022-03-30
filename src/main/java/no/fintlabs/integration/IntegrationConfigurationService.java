@@ -20,7 +20,9 @@ public class IntegrationConfigurationService {
     public IntegrationConfiguration newIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(1);
         integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
-
+        integrationConfiguration.getRecordConfiguration().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        integrationConfiguration.getDocumentConfiguration().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        //integrationConfiguration.getRecordConfiguration().forEach(field -> field.getValueBuilder().getProperties().forEach(property -> property.setValueBuilder(field.getValueBuilder())));
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
@@ -30,7 +32,7 @@ public class IntegrationConfigurationService {
 
         if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
-            integrationConfiguration.setDocumentId(null);
+            integrationConfiguration.setIntegrationId(null);
             integrationConfigurationRepository.save(integrationConfiguration);
         } else {
             throw new IntegrationConfigurationNotFound();

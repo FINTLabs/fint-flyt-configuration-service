@@ -1,17 +1,26 @@
 package no.fintlabs.integration.model;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Data
-@Document
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "integration_configuration")
 public class IntegrationConfiguration {
     @Id
-    private String documentId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private Long id;
 
     @CreatedDate
     private LocalDateTime documentCreatedDate;
@@ -26,10 +35,14 @@ public class IntegrationConfiguration {
     private int version;
     private boolean isPublished;
 
-    private RecordConfiguration recordConfiguration;
-    private DocumentConfiguration documentConfiguration;
-    private CaseConfiguration caseConfiguration;
-    private ApplicantConfiguration applicantConfiguration;
+    @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RecordConfiguration> recordConfiguration = new LinkedHashSet<>();
+
+    @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<DocumentConfiguration> documentConfiguration = new LinkedHashSet<>();
+
+    //private CaseConfiguration caseConfiguration;
+    //private ApplicantConfiguration applicantConfiguration;
 
     public boolean isSameAs(String otherId) {
         return integrationId.equals(otherId);

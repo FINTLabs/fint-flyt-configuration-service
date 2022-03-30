@@ -1,12 +1,27 @@
 package no.fintlabs.integration.model;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
 
-@Data
-public
-class RecordConfiguration {
-    private List<Field> fields = new ArrayList<>();
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "record_configuration")
+public class RecordConfiguration extends Field {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "integration_configuration_id")
+    @JsonIgnore
+    private IntegrationConfiguration integrationConfiguration;
 }
