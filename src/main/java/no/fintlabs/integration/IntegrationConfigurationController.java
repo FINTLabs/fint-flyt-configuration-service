@@ -80,7 +80,7 @@ public class IntegrationConfigurationController {
             return ResponseEntity.ok(integrationConfigurations);
         }
 
-        return ResponseEntity.notFound().build();
+        throw new IntegrationConfigurationNotFound();
     }
 
     @GetMapping("/{id}/{version}")
