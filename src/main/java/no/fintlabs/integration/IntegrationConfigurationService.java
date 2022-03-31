@@ -20,6 +20,45 @@ public class IntegrationConfigurationService {
     public IntegrationConfiguration newIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(1);
         integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
+        linkConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+
+        return integrationConfigurationRepository.save(integrationConfiguration);
+    }
+
+    private void linkConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        linkRecordConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+        linkDocumentConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+        linkCaseConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+        linkApplicantConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+    }
+
+    private void linkApplicantConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        if (integrationConfiguration.getApplicantConfiguration() != null) {
+            integrationConfiguration
+                    .getApplicantConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        }
+    }
+
+    private void linkCaseConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        if (integrationConfiguration.getCaseConfiguration() != null) {
+            integrationConfiguration
+                    .getCaseConfiguration()
+                    .getFields().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        }
+    }
+
+    private void linkDocumentConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        if (integrationConfiguration.getDocumentConfiguration() != null) {
+            integrationConfiguration
+                    .getDocumentConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        }
+    }
+
+    private void linkRecordConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         if (integrationConfiguration.getRecordConfiguration() != null) {
             integrationConfiguration
                     .getRecordConfiguration()
@@ -27,25 +66,6 @@ public class IntegrationConfigurationService {
                     .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
 
         }
-        if (integrationConfiguration.getDocumentConfiguration() != null) {
-            integrationConfiguration
-                    .getDocumentConfiguration()
-                    .getFields()
-                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
-        }
-        if (integrationConfiguration.getCaseConfiguration() != null) {
-            integrationConfiguration
-                    .getCaseConfiguration()
-                    .getFields().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
-        }
-        if (integrationConfiguration.getApplicantConfiguration() != null) {
-            integrationConfiguration
-                    .getApplicantConfiguration()
-                    .getFields()
-                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
-        }
-
-        return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
     public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {

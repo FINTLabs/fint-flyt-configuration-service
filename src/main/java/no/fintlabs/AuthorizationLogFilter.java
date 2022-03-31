@@ -11,7 +11,8 @@ public class AuthorizationLogFilter implements WebFilter {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        log.info(String.valueOf(exchange.getRequest().getHeaders().get("Authorization")));
+        log.trace(String.valueOf(exchange.getRequest().getHeaders().get("Authorization")));
+
         return chain.filter(exchange);
     }
 }
