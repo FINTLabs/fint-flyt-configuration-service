@@ -1,13 +1,12 @@
 package no.fintlabs.integration
 
 import no.fintlabs.integration.model.IntegrationConfiguration
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.util.StringUtils
 import spock.lang.Specification
 
-@DataMongoTest
+@DataJpaTest
 class IntegrationConfigurationServiceSpec extends Specification {
 
     private IntegrationConfigurationService integrationConfigurationService
@@ -41,7 +40,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), configuration)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), new IntegrationConfiguration())
         def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId())
 
         then:

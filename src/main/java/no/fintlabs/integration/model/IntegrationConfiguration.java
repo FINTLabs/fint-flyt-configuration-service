@@ -9,15 +9,13 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "integration_configuration")
+@Table
 public class IntegrationConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,14 +36,15 @@ public class IntegrationConfiguration {
     private int version;
     private boolean isPublished;
 
-    @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RecordConfigurationField> recordConfiguration = new LinkedHashSet<>();
-
-    @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<DocumentConfigurationField> documentConfiguration = new LinkedHashSet<>();
-
     @Embedded
     private CaseConfiguration caseConfiguration;
+
+    @Embedded
+    private RecordConfiguration recordConfiguration;
+
+    @Embedded
+    private DocumentConfiguration documentConfiguration;
+
 
     @Embedded
     private ApplicantConfiguration applicantConfiguration;

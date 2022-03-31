@@ -20,21 +20,42 @@ public class IntegrationConfigurationService {
     public IntegrationConfiguration newIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(1);
         integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
-        integrationConfiguration.getRecordConfiguration().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
-        integrationConfiguration.getDocumentConfiguration().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
-        integrationConfiguration.getCaseConfiguration().getFields().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
-        integrationConfiguration.getApplicantConfiguration().getFields().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        if (integrationConfiguration.getRecordConfiguration() != null) {
+            integrationConfiguration
+                    .getRecordConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+
+        }
+        if (integrationConfiguration.getDocumentConfiguration() != null) {
+            integrationConfiguration
+                    .getDocumentConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        }
+        if (integrationConfiguration.getCaseConfiguration() != null) {
+            integrationConfiguration
+                    .getCaseConfiguration()
+                    .getFields().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        }
+        if (integrationConfiguration.getApplicantConfiguration() != null) {
+            integrationConfiguration
+                    .getApplicantConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+        }
 
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
     public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {
-        List<IntegrationConfiguration> integrationConfigurations
-                = integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(integrationConfiguration.getIntegrationId());
+        List<IntegrationConfiguration> integrationConfigurations =
+                integrationConfigurationRepository
+                        .getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(integrationConfiguration.getIntegrationId());
 
         if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
-            integrationConfiguration.setIntegrationId(null);
+            integrationConfiguration.setId(null);
             integrationConfigurationRepository.save(integrationConfiguration);
         } else {
             throw new IntegrationConfigurationNotFound();
