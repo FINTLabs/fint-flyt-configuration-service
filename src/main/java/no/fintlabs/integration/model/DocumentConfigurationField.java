@@ -21,8 +21,7 @@ public class DocumentConfigurationField extends Field {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "integration_configuration_id")
-    @JsonIgnore
-    private IntegrationConfiguration integrationConfiguration;
+    @JoinColumn(name = "document_configuration_id")
+    private DocumentConfiguration documentConfiguration;
 
 }

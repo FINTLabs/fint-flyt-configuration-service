@@ -20,9 +20,9 @@ public class ApplicantConfigurationField extends Field {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
     @ManyToOne
-    @JoinColumn(name = "integration_configuration_id")
-    @JsonIgnore
-    private IntegrationConfiguration integrationConfiguration;
+    @JoinColumn(name = "applicant_configuration_id")
+    private ApplicantConfiguration applicantConfiguration;
 
 }

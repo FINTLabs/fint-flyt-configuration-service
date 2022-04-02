@@ -36,17 +36,25 @@ public class IntegrationConfiguration {
     private int version;
     private boolean isPublished;
 
-    @Embedded
+    //@Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "case_configuration_id", referencedColumnName = "id")
     private CaseConfiguration caseConfiguration;
 
-    @Embedded
+    //@Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "record_configuration_id", referencedColumnName = "id")
     private RecordConfiguration recordConfiguration;
 
-    @Embedded
+    //@Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "document_configuration_id", referencedColumnName = "id")
     private DocumentConfiguration documentConfiguration;
 
 
-    @Embedded
+    //@Embedded
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "applicant_configuration_id", referencedColumnName = "id")
     private ApplicantConfiguration applicantConfiguration;
 
     public boolean isSameAs(String otherId) {

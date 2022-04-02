@@ -21,7 +21,7 @@ public class RecordConfigurationField extends Field {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "integration_configuration_id")
-    @JsonIgnore
-    private IntegrationConfiguration integrationConfiguration;
+    @JoinColumn(name = "record_configuration_id")
+    private RecordConfiguration recordConfiguration;
+
 }

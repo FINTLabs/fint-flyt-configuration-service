@@ -37,7 +37,7 @@ public class IntegrationConfigurationService {
             integrationConfiguration
                     .getApplicantConfiguration()
                     .getFields()
-                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+                    .forEach(field -> field.setApplicantConfiguration(integrationConfiguration.getApplicantConfiguration()));
         }
     }
 
@@ -45,7 +45,7 @@ public class IntegrationConfigurationService {
         if (integrationConfiguration.getCaseConfiguration() != null) {
             integrationConfiguration
                     .getCaseConfiguration()
-                    .getFields().forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+                    .getFields().forEach(field -> field.setCaseConfiguration(integrationConfiguration.getCaseConfiguration()));
         }
     }
 
@@ -54,7 +54,7 @@ public class IntegrationConfigurationService {
             integrationConfiguration
                     .getDocumentConfiguration()
                     .getFields()
-                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+                    .forEach(field -> field.setDocumentConfiguration(integrationConfiguration.getDocumentConfiguration()));
         }
     }
 
@@ -63,7 +63,7 @@ public class IntegrationConfigurationService {
             integrationConfiguration
                     .getRecordConfiguration()
                     .getFields()
-                    .forEach(field -> field.setIntegrationConfiguration(integrationConfiguration));
+                    .forEach(field -> field.setRecordConfiguration(integrationConfiguration.getRecordConfiguration()));
 
         }
     }

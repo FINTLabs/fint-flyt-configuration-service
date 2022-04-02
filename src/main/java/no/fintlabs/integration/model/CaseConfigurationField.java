@@ -21,8 +21,12 @@ public class CaseConfigurationField extends Field {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "integration_configuration_id")
-    @JsonIgnore
-    private IntegrationConfiguration integrationConfiguration;
+    @JoinColumn(name = "case_configuration_id")
+    private CaseConfiguration caseConfiguration;
+
+//    @ManyToOne
+//    @JoinColumn(name = "integration_configuration_id")
+//    @JsonIgnore
+//    private IntegrationConfiguration integrationConfiguration;
 
 }

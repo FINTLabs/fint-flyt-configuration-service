@@ -1,17 +1,26 @@
 package no.fintlabs.integration.model;
 
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Embeddable;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-@Data
-@Embeddable
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table
 public class RecordConfiguration {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
-    @OneToMany(mappedBy = "integrationConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "recordConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecordConfigurationField> fields = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "recordConfiguration")
+    private IntegrationConfiguration integrationConfiguration;
 }
