@@ -1,12 +1,14 @@
 package no.fintlabs.integration
 
 import no.fintlabs.integration.model.IntegrationConfiguration
+import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.util.StringUtils
 import spock.lang.Specification
 
-@DataMongoTest
+@DataJpaTest
 class IntegrationConfigurationServiceSpec extends Specification {
 
     private IntegrationConfigurationService integrationConfigurationService
@@ -40,7 +42,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), configuration)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), new IntegrationConfiguration(integrationId: configuration.getIntegrationId()))
         def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId())
 
         then:
@@ -54,7 +56,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), configuration)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), new IntegrationConfiguration(integrationId: configuration.getIntegrationId()))
         def versionsBerforeDelete = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId()).size()
         integrationConfigurationService.deleteIntegrationConfigurationById(configuration.getIntegrationId())
         def versionsAfterDelete = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId()).size()
@@ -69,7 +71,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration = integrationConfigurationService.newIntegrationConfiguration(new IntegrationConfiguration())
 
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), configuration)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getIntegrationId(), new IntegrationConfiguration(integrationId: configuration.getIntegrationId()))
         def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getIntegrationId()).size()
 
         then:
@@ -80,10 +82,10 @@ class IntegrationConfigurationServiceSpec extends Specification {
 
         def configuration1 = integrationConfigurationService
                 .newIntegrationConfiguration(new IntegrationConfiguration())
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration1.getIntegrationId(), configuration1)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration1.getIntegrationId(), new IntegrationConfiguration(integrationId: configuration1.getIntegrationId()))
         def configuration2 = integrationConfigurationService
                 .newIntegrationConfiguration(new IntegrationConfiguration())
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration2.getIntegrationId(), configuration2)
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration2.getIntegrationId(), new IntegrationConfiguration(integrationId: configuration2.getIntegrationId()))
 
         when:
         def allIntegrationConfigurations = integrationConfigurationService

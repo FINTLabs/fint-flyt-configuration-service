@@ -1,16 +1,23 @@
 package no.fintlabs.integration.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
-@Builder
-@NoArgsConstructor
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+
+
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 public class Property {
+
     private ValueSource source;
     private String key;
+    @Column(name = "property_order")
     private int order;
 }

@@ -8,9 +8,9 @@ spec:
 apiVersion: onepassword.com/v1
 kind: OnePasswordItem
 metadata:
-  name: fint-mongo-uri
+  name: viken-no-fint-skjema-configuration-service
 spec:
-  itemPath: "vaults/aks-alpha-vault/items/fint-mongo-uri"
+  itemPath: "vaults/aks-alpha-vault/items/viken-no-fint-skjema-configuration-service"
 ---
 apiVersion: v1
 kind: Service
@@ -94,8 +94,7 @@ spec:
             - secretRef:
                 name: aiven-kafka
             - secretRef:
-                name: fint-mongo-uri
+                name: viken-no-fint-skjema-configuration-service
           env:
             - { name: TZ, value: Europe/Oslo }
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
-            - { name: spring.data.mongodb.database, value: "viken-no-skjema" }

@@ -1,13 +1,37 @@
 package no.fintlabs.integration.model;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.*;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table
 public class CaseConfiguration {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    @JsonIgnore
+    private Long id;
+
     private CaseCreationStrategy caseCreationStrategy;
     private String caseNumber;
-    private List<Field> fields = new ArrayList<>();
+
+    @OneToMany(mappedBy = "caseConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<CaseConfigurationField> fields = new LinkedHashSet<>();
+
+    @OneToOne(mappedBy = "caseConfiguration", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private IntegrationConfiguration integrationConfiguration;
+
+
 }

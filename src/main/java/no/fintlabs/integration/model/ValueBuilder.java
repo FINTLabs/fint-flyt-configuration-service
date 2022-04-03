@@ -1,18 +1,23 @@
 package no.fintlabs.integration.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embeddable;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
-@Data
-@Builder
-@NoArgsConstructor
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
+@Embeddable
 public class ValueBuilder {
     private String value;
-    private List<Property> properties = new ArrayList<>();
+
+    @ElementCollection
+    private Set<Property> properties = new LinkedHashSet<>();
 }

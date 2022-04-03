@@ -2,6 +2,7 @@ package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.IntegrationConfiguration;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,23 +21,70 @@ public class IntegrationConfigurationService {
     public IntegrationConfiguration newIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(1);
         integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
+        linkConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
 
         return integrationConfigurationRepository.save(integrationConfiguration);
     }
 
+    private void linkConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        linkRecordConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+        linkDocumentConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+        linkCaseConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+        linkApplicantConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
+    }
+
+    private void linkApplicantConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        if (integrationConfiguration.getApplicantConfiguration() != null) {
+            integrationConfiguration
+                    .getApplicantConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setApplicantConfiguration(integrationConfiguration.getApplicantConfiguration()));
+        }
+    }
+
+    private void linkCaseConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        if (integrationConfiguration.getCaseConfiguration() != null) {
+            integrationConfiguration
+                    .getCaseConfiguration()
+                    .getFields().forEach(field -> field.setCaseConfiguration(integrationConfiguration.getCaseConfiguration()));
+        }
+    }
+
+    private void linkDocumentConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        if (integrationConfiguration.getDocumentConfiguration() != null) {
+            integrationConfiguration
+                    .getDocumentConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setDocumentConfiguration(integrationConfiguration.getDocumentConfiguration()));
+        }
+    }
+
+    private void linkRecordConfigurationFieldsToIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
+        if (integrationConfiguration.getRecordConfiguration() != null) {
+            integrationConfiguration
+                    .getRecordConfiguration()
+                    .getFields()
+                    .forEach(field -> field.setRecordConfiguration(integrationConfiguration.getRecordConfiguration()));
+
+        }
+    }
+
     public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {
-        List<IntegrationConfiguration> integrationConfigurations
-                = integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(integrationConfiguration.getIntegrationId());
+        List<IntegrationConfiguration> integrationConfigurations =
+                integrationConfigurationRepository
+                        .getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(integrationConfiguration.getIntegrationId());
 
         if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
-            integrationConfiguration.setDocumentId(null);
+            integrationConfiguration.setId(null);
+            linkConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
             integrationConfigurationRepository.save(integrationConfiguration);
         } else {
             throw new IntegrationConfigurationNotFound();
         }
     }
 
+    @Transactional
     public void deleteIntegrationConfigurationById(String id) {
         integrationConfigurationRepository.deleteIntegrationConfigurationByIntegrationId(id);
     }

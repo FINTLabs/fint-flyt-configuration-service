@@ -1,6 +1,5 @@
 package no.fintlabs;
 
-import no.fintlabs.integration.AuthorizationLogFilter;
 import no.vigoiks.resourceserver.security.FintJwtUserConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
