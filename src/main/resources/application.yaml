@@ -11,6 +11,7 @@ spring:
     consumer:
       group-id: fint-skjema-configuration-service
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/fint-skjema-configuration-service
     username: postgres
     password: password
