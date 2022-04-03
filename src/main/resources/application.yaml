@@ -32,6 +32,7 @@ spring:
           issuer-uri: https://idp.felleskomponent.no/nidp/oauth/nam
 server:
   port: 8080
+  max-http-header-size: 40KB
 logging:
   level:
     root: INFO
