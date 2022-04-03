@@ -18,11 +18,13 @@ public class ApplicantConfigurationField extends Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
+    @JsonIgnore
     private Long id;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "applicant_configuration_id")
+    @JsonIgnore
     private ApplicantConfiguration applicantConfiguration;
 
 }

@@ -13,20 +13,16 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "case_configuration_field")
+@Table
 public class CaseConfigurationField extends Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
+    @JsonIgnore
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "case_configuration_id")
+    @JsonIgnore
     private CaseConfiguration caseConfiguration;
-
-//    @ManyToOne
-//    @JoinColumn(name = "integration_configuration_id")
-//    @JsonIgnore
-//    private IntegrationConfiguration integrationConfiguration;
-
 }

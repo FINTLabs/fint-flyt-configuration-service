@@ -13,15 +13,17 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(/*name = "record_configuration"*/)
+@Table
 public class RecordConfigurationField extends Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
+    @JsonIgnore
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_configuration_id")
+    @JsonIgnore
     private RecordConfiguration recordConfiguration;
 
 }

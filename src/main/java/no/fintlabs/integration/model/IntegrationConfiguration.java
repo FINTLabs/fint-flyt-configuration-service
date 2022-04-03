@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Entity
 @Table
+@EntityListeners(AuditingEntityListener.class)
 public class IntegrationConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,7 +26,7 @@ public class IntegrationConfiguration {
     private Long id;
 
     @CreatedDate
-    private LocalDateTime documentCreatedDate;
+    private LocalDateTime createdDate;
 
     private String integrationId;
     private String name;
@@ -36,23 +38,18 @@ public class IntegrationConfiguration {
     private int version;
     private boolean isPublished;
 
-    //@Embedded
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "case_configuration_id", referencedColumnName = "id")
     private CaseConfiguration caseConfiguration;
 
-    //@Embedded
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "record_configuration_id", referencedColumnName = "id")
     private RecordConfiguration recordConfiguration;
 
-    //@Embedded
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "document_configuration_id", referencedColumnName = "id")
     private DocumentConfiguration documentConfiguration;
 
-
-    //@Embedded
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "applicant_configuration_id", referencedColumnName = "id")
     private ApplicantConfiguration applicantConfiguration;

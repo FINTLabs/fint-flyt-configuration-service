@@ -2,6 +2,7 @@ package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.IntegrationConfiguration;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -76,12 +77,14 @@ public class IntegrationConfigurationService {
         if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
             integrationConfiguration.setId(null);
+            linkConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
             integrationConfigurationRepository.save(integrationConfiguration);
         } else {
             throw new IntegrationConfigurationNotFound();
         }
     }
 
+    @Transactional
     public void deleteIntegrationConfigurationById(String id) {
         integrationConfigurationRepository.deleteIntegrationConfigurationByIntegrationId(id);
     }

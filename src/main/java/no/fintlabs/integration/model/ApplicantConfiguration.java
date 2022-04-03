@@ -1,6 +1,10 @@
 package no.fintlabs.integration.model;
 
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
@@ -16,6 +20,7 @@ public class ApplicantConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
+    @JsonIgnore
     private Long id;
 
     private String organisationNumber;
@@ -24,6 +29,7 @@ public class ApplicantConfiguration {
     @OneToMany(mappedBy = "applicantConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantConfigurationField> fields = new LinkedHashSet<>();
 
-    @OneToOne(mappedBy = "applicantConfiguration")
+    @OneToOne(mappedBy = "applicantConfiguration", cascade = CascadeType.ALL)
+    @JsonIgnore
     private IntegrationConfiguration integrationConfiguration;
 }

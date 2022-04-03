@@ -1,5 +1,6 @@
 package no.fintlabs.integration.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +20,7 @@ public class CaseConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
+    @JsonIgnore
     private Long id;
 
     private CaseCreationStrategy caseCreationStrategy;
@@ -27,7 +29,8 @@ public class CaseConfiguration {
     @OneToMany(mappedBy = "caseConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<CaseConfigurationField> fields = new LinkedHashSet<>();
 
-    @OneToOne(mappedBy = "caseConfiguration")
+    @OneToOne(mappedBy = "caseConfiguration", cascade = CascadeType.ALL)
+    @JsonIgnore
     private IntegrationConfiguration integrationConfiguration;
 
 
