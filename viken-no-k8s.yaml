@@ -38,9 +38,6 @@ metadata:
       auth_request_set $token $upstream_http_authorization;
       proxy_set_header Authorization $token;
       proxy_pass_header Authorization;
-    nginx.ingress.kubernetes.io/proxy-body-size: "0"
-    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
-    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
 spec:
   rules:
     - host: "viken-no-skjema.vigoiks.no"

@@ -33,11 +33,3 @@ spring:
 server:
   port: 8080
   max-http-header-size: 40KB
-logging:
-  level:
-    root: INFO
-    org.apache.kafka: INFO
-    no.fintlabs.cache: WARN
-    org:
-      springframework:
-        security: DEBUG
