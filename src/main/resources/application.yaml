@@ -1,9 +1,11 @@
 fint:
-  org-id: fintlabs.no
   cache:
     defaultCacheEntryTimeToLiveMillis: 518400000
     defaultCacheHeapSize: 1000000
   kafka:
+    topic:
+      org-id: fintlabs.no
+      domain-context: flyt
     application-id: fint-skjema-configuration-service
 spring:
   kafka:

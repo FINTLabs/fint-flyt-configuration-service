@@ -52,7 +52,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     implementation 'org.springframework.kafka:spring-kafka'
-    implementation 'no.fintlabs:fint-kafka:1.2.0'
+    implementation 'no.fintlabs:fint-kafka:2.0.0'
 
     implementation 'no.fint:fint-arkiv-resource-model-java:3.9.0'
     implementation 'no.fint:fint-administrasjon-resource-model-java:3.9.0'
