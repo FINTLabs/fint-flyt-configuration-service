@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "case_configuration_field")
 public class CaseConfigurationField extends Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

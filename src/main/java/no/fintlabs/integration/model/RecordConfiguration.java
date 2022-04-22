@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "record_configuration")
 public class RecordConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
