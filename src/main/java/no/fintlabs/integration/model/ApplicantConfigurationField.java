@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "application_configuration_field")
 public class ApplicantConfigurationField extends Field {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

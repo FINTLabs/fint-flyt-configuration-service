@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "integration_configuration")
 @EntityListeners(AuditingEntityListener.class)
 public class IntegrationConfiguration {
     @Id

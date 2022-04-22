@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table
+@Table(name = "case_configuration")
 public class CaseConfiguration {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
