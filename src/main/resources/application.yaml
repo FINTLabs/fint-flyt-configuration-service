@@ -5,6 +5,8 @@ fint:
     defaultCacheHeapSize: 1000000
   kafka:
     application-id: fint-flyt-configuration-service
+    topic:
+      domain-context: flyt
 spring:
   kafka:
     bootstrap-servers: localhost:29092

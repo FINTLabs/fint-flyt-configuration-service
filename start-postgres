@@ -1,3 +1,4 @@
 #!/bin/bash
 
-docker run --rm --name core-status-service-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTRES_DB=fint-flyt-configuration-service -d postgres
+docker run --rm --name fint-flyt-configuration-service-postgres -p 5432:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_DB=fint-flyt-configuration-service -d postgres
+
