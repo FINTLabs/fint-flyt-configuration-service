@@ -3,14 +3,14 @@ kind: OnePasswordItem
 metadata:
   name: aiven-kafka
 spec:
-  itemPath: "vaults/aks-pwf-vault/items/aiven-kafka"
+  itemPath: "vaults/aks-alpha-vault/items/aiven-kafka"
 ---
 apiVersion: onepassword.com/v1
 kind: OnePasswordItem
 metadata:
   name: pwf-no-fint-flyt-configuration-service
 spec:
-  itemPath: "vaults/aks-pwf-vault/items/pwf-no-fint-flyt-configuration-service"
+  itemPath: "vaults/aks-alpha-vault/items/pwf-no-fint-flyt-configuration-service"
 ---
 apiVersion: v1
 kind: Service
