@@ -40,6 +40,7 @@ public class SecurityConfiguration {
 
     private SecurityWebFilterChain createPermitAllFilterChain(ServerHttpSecurity http) {
         return http
+                .csrf().disable()
                 .authorizeExchange()
                 .anyExchange()
                 .permitAll()
