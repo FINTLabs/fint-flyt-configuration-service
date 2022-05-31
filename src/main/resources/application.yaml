@@ -8,6 +8,9 @@ fint:
     topic:
       org-id: ${fint.org-id}
       domain-context: flyt
+  integration:
+    service:
+      authorized-org-id: ${fint.org-id}
 spring:
   kafka:
     bootstrap-servers: localhost:29092
