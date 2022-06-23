@@ -1,4 +1,4 @@
-# FINT Skjema Configuration Service
+# FINT Flyt Configuration Service
 
 ## Running locally for development
 >You need to have Docker installed.

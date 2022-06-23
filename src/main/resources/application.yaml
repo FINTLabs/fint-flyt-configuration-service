@@ -15,7 +15,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:29092
     consumer:
-      group-id: fint-skjema-configuration-service
+      group-id: fint-flyt-configuration-service
   datasource:
     hikari:
       schema: fintlabs_no
@@ -50,4 +50,3 @@ spring:
 server:
   port: 8080
   max-http-header-size: 40KB
-
