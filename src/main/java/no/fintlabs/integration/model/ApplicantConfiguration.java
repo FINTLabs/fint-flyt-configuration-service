@@ -25,6 +25,7 @@ public class ApplicantConfiguration {
 
     private String organisationNumber;
     private String nationalIdentityNumber;
+    private boolean isProtected;
 
     @OneToMany(mappedBy = "applicantConfiguration", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ApplicantConfigurationField> fields = new LinkedHashSet<>();
