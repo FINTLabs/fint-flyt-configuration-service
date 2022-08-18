@@ -29,7 +29,6 @@ public class IntegrationConfiguration {
     private LocalDateTime createdDate;
 
     private String integrationId;
-    private String name;
     private String description;
     private String sourceApplication;
     private String sourceApplicationIntegrationId;
