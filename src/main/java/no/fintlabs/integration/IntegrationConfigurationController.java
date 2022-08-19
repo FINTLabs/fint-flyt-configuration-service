@@ -48,33 +48,33 @@ public class IntegrationConfigurationController {
 
         return ResponseEntity.created(UriComponentsBuilder
                         .fromHttpRequest(httpRequest)
-                        .path("/" + savedIntegrationConfiguration.getIntegrationId())
+                        .path("/" + savedIntegrationConfiguration.getSourceApplicationIntegrationId())
                         .build()
                         .toUri())
                 .build();
 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{sourceApplicationIntegrationId}")
     public ResponseEntity<Void> addNewIntegrationConfigurationVersion(
-            @PathVariable String id,
+            @PathVariable String sourceApplicationIntegrationId,
             @RequestBody IntegrationConfiguration integrationConfiguration) {
 
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(id, integrationConfiguration);
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(sourceApplicationIntegrationId, integrationConfiguration);
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIntegrationConfigurationById(@PathVariable String id) {
-        integrationConfigurationService.deleteIntegrationConfigurationById(id);
+    @DeleteMapping("/{sourceApplicationIntegrationId}")
+    public ResponseEntity<Void> deleteIntegrationConfigurationById(@PathVariable String sourceApplicationIntegrationId) {
+        integrationConfigurationService.deleteIntegrationConfigurationById(sourceApplicationIntegrationId);
 
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<List<IntegrationConfiguration>> getIntegrationConfigurationsById(@PathVariable String id) {
+    @GetMapping("/{sourceApplicationIntegrationId}")
+    public ResponseEntity<List<IntegrationConfiguration>> getIntegrationConfigurationsById(@PathVariable String sourceApplicationIntegrationId) {
         List<IntegrationConfiguration> integrationConfigurations
-                = integrationConfigurationService.getIntegrationConfigurationById(id);
+                = integrationConfigurationService.getIntegrationConfigurationById(sourceApplicationIntegrationId);
 
         if (integrationConfigurations.size() > 0) {
             return ResponseEntity.ok(integrationConfigurations);
@@ -83,24 +83,24 @@ public class IntegrationConfigurationController {
         throw new IntegrationConfigurationNotFound();
     }
 
-    @GetMapping("/{id}/{version}")
+    @GetMapping("/{sourceApplicationIntegrationId}/{version}")
     public ResponseEntity<IntegrationConfiguration> getIntegrationConfigurationsByIdAndVersion(
-            @PathVariable String id,
+            @PathVariable String sourceApplicationIntegrationId,
             @PathVariable int version) {
 
         return ResponseEntity.ok(
                 integrationConfigurationService
-                        .getIntegrationConfigurationByIdAndVersion(id, version)
+                        .getIntegrationConfigurationByIdAndVersion(sourceApplicationIntegrationId, version)
                         .orElseThrow(IntegrationConfigurationVersionNotFound::new)
         );
     }
 
-    @GetMapping("/{id}/latest")
-    public ResponseEntity<IntegrationConfiguration> getLatestIntegrationConfigurations(@PathVariable String id) {
+    @GetMapping("/{sourceApplicationIntegrationId}/latest")
+    public ResponseEntity<IntegrationConfiguration> getLatestIntegrationConfigurations(@PathVariable String sourceApplicationIntegrationId) {
 
         return ResponseEntity.ok(
                 integrationConfigurationService
-                        .getLatestIntegrationConfigurationById(id)
+                        .getLatestIntegrationConfigurationById(sourceApplicationIntegrationId)
         );
     }
 

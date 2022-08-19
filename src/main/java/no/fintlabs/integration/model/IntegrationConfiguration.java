@@ -1,6 +1,5 @@
 package no.fintlabs.integration.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,18 +18,17 @@ import java.time.LocalDateTime;
 @Table(name = "integration_configuration")
 @EntityListeners(AuditingEntityListener.class)
 public class IntegrationConfiguration {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
-    @JsonIgnore
     private Long id;
 
     @CreatedDate
     private LocalDateTime createdDate;
 
-    private String integrationId;
     private String description;
-    private String sourceApplication;
+    private String sourceApplicationId;
     private String sourceApplicationIntegrationId;
     private String orgId;
     private String destination;
@@ -53,7 +51,4 @@ public class IntegrationConfiguration {
     @JoinColumn(name = "applicant_configuration_id", referencedColumnName = "id")
     private ApplicantConfiguration applicantConfiguration;
 
-    public boolean isSameAs(String otherId) {
-        return integrationId.equals(otherId);
-    }
 }

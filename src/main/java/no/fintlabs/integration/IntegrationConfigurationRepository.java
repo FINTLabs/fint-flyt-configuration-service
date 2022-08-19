@@ -9,13 +9,13 @@ import java.util.Optional;
 
 @Repository
 public interface IntegrationConfigurationRepository extends JpaRepository<IntegrationConfiguration, String> {
-    List<IntegrationConfiguration> getIntegrationConfigurationByIntegrationId(String id);
+    List<IntegrationConfiguration> getIntegrationConfigurationBySourceApplicationIntegrationId(String id);
 
-    IntegrationConfiguration getIntegrationConfigurationByIntegrationIdAndVersion(String id, int version);
+    IntegrationConfiguration getIntegrationConfigurationBySourceApplicationIntegrationIdAndVersion(String id, int version);
 
-    List<IntegrationConfiguration> getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(String id);
+    List<IntegrationConfiguration> getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(String id);
 
-    Optional<IntegrationConfiguration> findFirstByIntegrationIdOrderByVersionDesc(String id);
+    Optional<IntegrationConfiguration> findFirstBySourceApplicationIntegrationIdOrderByVersionDesc(String id);
 
-    void deleteIntegrationConfigurationByIntegrationId(String id);
+    void deleteIntegrationConfigurationBySourceApplicationIntegrationId(String id);
 }
