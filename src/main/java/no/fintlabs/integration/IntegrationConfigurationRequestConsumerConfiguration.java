@@ -22,7 +22,7 @@ public class IntegrationConfigurationRequestConsumerConfiguration {
     ) {
         RequestTopicNameParameters topicNameParameters = RequestTopicNameParameters.builder()
                 .resource("integration.configuration")
-                .parameterName("integration-id")
+                .parameterName("source-application-integration-id")
                 .build();
 
         requestTopicService.ensureTopic(topicNameParameters, 0, TopicCleanupPolicyParameters.builder().build());

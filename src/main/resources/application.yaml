@@ -15,7 +15,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:29092
     consumer:
-      group-id: fint-flyt-configuration-service
+      group-id: ${fint.kafka.application-id}
   datasource:
     hikari:
       schema: fintlabs_no
