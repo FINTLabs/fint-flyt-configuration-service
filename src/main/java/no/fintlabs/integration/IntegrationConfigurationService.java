@@ -20,7 +20,6 @@ public class IntegrationConfigurationService {
 
     public IntegrationConfiguration newIntegrationConfiguration(IntegrationConfiguration integrationConfiguration) {
         integrationConfiguration.setVersion(1);
-        integrationConfiguration.setIntegrationId(UUID.randomUUID().toString());
         linkConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
 
         return integrationConfigurationRepository.save(integrationConfiguration);
@@ -69,12 +68,13 @@ public class IntegrationConfigurationService {
         }
     }
 
-    public void addNewIntegrationConfigurationVersion(String id, IntegrationConfiguration integrationConfiguration) {
+    public void addNewIntegrationConfigurationVersion(String sourceApplicationIntegrationId, IntegrationConfiguration integrationConfiguration) {
         List<IntegrationConfiguration> integrationConfigurations =
                 integrationConfigurationRepository
-                        .getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(integrationConfiguration.getIntegrationId());
+                        .getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(integrationConfiguration.getSourceApplicationIntegrationId());
 
-        if (integrationConfiguration.isSameAs(id) && integrationConfigurations.size() > 0) {
+        if (integrationConfiguration.getSourceApplicationIntegrationId().equals(sourceApplicationIntegrationId)
+                && integrationConfigurations.size() > 0) {
             integrationConfiguration.setVersion(integrationConfigurations.get(0).getVersion() + 1);
             integrationConfiguration.setId(null);
             linkConfigurationFieldsToIntegrationConfiguration(integrationConfiguration);
@@ -85,12 +85,12 @@ public class IntegrationConfigurationService {
     }
 
     @Transactional
-    public void deleteIntegrationConfigurationById(String id) {
-        integrationConfigurationRepository.deleteIntegrationConfigurationByIntegrationId(id);
+    public void deleteIntegrationConfigurationById(String sourceApplicationIntegrationId) {
+        integrationConfigurationRepository.deleteIntegrationConfigurationBySourceApplicationIntegrationId(sourceApplicationIntegrationId);
     }
 
-    public List<IntegrationConfiguration> getIntegrationConfigurationById(String id) {
-        return integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(id);
+    public List<IntegrationConfiguration> getIntegrationConfigurationById(String sourceApplicationIntegrationId) {
+        return integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(sourceApplicationIntegrationId);
     }
 
     public List<IntegrationConfiguration> getLatestIntegrationConfigurations() {
@@ -98,14 +98,14 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository
                 .findAll()
                 .stream()
-                .filter(ic -> getLatestIntegrationConfigurationById(ic.getIntegrationId()).getVersion() == ic.getVersion())
+                .filter(ic -> getLatestIntegrationConfigurationById(ic.getSourceApplicationIntegrationId()).getVersion() == ic.getVersion())
                 .collect(Collectors.toList());
     }
 
-    public IntegrationConfiguration getLatestIntegrationConfigurationById(String id) {
+    public IntegrationConfiguration getLatestIntegrationConfigurationById(String sourceApplicationIntegrationId) {
 
         List<IntegrationConfiguration> latest
-                = integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdOrderByVersionDesc(id);
+                = integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(sourceApplicationIntegrationId);
 
         if (latest.size() > 0) {
             return latest.get(0);
@@ -118,9 +118,9 @@ public class IntegrationConfigurationService {
         return integrationConfigurationRepository.findAll();
     }
 
-    public Optional<IntegrationConfiguration> getIntegrationConfigurationByIdAndVersion(String id, int version) {
+    public Optional<IntegrationConfiguration> getIntegrationConfigurationByIdAndVersion(String sourceApplicationIntegrationId, int version) {
         return Optional.ofNullable(
-                integrationConfigurationRepository.getIntegrationConfigurationByIntegrationIdAndVersion(id, version)
+                integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdAndVersion(sourceApplicationIntegrationId, version)
         );
     }
 

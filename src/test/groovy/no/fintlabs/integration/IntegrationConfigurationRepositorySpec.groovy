@@ -4,15 +4,12 @@ import no.fintlabs.integration.model.IntegrationConfiguration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.annotation.DirtiesContext
-import spock.lang.Ignore
 import spock.lang.Specification
 
 import java.time.LocalDateTime
 
-// TODO: Fix schema support
-@DataJpaTest
+@DataJpaTest(properties = "spring.jpa.hibernate.ddl-auto=none")
 @DirtiesContext()
-@Ignore
 class IntegrationConfigurationRepositorySpec extends Specification {
 
     @Autowired
@@ -29,11 +26,11 @@ class IntegrationConfigurationRepositorySpec extends Specification {
         ))
 
         when:
-        Optional<IntegrationConfiguration> result = integrationConfigurationRepository.findFirstByIntegrationIdOrderByVersionDesc("integrationId1")
+        Optional<IntegrationConfiguration> result = integrationConfigurationRepository.findFirstBySourceApplicationIntegrationIdOrderByVersionDesc("integrationId1")
 
         then:
         result.isPresent()
-        result.get().getIntegrationId() == "integrationId1"
+        result.get().getSourceApplicationIntegrationId() == "integrationId1"
         result.get().getId() == 2L
     }
 
@@ -48,21 +45,20 @@ class IntegrationConfigurationRepositorySpec extends Specification {
         ))
 
         when:
-        Optional<IntegrationConfiguration> result = integrationConfigurationRepository.findFirstByIntegrationIdOrderByVersionDesc("integrationId4")
+        Optional<IntegrationConfiguration> result = integrationConfigurationRepository.findFirstBySourceApplicationIntegrationIdOrderByVersionDesc("integrationId4")
 
         then:
         result.isEmpty()
     }
 
-    private IntegrationConfiguration createIntegrationConfiguration(Long id, String integrationId, int version) {
+    private IntegrationConfiguration createIntegrationConfiguration(Long id, String sourceApplicationIntegrationId, int version) {
         return new IntegrationConfiguration(
                 id,
                 LocalDateTime.now(),
-                integrationId,
                 "name",
                 "description",
-                "sourceApplication",
-                "sourceApplicationIntegrationId",
+                "sourceApplicationId",
+                sourceApplicationIntegrationId,
                 "orgId",
                 "destination",
                 version,

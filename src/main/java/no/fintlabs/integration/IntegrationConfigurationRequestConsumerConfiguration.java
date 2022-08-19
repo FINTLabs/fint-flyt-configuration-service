@@ -32,7 +32,7 @@ public class IntegrationConfigurationRequestConsumerConfiguration {
                 IntegrationConfiguration.class,
                 consumerRecord -> ReplyProducerRecord.<IntegrationConfiguration>builder()
                         .value(integrationConfigurationRepository
-                                .findFirstByIntegrationIdOrderByVersionDesc(consumerRecord.value())
+                                .findFirstBySourceApplicationIntegrationIdOrderByVersionDesc(consumerRecord.value())
                                 .orElse(null))
                         .build(),
                 new CommonLoggingErrorHandler()
