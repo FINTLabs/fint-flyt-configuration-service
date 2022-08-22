@@ -11,6 +11,7 @@ create table application_configuration
     id                       int8 not null,
     national_identity_number varchar(255),
     organisation_number      varchar(255),
+    is_protected             bool,
     primary key (id)
 );
 create table application_configuration_field
@@ -73,7 +74,6 @@ create table integration_configuration
     description                       varchar(255),
     destination                       varchar(255),
     is_published                      boolean not null,
-    name                              varchar(255),
     org_id                            varchar(255),
     source_application_id             varchar(255),
     source_application_integration_id varchar(255),
