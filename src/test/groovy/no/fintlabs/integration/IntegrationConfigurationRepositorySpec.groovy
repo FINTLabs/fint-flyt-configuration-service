@@ -55,7 +55,6 @@ class IntegrationConfigurationRepositorySpec extends Specification {
         return new IntegrationConfiguration(
                 id,
                 LocalDateTime.now(),
-                "name",
                 "description",
                 "sourceApplicationId",
                 sourceApplicationIntegrationId,
