@@ -11,7 +11,7 @@ create table application_configuration
     id                       int8 not null,
     national_identity_number varchar(255),
     organisation_number      varchar(255),
-    is_protected             bool,
+    is_protected             boolean not null,
     primary key (id)
 );
 create table application_configuration_field
