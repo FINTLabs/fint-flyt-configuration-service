@@ -14,7 +14,7 @@ import java.util.List;
 import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 
 @RestController
-@RequestMapping(INTERNAL_API + "/integration/configuration")
+@RequestMapping(INTERNAL_API + "/integrasjon/konfigurasjon")
 public class IntegrationConfigurationController {
 
     private final IntegrationConfigurationService integrationConfigurationService;
