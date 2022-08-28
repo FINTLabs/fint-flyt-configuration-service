@@ -8,6 +8,8 @@ import org.springframework.test.web.reactive.server.WebTestClient
 import reactor.core.publisher.Mono
 import spock.lang.Specification
 
+import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API
+
 @WebFluxTest(IntegrationConfigurationController.class)
 @ContextConfiguration(classes = [IntegrationConfigurationService.class])
 class IntegrationConfigurationControllerSpec extends Specification {
@@ -34,7 +36,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         then:
         client
                 .get()
-                .uri("/api/integration/configuration")
+                .uri(INTERNAL_API + "/integration/configuration")
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -49,7 +51,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .post()
-                .uri("/api/integration/configuration")
+                .uri(INTERNAL_API + "/integration/configuration")
                 .body(Mono.just(new IntegrationConfiguration()), IntegrationConfiguration.class)
                 .exchange()
 
@@ -61,14 +63,14 @@ class IntegrationConfigurationControllerSpec extends Specification {
         response.expectStatus()
                 .isCreated()
                 .expectHeader()
-                .location("/api/integration/configuration/123")
+                .location(INTERNAL_API + "/integration/configuration/123")
     }
 
     def "Adding a new integration configuration to an existing config should return 200"() {
         when:
         def response = client
                 .put()
-                .uri("/api/integration/configuration/123")
+                .uri(INTERNAL_API + "/integration/configuration/123")
                 .body(Mono.just(new IntegrationConfiguration(sourceApplicationIntegrationId: "123")), IntegrationConfiguration.class)
                 .exchange()
 
@@ -87,7 +89,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .put()
-                .uri("/api/integration/configuration/321")
+                .uri(INTERNAL_API + "/integration/configuration/321")
                 .body(Mono.just(new IntegrationConfiguration(sourceApplicationIntegrationId: "123")), IntegrationConfiguration.class)
                 .exchange()
 
@@ -106,7 +108,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         expect:
         client
                 .delete()
-                .uri("/api/integration/configuration/321")
+                .uri(INTERNAL_API + "/integration/configuration/321")
                 .exchange()
                 .expectStatus()
                 .isOk()
@@ -116,7 +118,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .get()
-                .uri("/api/integration/configuration/321")
+                .uri(INTERNAL_API + "/integration/configuration/321")
                 .exchange()
 
         then:
@@ -132,7 +134,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .get()
-                .uri("/api/integration/configuration/543")
+                .uri(INTERNAL_API + "/integration/configuration/543")
                 .exchange()
 
         then:
@@ -148,7 +150,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .get()
-                .uri("/api/integration/configuration/321/2")
+                .uri(INTERNAL_API + "/integration/configuration/321/2")
                 .exchange()
 
         then:
@@ -164,7 +166,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .get()
-                .uri("/api/integration/configuration/999/99")
+                .uri(INTERNAL_API + "/integration/configuration/999/99")
                 .exchange()
 
         then:
@@ -180,7 +182,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .get()
-                .uri("/api/integration/configuration/999/latest")
+                .uri(INTERNAL_API + "/integration/configuration/999/latest")
                 .exchange()
 
         then:
@@ -196,7 +198,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
         when:
         def response = client
                 .get()
-                .uri("/api/integration/configuration/888/latest")
+                .uri(INTERNAL_API + "/integration/configuration/888/latest")
                 .exchange()
 
         then:
