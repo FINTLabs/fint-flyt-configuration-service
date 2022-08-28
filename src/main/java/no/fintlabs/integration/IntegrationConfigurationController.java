@@ -11,8 +11,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
+import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
+
 @RestController
-@RequestMapping("/api/integration/configuration")
+@RequestMapping(INTERNAL_API + "/integration/configuration")
 public class IntegrationConfigurationController {
 
     private final IntegrationConfigurationService integrationConfigurationService;

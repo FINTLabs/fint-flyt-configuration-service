@@ -1,52 +1,11 @@
 fint:
-  org-id: fintlabs.no
-  cache:
-    defaultCacheEntryTimeToLiveMillis: 518400000
-    defaultCacheHeapSize: 1000000
-  kafka:
-    application-id: fint-flyt-configuration-service
-    topic:
-      org-id: ${fint.org-id}
-      domain-context: flyt
-  integration:
-    service:
-      authorized-org-id: ${fint.org-id}
-spring:
-  kafka:
-    bootstrap-servers: localhost:29092
-    consumer:
-      group-id: ${fint.kafka.application-id}
-  datasource:
-    hikari:
-      schema: fintlabs_no
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/fint-flyt-configuration-service
-    username: postgres
-    password: password
-  jpa:
-    properties:
-#      javax:
-#        persistence:
-#          schema-generation:
-#            scripts:
-#              action: create
-#              create-target: __init.sql
-#              create-source: metadata
-      hibernate:
-        jdbc:
-          lob:
-            non_contextual_creation: true
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        enable_lazy_load_no_trans: true
-    hibernate:
-      ddl-auto: validate
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: https://idp.felleskomponent.no/nidp/oauth/nam
-  flyway:
-    locations: classpath:db/migration/
+  application-id: fint-flyt-configuration-service
 server:
-  port: 8080
   max-http-header-size: 40KB
+spring:
+  profiles:
+    include:
+      - flyt-kafka
+      - flyt-logging
+      - flyt-resource-server
+      - flyt-postgres
