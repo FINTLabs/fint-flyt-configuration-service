@@ -37,7 +37,7 @@ spec:
     - host: "fint-flyt-demo.vigoiks.no"
       http:
         paths:
-          - path: /api/integration/configuration
+          - path: /api/intern/integration/configuration
             pathType: Prefix
             backend:
               service:
