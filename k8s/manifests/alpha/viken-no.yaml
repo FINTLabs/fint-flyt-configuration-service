@@ -43,7 +43,7 @@ spec:
     - host: "viken-no-skjema.vigoiks.no"
       http:
         paths:
-          - path: /api/integration/configuration
+          - path: /api/intern/integrasjon/konfigurasjon
             pathType: Prefix
             backend:
               service:
@@ -98,5 +98,7 @@ spec:
           env:
             - { name: TZ, value: Europe/Oslo }
             - { name: JAVA_TOOL_OPTIONS, value: '-XX:+ExitOnOutOfMemoryError -Xmx480M' }
-            - { name: spring.datasource.hikari.schema, value: 'viken_no' }
             - { name: fint.org-id, value: 'viken.no' }
+            - { name: spring.datasource.hikari.schema, value: 'viken_no' }
+            - { name: fint.flyt.resource-server.security.api.internal.enabled, value: 'true' }
+            - { name: fint.flyt.resource-server.security.api.internal.authorized-org-ids, value: 'viken.no, vigo.no' }

@@ -1,4 +1,4 @@
 #!/bin/bash
 
-docker run --rm --name fint-flyt-configuration-service-postgres -p 5433:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_DB=fint-flyt-configuration-service -d postgres
+docker run --rm --name fint-flyt-configuration-service-postgres -p 5434:5432 -e POSTGRES_PASSWORD=password -e POSTGRES_DB=fint-flyt-configuration-service -d postgres
 
