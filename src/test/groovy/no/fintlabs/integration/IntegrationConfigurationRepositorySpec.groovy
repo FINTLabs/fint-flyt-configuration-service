@@ -1,6 +1,6 @@
 package no.fintlabs.integration
 
-import no.fintlabs.integration.model.IntegrationConfiguration
+import no.fintlabs.integration.model.configuration.Configuration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.annotation.DirtiesContext
@@ -26,7 +26,7 @@ class IntegrationConfigurationRepositorySpec extends Specification {
         ))
 
         when:
-        Optional<IntegrationConfiguration> result = integrationConfigurationRepository.findFirstBySourceApplicationIntegrationIdOrderByVersionDesc("integrationId1")
+        Optional<Configuration> result = integrationConfigurationRepository.findFirstBySourceApplicationIntegrationIdOrderByVersionDesc("integrationId1")
 
         then:
         result.isPresent()
@@ -45,14 +45,14 @@ class IntegrationConfigurationRepositorySpec extends Specification {
         ))
 
         when:
-        Optional<IntegrationConfiguration> result = integrationConfigurationRepository.findFirstBySourceApplicationIntegrationIdOrderByVersionDesc("integrationId4")
+        Optional<Configuration> result = integrationConfigurationRepository.findFirstBySourceApplicationIntegrationIdOrderByVersionDesc("integrationId4")
 
         then:
         result.isEmpty()
     }
 
-    private IntegrationConfiguration createIntegrationConfiguration(Long id, String sourceApplicationIntegrationId, int version) {
-        return new IntegrationConfiguration(
+    private Configuration createIntegrationConfiguration(Long id, String sourceApplicationIntegrationId, int version) {
+        return new Configuration(
                 id,
                 LocalDateTime.now(),
                 "name",

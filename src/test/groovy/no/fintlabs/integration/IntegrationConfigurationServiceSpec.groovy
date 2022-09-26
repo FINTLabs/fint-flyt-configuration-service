@@ -1,6 +1,6 @@
 package no.fintlabs.integration
 
-import no.fintlabs.integration.model.IntegrationConfiguration
+import no.fintlabs.integration.model.configuration.Configuration
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest
 import org.springframework.test.annotation.DirtiesContext
@@ -19,8 +19,8 @@ class IntegrationConfigurationServiceSpec extends Specification {
         integrationConfigurationService = new IntegrationConfigurationService(integrationConfigurationRepository)
     }
 
-    private IntegrationConfiguration createConfiguration(String sourceApplicationIntegrationId) {
-        IntegrationConfiguration integrationConfiguration = new IntegrationConfiguration()
+    private Configuration createConfiguration(String sourceApplicationIntegrationId) {
+        Configuration integrationConfiguration = new Configuration()
         integrationConfiguration.setSourceApplicationIntegrationId(sourceApplicationIntegrationId)
         return integrationConfiguration
     }
@@ -49,7 +49,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         when:
         integrationConfigurationService.addNewIntegrationConfigurationVersion(
                 configuration.getSourceApplicationIntegrationId(),
-                new IntegrationConfiguration(sourceApplicationIntegrationId: configuration.getSourceApplicationIntegrationId())
+                new Configuration(sourceApplicationIntegrationId: configuration.getSourceApplicationIntegrationId())
         )
         def versions = integrationConfigurationService.getIntegrationConfigurationById(
                 configuration.getSourceApplicationIntegrationId()
@@ -70,7 +70,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
         when:
         integrationConfigurationService.addNewIntegrationConfigurationVersion(
                 configuration.getSourceApplicationIntegrationId(),
-                new IntegrationConfiguration(sourceApplicationIntegrationId: configuration.getSourceApplicationIntegrationId())
+                new Configuration(sourceApplicationIntegrationId: configuration.getSourceApplicationIntegrationId())
         )
         def versionsBeforeDelete = integrationConfigurationService.getIntegrationConfigurationById(
                 configuration.getSourceApplicationIntegrationId()
@@ -89,7 +89,7 @@ class IntegrationConfigurationServiceSpec extends Specification {
                 createConfiguration("123")
         )
         when:
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getSourceApplicationIntegrationId(), new IntegrationConfiguration(sourceApplicationIntegrationId: configuration.getSourceApplicationIntegrationId()))
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration.getSourceApplicationIntegrationId(), new Configuration(sourceApplicationIntegrationId: configuration.getSourceApplicationIntegrationId()))
         def versions = integrationConfigurationService.getIntegrationConfigurationById(configuration.getSourceApplicationIntegrationId()).size()
 
         then:
@@ -101,11 +101,11 @@ class IntegrationConfigurationServiceSpec extends Specification {
         def configuration1 = integrationConfigurationService.newIntegrationConfiguration(
                 createConfiguration("1")
         )
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration1.getSourceApplicationIntegrationId(), new IntegrationConfiguration(sourceApplicationIntegrationId: configuration1.getSourceApplicationIntegrationId()))
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration1.getSourceApplicationIntegrationId(), new Configuration(sourceApplicationIntegrationId: configuration1.getSourceApplicationIntegrationId()))
         def configuration2 = integrationConfigurationService.newIntegrationConfiguration(
                 createConfiguration("2")
         )
-        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration2.getSourceApplicationIntegrationId(), new IntegrationConfiguration(sourceApplicationIntegrationId: configuration2.getSourceApplicationIntegrationId()))
+        integrationConfigurationService.addNewIntegrationConfigurationVersion(configuration2.getSourceApplicationIntegrationId(), new Configuration(sourceApplicationIntegrationId: configuration2.getSourceApplicationIntegrationId()))
 
         when:
         def allIntegrationConfigurations = integrationConfigurationService

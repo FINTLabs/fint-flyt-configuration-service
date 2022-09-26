@@ -1,6 +1,6 @@
 package no.fintlabs.integration
 
-import no.fintlabs.integration.model.IntegrationConfiguration
+import no.fintlabs.integration.model.configuration.Configuration
 import org.spockframework.spring.SpringBean
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.test.context.ContextConfiguration
@@ -52,13 +52,13 @@ class IntegrationConfigurationControllerSpec extends Specification {
         def response = client
                 .post()
                 .uri(INTERNAL_API + "/integrasjon/konfigurasjon")
-                .body(Mono.just(new IntegrationConfiguration()), IntegrationConfiguration.class)
+                .body(Mono.just(new Configuration()), Configuration.class)
                 .exchange()
 
 
         then:
-        integrationConfigurationRepository.save(_ as IntegrationConfiguration)
-                >> new IntegrationConfiguration(sourceApplicationIntegrationId: "123")
+        integrationConfigurationRepository.save(_ as Configuration)
+                >> new Configuration(sourceApplicationIntegrationId: "123")
 
         response.expectStatus()
                 .isCreated()
@@ -71,14 +71,14 @@ class IntegrationConfigurationControllerSpec extends Specification {
         def response = client
                 .put()
                 .uri(INTERNAL_API + "/integrasjon/konfigurasjon/123")
-                .body(Mono.just(new IntegrationConfiguration(sourceApplicationIntegrationId: "123")), IntegrationConfiguration.class)
+                .body(Mono.just(new Configuration(sourceApplicationIntegrationId: "123")), Configuration.class)
                 .exchange()
 
         then:
-        integrationConfigurationRepository.save(_ as IntegrationConfiguration)
-                >> new IntegrationConfiguration()
+        integrationConfigurationRepository.save(_ as Configuration)
+                >> new Configuration()
         integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(_ as String)
-                >> [new IntegrationConfiguration()]
+                >> [new Configuration()]
 
         response
                 .expectStatus()
@@ -90,14 +90,14 @@ class IntegrationConfigurationControllerSpec extends Specification {
         def response = client
                 .put()
                 .uri(INTERNAL_API + "/integrasjon/konfigurasjon/321")
-                .body(Mono.just(new IntegrationConfiguration(sourceApplicationIntegrationId: "123")), IntegrationConfiguration.class)
+                .body(Mono.just(new Configuration(sourceApplicationIntegrationId: "123")), Configuration.class)
                 .exchange()
 
         then:
-        integrationConfigurationRepository.save(_ as IntegrationConfiguration)
-                >> new IntegrationConfiguration()
+        integrationConfigurationRepository.save(_ as Configuration)
+                >> new Configuration()
         integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(_ as String)
-                >> [new IntegrationConfiguration()]
+                >> [new Configuration()]
 
         response
                 .expectStatus()
@@ -123,7 +123,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
 
         then:
         integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(_ as String)
-                >> [new IntegrationConfiguration()]
+                >> [new Configuration()]
 
         response
                 .expectStatus()
@@ -155,7 +155,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
 
         then:
         integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdAndVersion(_ as String, _ as Integer)
-                >> new IntegrationConfiguration()
+                >> new Configuration()
 
         response
                 .expectStatus()
@@ -187,7 +187,7 @@ class IntegrationConfigurationControllerSpec extends Specification {
 
         then:
         integrationConfigurationRepository.getIntegrationConfigurationBySourceApplicationIntegrationIdOrderByVersionDesc(_ as String)
-                >> [new IntegrationConfiguration()]
+                >> [new Configuration()]
 
         response
                 .expectStatus()

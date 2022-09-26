@@ -2,7 +2,12 @@ fint:
   application-id: fint-flyt-configuration-service
 server:
   max-http-header-size: 40KB
+  error:
+    include-message: always
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   profiles:
     include:
       - flyt-kafka
