@@ -1,7 +1,6 @@
 package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.Configuration;
-import org.springframework.security.core.context.ReactiveSecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -20,6 +19,10 @@ public class ConfigurationService {
 
     public Collection<Configuration> findAll() {
         return configurationRepository.findAll();
+    }
+
+    public Collection<Configuration> findAllForIntegrationId(String integrationId) {
+        return configurationRepository.findConfigurationsByIntegrationIdLike(integrationId);
     }
 
     public Optional<Configuration> findById(UUID configurationId) {

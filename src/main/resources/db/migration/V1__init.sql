@@ -8,11 +8,11 @@ create table authentication_subject_revision_entity
 );
 create table configuration
 (
-    id                      uuid    not null,
+    id                      uuid         not null,
     comment                 varchar(255),
-    completed               boolean not null,
-    integration_id          varchar(255),
-    integration_metadata_id varchar(255),
+    completed               boolean      not null,
+    integration_id          varchar(255) not null,
+    integration_metadata_id varchar(255) not null,
     version                 int4,
     primary key (id)
 );
@@ -44,13 +44,14 @@ create table configuration_configuration_element_aud
 );
 create table configuration_element_aud
 (
-    id                       uuid not null,
-    rev                      int4 not null,
-    revtype                  int2,
-    key                      varchar(255),
-    key_mod                  boolean,
-    elements_mod             boolean,
-    field_configurations_mod boolean,
+    id                                  uuid not null,
+    rev                                 int4 not null,
+    revtype                             int2,
+    key                                 varchar(255),
+    key_mod                             boolean,
+    elements_mod                        boolean,
+    field_collection_configurations_mod boolean,
+    field_configurations_mod            boolean,
     primary key (id, rev)
 );
 create table configuration_element
@@ -68,6 +69,14 @@ create table configuration_element_configuration_element_aud
     id                              uuid not null,
     revtype                         int2,
     primary key (rev, parent_configuration_element_id, id)
+);
+create table configuration_element_field_collection_configuration_aud
+(
+    rev                      int4 not null,
+    configuration_element_id uuid not null,
+    id                       uuid not null,
+    revtype                  int2,
+    primary key (rev, configuration_element_id, id)
 );
 create table configuration_element_field_configuration_aud
 (
@@ -112,9 +121,10 @@ create table field_configuration_aud
 );
 create table field_collection_configuration
 (
-    id   uuid not null,
-    key  varchar(255),
-    type varchar(255),
+    id                       uuid not null,
+    key                      varchar(255),
+    type                     varchar(255),
+    configuration_element_id uuid,
     primary key (id)
 );
 create table field_collection_configuration_values
@@ -143,6 +153,8 @@ alter table configuration_element
     add constraint FKhsvcfe0oq47x078sggh4gg2va foreign key (configuration_id) references configuration;
 alter table configuration_element_configuration_element_aud
     add constraint FK8a5mrstm0k41byojiwk4q3qhk foreign key (rev) references authentication_subject_revision_entity;
+alter table configuration_element_field_collection_configuration_aud
+    add constraint FKtk8f6p2uvydk5vl9whd0ywk6m foreign key (rev) references authentication_subject_revision_entity;
 alter table configuration_element_field_configuration_aud
     add constraint FKqxp8r56duxhpgsua0au42kk8e foreign key (rev) references authentication_subject_revision_entity;
 alter table field_collection_configuration_aud
@@ -151,6 +163,8 @@ alter table field_collection_configuration_values_aud
     add constraint FK1n6p99hkh8ppmwu8g0nu1jc6o foreign key (rev) references authentication_subject_revision_entity;
 alter table field_configuration_aud
     add constraint FK5a83d462ymajk7cehrt2sb3b4 foreign key (rev) references authentication_subject_revision_entity;
+alter table field_collection_configuration
+    add constraint FKe2fc7roqyqeelpxx1dycf3d2m foreign key (configuration_element_id) references configuration_element;
 alter table field_collection_configuration_values
     add constraint FK8w97f2ngpyyyn3x75b3km37e8 foreign key (field_collection_configuration_id) references field_collection_configuration;
 alter table field_configuration

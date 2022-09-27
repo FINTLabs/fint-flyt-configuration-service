@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -22,14 +23,18 @@ public class ConfigurationElement {
     @Setter(AccessLevel.NONE)
     private UUID id;
 
-    private String key; // TODO: 20/09/2022 Unique combined with configurationId
+    private String key;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "parent_configuration_element_id")
-    private Collection<ConfigurationElement> elements;
+    private Collection<ConfigurationElement> elements = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "configuration_element_id")
-    private Collection<FieldConfiguration> fieldConfigurations;
+    private Collection<FieldConfiguration> fieldConfigurations = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "configuration_element_id")
+    private Collection<FieldCollectionConfiguration> fieldCollectionConfigurations = new ArrayList<>();
 
 }

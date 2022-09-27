@@ -2,13 +2,16 @@ package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.Configuration;
 import no.fintlabs.integration.model.web.ConfigurationPatch;
+import no.fintlabs.integration.validation.ConfigurationValidationService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 
@@ -18,14 +21,25 @@ import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
+    private final ConfigurationValidationService configurationValidationService;
 
-    public ConfigurationController(ConfigurationService configurationService) {
+    public ConfigurationController(
+            ConfigurationService configurationService,
+            ConfigurationValidationService configurationValidationService
+    ) {
         this.configurationService = configurationService;
+        this.configurationValidationService = configurationValidationService;
     }
 
     @GetMapping
-    public ResponseEntity<Collection<Configuration>> getConfigurations() {
-        return ResponseEntity.ok(configurationService.findAll());
+    public ResponseEntity<Collection<Configuration>> getConfigurations(
+            @RequestParam Optional<String> integrationId
+    ) {
+        return ResponseEntity.ok(
+                integrationId
+                        .map(configurationService::findAllForIntegrationId)
+                        .orElseGet(configurationService::findAll)
+        );
     }
 
     @GetMapping("{configurationId}")
@@ -43,6 +57,13 @@ public class ConfigurationController {
     public ResponseEntity<Configuration> postConfiguration(
             @RequestBody Configuration configuration
     ) {
+        configurationValidationService.validate(configuration).ifPresent(
+                elementErrors -> {
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                            String.join(", ", formatValidationErrors(elementErrors))
+                    );
+                }
+        );
         return ResponseEntity.ok(configurationService.save(configuration));
     }
 
@@ -60,15 +81,39 @@ public class ConfigurationController {
             );
         }
 
-        configuration.setIntegrationMetadataId(configurationPatch.getIntegrationMetadataId());
-        configuration.setCompleted(configurationPatch.isCompleted());
-        configuration.setComment(configurationPatch.getComment());
-        configuration.getElements().clear();
-        configuration.getElements().addAll(configurationPatch.getElements());
+        configurationValidationService.validate(configurationPatch).ifPresent(
+                elementErrors -> {
+                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                            String.join(", ", formatValidationErrors(elementErrors))
+                    );
+                }
+        );
+
+        configurationPatch.getIntegrationMetadataId().ifPresent(configuration::setIntegrationMetadataId);
+        configurationPatch.isCompleted().ifPresent(configuration::setCompleted);
+        configurationPatch.getComment().ifPresent(configuration::setComment);
+        configurationPatch.getElements().ifPresent(elements -> {
+            configuration.getElements().clear();
+            configuration.getElements().addAll(elements);
+        });
 
         Configuration resultConfiguration = configurationService.save(configuration);
 
         return ResponseEntity.ok(resultConfiguration);
+    }
+
+    private Collection<String> formatValidationErrors(ConfigurationValidationService.ElementErrors elementErrors) {
+        return Stream.concat(
+                elementErrors.getErrors()
+                        .stream()
+                        .map(error -> elementErrors.getObjectKey() + " " + error.getMessage()),
+
+                elementErrors.getElementErrors()
+                        .stream()
+                        .map(this::formatValidationErrors)
+                        .flatMap(Collection::stream)
+                        .map(errorString -> elementErrors.getObjectKey() + "." + errorString)
+        ).toList();
     }
 
 }

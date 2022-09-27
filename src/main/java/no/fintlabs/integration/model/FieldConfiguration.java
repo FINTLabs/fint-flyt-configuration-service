@@ -22,7 +22,7 @@ public class FieldConfiguration {
     private UUID id;
 
     public enum Type {
-        STRING, URL, STRING_BUILDER
+        STRING, URL, BOOLEAN, DYNAMIC_STRING
     }
 
     private String key;

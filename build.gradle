@@ -39,6 +39,9 @@ dependencies {
 
     implementation 'org.flywaydb:flyway-core'
 
+    implementation 'javax.validation:validation-api'
+    implementation 'org.hibernate.validator:hibernate-validator'
+
     implementation files('libs/fint-flyt-resource-server.jar')
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

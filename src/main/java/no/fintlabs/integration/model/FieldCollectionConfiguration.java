@@ -23,7 +23,7 @@ public class FieldCollectionConfiguration {
     private UUID id;
 
     public enum Type {
-        STRING, URL
+        STRING, URL, BOOLEAN
     }
 
     private String key;

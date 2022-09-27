@@ -6,6 +6,7 @@ import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -37,6 +38,6 @@ public class Configuration {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "configuration_id")
-    private Collection<ConfigurationElement> elements;
+    private Collection<ConfigurationElement> elements = new ArrayList<>();
 
 }
