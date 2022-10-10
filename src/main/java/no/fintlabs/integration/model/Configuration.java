@@ -1,36 +1,34 @@
 package no.fintlabs.integration.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.UUID;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Audited(withModifiedFlag = true)
 @Entity
 public class Configuration {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Setter(AccessLevel.NONE)
-    private UUID id;
+    private long id;
 
     @NotNull
-    private String integrationId;
+    private Long integrationId;
 
     @NotNull
-    private String integrationMetadataId; // what if this is updated since last edit on uncompleted configuration?
+    private Long integrationMetadataId;
 
-    private Integer version; // Only set when completed
+    private Integer version;
 
     private boolean completed;
 
@@ -38,6 +36,6 @@ public class Configuration {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "configuration_id")
-    private Collection<ConfigurationElement> elements = new ArrayList<>();
+    private Collection<@Valid ConfigurationElement> elements = new ArrayList<>();
 
 }

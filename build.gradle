@@ -42,10 +42,9 @@ dependencies {
     implementation 'javax.validation:validation-api'
     implementation 'org.hibernate.validator:hibernate-validator'
 
-    implementation files('libs/fint-flyt-resource-server.jar')
+    implementation 'no.fintlabs:fint-flyt-resource-server:1.0.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.data:spring-data-envers:2.7.3'
     runtimeOnly 'org.postgresql:postgresql'
 
 //    implementation 'io.springfox:springfox-boot-starter:3.0.0'

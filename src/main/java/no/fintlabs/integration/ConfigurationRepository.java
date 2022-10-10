@@ -10,11 +10,11 @@ import java.util.UUID;
 
 public interface ConfigurationRepository extends JpaRepository<Configuration, UUID> {
 
-    Collection<Configuration> findConfigurationsByIntegrationIdLike(String integrationId);
+    Collection<Configuration> findConfigurationsByIntegrationIdLike(Long integrationId);
 
-    Optional<Configuration> findFirstByIntegrationIdLikeAndVersionNotNullOrderByVersionDesc(String integrationId);
+    Optional<Configuration> findFirstByIntegrationIdLikeAndVersionNotNullOrderByVersionDesc(Long integrationId);
 
-    default int getNextVersionForIntegrationId(String integrationId) {
+    default int getNextVersionForIntegrationId(Long integrationId) {
         return findFirstByIntegrationIdLikeAndVersionNotNullOrderByVersionDesc(integrationId)
                 .map(Configuration::getVersion)
                 .map(version -> version + 1)

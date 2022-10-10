@@ -21,7 +21,7 @@ public class ConfigurationService {
         return configurationRepository.findAll();
     }
 
-    public Collection<Configuration> findAllForIntegrationId(String integrationId) {
+    public Collection<Configuration> findAllForIntegrationId(Long integrationId) {
         return configurationRepository.findConfigurationsByIntegrationIdLike(integrationId);
     }
 
@@ -37,18 +37,5 @@ public class ConfigurationService {
         }
         return configurationRepository.save(configuration);
     }
-
-//    @Transactional
-//    public Optional<Configuration> update(Long configurationId, Configuration configuration) {
-//        Configuration existingConfiguration = configurationRepository.findById(configurationId);
-//
-//
-//
-//        if (configuration.isCompleted()) {
-//            int nextVersion = configurationRepository.getNextVersionForIntegrationId(configuration.getIntegrationId());
-//            configuration.setVersion(nextVersion);
-//        }
-//        return configurationRepository.save(configuration);
-//    }
 
 }

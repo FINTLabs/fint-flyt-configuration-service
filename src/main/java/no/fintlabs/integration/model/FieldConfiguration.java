@@ -1,32 +1,33 @@
 package no.fintlabs.integration.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.envers.Audited;
 
 import javax.persistence.*;
-import java.util.UUID;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Audited(withModifiedFlag = true)
 @Entity
 public class FieldConfiguration {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     @Setter(AccessLevel.NONE)
-    private UUID id;
+    private long id;
 
     public enum Type {
         STRING, URL, BOOLEAN, DYNAMIC_STRING
     }
 
+    @NotBlank
     private String key;
 
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     private Type type;
 

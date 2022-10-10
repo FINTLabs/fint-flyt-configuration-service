@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 
 import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 
-// TODO: 26/09/2022 Revert to published fint-flyt-resource-server version
 @RestController
 @RequestMapping(INTERNAL_API + "/konfigurasjoner")
 public class ConfigurationController {
@@ -33,7 +32,7 @@ public class ConfigurationController {
 
     @GetMapping
     public ResponseEntity<Collection<Configuration>> getConfigurations(
-            @RequestParam Optional<String> integrationId
+            @RequestParam Optional<Long> integrationId
     ) {
         return ResponseEntity.ok(
                 integrationId

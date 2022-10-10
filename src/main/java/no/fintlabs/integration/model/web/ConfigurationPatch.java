@@ -9,7 +9,7 @@ import java.util.Optional;
 @Data
 public class ConfigurationPatch {
 
-    private String integrationMetadataId;
+    private Long integrationMetadataId;
 
     private Boolean completed;
 
@@ -17,7 +17,7 @@ public class ConfigurationPatch {
 
     private Collection<ConfigurationElement> elements;
 
-    public Optional<String> getIntegrationMetadataId() {
+    public Optional<Long> getIntegrationMetadataId() {
         return Optional.ofNullable(integrationMetadataId);
     }
 
