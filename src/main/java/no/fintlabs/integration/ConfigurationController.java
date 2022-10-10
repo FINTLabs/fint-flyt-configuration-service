@@ -2,16 +2,17 @@ package no.fintlabs.integration;
 
 import no.fintlabs.integration.model.Configuration;
 import no.fintlabs.integration.model.web.ConfigurationPatch;
-import no.fintlabs.integration.validation.ConfigurationValidationService;
+import no.fintlabs.integration.validation.ValidationErrorsFormattingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
-import java.util.stream.Stream;
+import java.util.Set;
 
 import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 
@@ -20,14 +21,17 @@ import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
-    private final ConfigurationValidationService configurationValidationService;
+    private final Validator validator;
+    private final ValidationErrorsFormattingService validationErrorsFormattingService;
 
     public ConfigurationController(
             ConfigurationService configurationService,
-            ConfigurationValidationService configurationValidationService
+            Validator validator,
+            ValidationErrorsFormattingService validationErrorsFormattingService
     ) {
         this.configurationService = configurationService;
-        this.configurationValidationService = configurationValidationService;
+        this.validator = validator;
+        this.validationErrorsFormattingService = validationErrorsFormattingService;
     }
 
     @GetMapping
@@ -43,7 +47,7 @@ public class ConfigurationController {
 
     @GetMapping("{configurationId}")
     public ResponseEntity<Configuration> getConfiguration(
-            @PathVariable UUID configurationId
+            @PathVariable Long configurationId
     ) {
         Configuration configuration = configurationService
                 .findById(configurationId)
@@ -56,19 +60,19 @@ public class ConfigurationController {
     public ResponseEntity<Configuration> postConfiguration(
             @RequestBody Configuration configuration
     ) {
-        configurationValidationService.validate(configuration).ifPresent(
-                elementErrors -> {
-                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                            String.join(", ", formatValidationErrors(elementErrors))
-                    );
-                }
-        );
+        Set<ConstraintViolation<Configuration>> constraintViolations = validator.validate(configuration);
+        if (!constraintViolations.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    validationErrorsFormattingService.format(constraintViolations)
+            );
+        }
         return ResponseEntity.ok(configurationService.save(configuration));
     }
 
     @PatchMapping("{configurationId}")
     public ResponseEntity<Configuration> patchConfiguration(
-            @PathVariable UUID configurationId,
+            @PathVariable Long configurationId,
             @RequestBody ConfigurationPatch configurationPatch
     ) {
         Configuration configuration = configurationService.findById(configurationId)
@@ -80,13 +84,13 @@ public class ConfigurationController {
             );
         }
 
-        configurationValidationService.validate(configurationPatch).ifPresent(
-                elementErrors -> {
-                    throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                            String.join(", ", formatValidationErrors(elementErrors))
-                    );
-                }
-        );
+        Set<ConstraintViolation<ConfigurationPatch>> constraintViolations = validator.validate(configurationPatch);
+        if (!constraintViolations.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    validationErrorsFormattingService.format(constraintViolations)
+            );
+        }
 
         configurationPatch.getIntegrationMetadataId().ifPresent(configuration::setIntegrationMetadataId);
         configurationPatch.isCompleted().ifPresent(configuration::setCompleted);
@@ -99,20 +103,6 @@ public class ConfigurationController {
         Configuration resultConfiguration = configurationService.save(configuration);
 
         return ResponseEntity.ok(resultConfiguration);
-    }
-
-    private Collection<String> formatValidationErrors(ConfigurationValidationService.ElementErrors elementErrors) {
-        return Stream.concat(
-                elementErrors.getErrors()
-                        .stream()
-                        .map(error -> elementErrors.getObjectKey() + " " + error.getMessage()),
-
-                elementErrors.getElementErrors()
-                        .stream()
-                        .map(this::formatValidationErrors)
-                        .flatMap(Collection::stream)
-                        .map(errorString -> elementErrors.getObjectKey() + "." + errorString)
-        ).toList();
     }
 
 }

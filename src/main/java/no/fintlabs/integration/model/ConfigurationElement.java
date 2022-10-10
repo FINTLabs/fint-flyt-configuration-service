@@ -2,6 +2,7 @@ package no.fintlabs.integration.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import no.fintlabs.integration.validation.constraints.UniqueChildrenKeys;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -13,6 +14,7 @@ import java.util.Collection;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@UniqueChildrenKeys
 @Entity
 public class ConfigurationElement {
 

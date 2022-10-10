@@ -2,7 +2,9 @@ package no.fintlabs.integration.model.web;
 
 import lombok.Data;
 import no.fintlabs.integration.model.ConfigurationElement;
+import no.fintlabs.integration.validation.constraints.UniqueChildrenKeys;
 
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -15,7 +17,8 @@ public class ConfigurationPatch {
 
     private String comment;
 
-    private Collection<ConfigurationElement> elements;
+    @UniqueChildrenKeys
+    private Collection<@Valid ConfigurationElement> elements;
 
     public Optional<Long> getIntegrationMetadataId() {
         return Optional.ofNullable(integrationMetadataId);

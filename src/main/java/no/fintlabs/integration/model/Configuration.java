@@ -2,6 +2,7 @@ package no.fintlabs.integration.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import no.fintlabs.integration.validation.constraints.UniqueChildrenKeys;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -36,6 +37,7 @@ public class Configuration {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "configuration_id")
+    @UniqueChildrenKeys
     private Collection<@Valid ConfigurationElement> elements = new ArrayList<>();
 
 }
