@@ -21,7 +21,7 @@ public class ConfigurationService {
     }
 
     public Collection<Configuration> findAllForIntegrationId(Long integrationId) {
-        return configurationRepository.findConfigurationsByIntegrationIdLike(integrationId);
+        return configurationRepository.findConfigurationsByIntegrationId(integrationId);
     }
 
     public Optional<Configuration> findById(Long configurationId) {

@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface ConfigurationRepository extends JpaRepository<Configuration, Long> {
 
-    Collection<Configuration> findConfigurationsByIntegrationIdLike(Long integrationId);
+    Collection<Configuration> findConfigurationsByIntegrationId(Long integrationId);
 
     Optional<Configuration> findFirstByIntegrationIdLikeAndVersionNotNullOrderByVersionDesc(Long integrationId);
 
