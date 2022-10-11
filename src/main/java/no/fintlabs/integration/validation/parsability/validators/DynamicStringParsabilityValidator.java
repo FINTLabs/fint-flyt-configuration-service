@@ -15,7 +15,7 @@ public class DynamicStringParsabilityValidator implements FieldParsabilityValida
     }
 
     @Override
-    public boolean validate(String value) {
+    public boolean isValid(String value) {
         // TODO: 27/09/2022 Validate string  $iem{}
         // TODO: 27/09/2022 Extract iem-ids
         // TODO: 27/09/2022 Find metadata from iem id

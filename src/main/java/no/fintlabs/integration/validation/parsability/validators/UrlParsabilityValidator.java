@@ -23,12 +23,12 @@ public class UrlParsabilityValidator implements FieldParsabilityValidator, Field
     }
 
     @Override
-    public boolean validate(Collection<String> values) {
-        return values.stream().allMatch(this::validate);
+    public boolean isValid(Collection<String> values) {
+        return values.stream().allMatch(this::isValid);
     }
 
     @Override
-    public boolean validate(String value) {
+    public boolean isValid(String value) {
         try {
             new URL(value).toURI();
             return true;

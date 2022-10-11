@@ -2,15 +2,10 @@ package no.fintlabs.integration.validation.constraints;
 
 import no.fintlabs.integration.model.FieldCollectionConfiguration;
 import no.fintlabs.integration.validation.parsability.FieldCollectionParsabilityValidator;
-import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
 import java.util.Collection;
 
-import static no.fintlabs.integration.validation.constraints.ValueParsableAsType.FIELD_VALUE_TYPE_REF;
-
-public class ValueParsableAsTypeFieldCollectionConfigurationValidator implements ConstraintValidator<ValueParsableAsType, FieldCollectionConfiguration> {
+public class ValueParsableAsTypeFieldCollectionConfigurationValidator extends ValueParsableAsTypeValidator<FieldCollectionConfiguration> {
 
     private final Collection<FieldCollectionParsabilityValidator> fieldCollectionParsabilityValidators;
 
@@ -20,20 +15,16 @@ public class ValueParsableAsTypeFieldCollectionConfigurationValidator implements
         this.fieldCollectionParsabilityValidators = fieldCollectionParsabilityValidators;
     }
 
+    @Override
+    String getType(FieldCollectionConfiguration value) {
+        return value.getType().toString();
+    }
 
     @Override
-    public boolean isValid(FieldCollectionConfiguration fieldCollectionConfiguration, ConstraintValidatorContext constraintValidatorContext) {
-        boolean valid = fieldCollectionParsabilityValidators
+    public boolean isValid(FieldCollectionConfiguration value) {
+        return fieldCollectionParsabilityValidators
                 .stream()
-                .allMatch(validator -> validator.validate(fieldCollectionConfiguration));
-        if (valid) {
-            return true;
-        }
-        if (constraintValidatorContext instanceof HibernateConstraintValidatorContext) {
-            constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class)
-                    .addMessageParameter(FIELD_VALUE_TYPE_REF, fieldCollectionConfiguration.getType());
-        }
-        return false;
+                .allMatch(fieldParsabilityValidator -> fieldParsabilityValidator.isValid(value));
     }
 
 }

@@ -22,13 +22,13 @@ public class BooleanParsabilityValidator implements FieldParsabilityValidator, F
     }
 
     @Override
-    public boolean validate(String value) {
+    public boolean isValid(String value) {
         return value.equals("true") || value.equals("false");
     }
 
     @Override
-    public boolean validate(Collection<String> values) {
-        return values.stream().allMatch(this::validate);
+    public boolean isValid(Collection<String> values) {
+        return values.stream().allMatch(this::isValid);
     }
 
 }

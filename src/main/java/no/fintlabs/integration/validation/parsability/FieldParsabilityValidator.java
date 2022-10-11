@@ -4,12 +4,12 @@ import no.fintlabs.integration.model.FieldConfiguration;
 
 public interface FieldParsabilityValidator {
 
-    default boolean validate(FieldConfiguration fieldConfiguration) {
-        return fieldConfiguration.getType() != getFieldValueType() || validate(fieldConfiguration.getValue());
+    default boolean isValid(FieldConfiguration fieldConfiguration) {
+        return fieldConfiguration.getType() != getFieldValueType() || isValid(fieldConfiguration.getValue());
     }
 
     FieldConfiguration.Type getFieldValueType();
 
-    boolean validate(String value);
+    boolean isValid(String value);
 
 }
