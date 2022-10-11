@@ -14,7 +14,7 @@ import java.util.stream.Stream;
 
 public class UniqueChildrenKeysConfigurationElementValidator extends UniqueChildrenKeysValidator<ConfigurationElement> {
 
-    List<String> findDuplicateKeys(ConfigurationElement value) {
+    protected List<String> findDuplicateKeys(ConfigurationElement value) {
         Set<String> checkedKeys = new HashSet<>();
         return Stream.of(
                         value.getFieldConfigurations().stream().map(FieldConfiguration::getKey),

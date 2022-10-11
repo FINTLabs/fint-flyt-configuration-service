@@ -22,8 +22,8 @@ public abstract class ValueParsableAsTypeValidator<T> implements ConstraintValid
         return false;
     }
 
-    abstract String getType(T value);
+    protected abstract String getType(T value);
 
-    abstract boolean isValid(T value);
+    protected abstract boolean isValid(T value);
 
 }

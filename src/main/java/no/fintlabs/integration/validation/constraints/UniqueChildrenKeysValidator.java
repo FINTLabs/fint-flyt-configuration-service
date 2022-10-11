@@ -32,6 +32,6 @@ public abstract class UniqueChildrenKeysValidator<T> implements ConstraintValida
         return false;
     }
 
-    abstract List<String> findDuplicateKeys(T value);
+    protected abstract List<String> findDuplicateKeys(T value);
 
 }

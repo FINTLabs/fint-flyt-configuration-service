@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 
 public class UniqueChildrenKeysElementsFieldValidator extends UniqueChildrenKeysValidator<Collection<ConfigurationElement>> {
 
-    List<String> findDuplicateKeys(Collection<ConfigurationElement> value) {
+    protected List<String> findDuplicateKeys(Collection<ConfigurationElement> value) {
         Set<String> checkedKeys = new HashSet<>();
         return value
                 .stream()

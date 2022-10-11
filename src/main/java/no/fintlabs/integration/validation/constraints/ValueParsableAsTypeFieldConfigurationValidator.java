@@ -16,12 +16,12 @@ public class ValueParsableAsTypeFieldConfigurationValidator extends ValueParsabl
     }
 
     @Override
-    String getType(FieldConfiguration value) {
+    protected String getType(FieldConfiguration value) {
         return value.getType().toString();
     }
 
     @Override
-    public boolean isValid(FieldConfiguration value) {
+    protected boolean isValid(FieldConfiguration value) {
         return fieldParsabilityValidators
                 .stream()
                 .allMatch(fieldParsabilityValidator -> fieldParsabilityValidator.isValid(value));

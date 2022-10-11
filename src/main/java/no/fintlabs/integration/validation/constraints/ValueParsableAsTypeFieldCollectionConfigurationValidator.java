@@ -16,12 +16,12 @@ public class ValueParsableAsTypeFieldCollectionConfigurationValidator extends Va
     }
 
     @Override
-    String getType(FieldCollectionConfiguration value) {
+    protected String getType(FieldCollectionConfiguration value) {
         return value.getType().toString();
     }
 
     @Override
-    public boolean isValid(FieldCollectionConfiguration value) {
+    protected boolean isValid(FieldCollectionConfiguration value) {
         return fieldCollectionParsabilityValidators
                 .stream()
                 .allMatch(fieldParsabilityValidator -> fieldParsabilityValidator.isValid(value));
