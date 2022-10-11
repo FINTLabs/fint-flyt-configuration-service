@@ -24,7 +24,7 @@ public class FieldCollectionConfiguration {
     private long id;
 
     public enum Type {
-        STRING, URL, BOOLEAN
+        STRING, URL
     }
 
     @NotBlank

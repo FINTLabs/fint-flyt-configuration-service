@@ -50,37 +50,4 @@ class BooleanParsabilityValidatorSpock extends Specification {
         !valid
     }
 
-    def 'should return true if value is list of parsable values'() {
-        given:
-        List<String> values = List.of("false", "true", "true")
-
-        when:
-        boolean valid = booleanParsabilityValidator.isValid(values)
-
-        then:
-        valid
-    }
-
-    def 'should return true if value is empty list '() {
-        given:
-        List<String> values = List.of()
-
-        when:
-        boolean valid = booleanParsabilityValidator.isValid(values)
-
-        then:
-        valid
-    }
-
-    def 'should return false if value is list contains one unparsable value'() {
-        given:
-        List<String> values = List.of("false", "true", "truest")
-
-        when:
-        boolean valid = booleanParsabilityValidator.isValid(values)
-
-        then:
-        !valid
-    }
-
 }
