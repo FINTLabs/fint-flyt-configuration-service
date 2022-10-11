@@ -36,7 +36,7 @@ public class ConfigurationController {
 
     @GetMapping
     public ResponseEntity<Collection<Configuration>> getConfigurations(
-            @RequestParam Optional<Long> integrationId
+            @RequestParam(name = "integrasjonId") Optional<Long> integrationId
     ) {
         return ResponseEntity.ok(
                 integrationId
