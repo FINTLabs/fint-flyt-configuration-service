@@ -4,10 +4,16 @@ import no.fintlabs.integration.model.FieldConfiguration;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 public class DynamicStringParsabilityValidator implements FieldParsabilityValidator {
 
-    private static String regex = "";
+    private static final Pattern textPattern = Pattern.compile("(?:(?!\\$if\\{).)*");
+    private static final Pattern instanceFieldKeyPattern = Pattern.compile("(?:(?!\\$if\\{).)+");
+    private static final Pattern ifReferencePattern = Pattern.compile("(?:\\$if\\{" + instanceFieldKeyPattern + "})*");
+    private static final Pattern validationPattern = Pattern.compile(
+            "^(?:" + textPattern + ifReferencePattern + textPattern + ")*$");
 
     @Override
     public FieldConfiguration.Type getFieldValueType() {
@@ -16,11 +22,7 @@ public class DynamicStringParsabilityValidator implements FieldParsabilityValida
 
     @Override
     public boolean isValid(String value) {
-        // TODO: 27/09/2022 Validate string  $iem{}
-        // TODO: 27/09/2022 Extract iem-ids
-        // TODO: 27/09/2022 Find metadata from iem id
-        // TODO: 27/09/2022 Validate iem types match element type
-        return true;
+        return validationPattern.matcher(value).matches();
     }
 
 }
