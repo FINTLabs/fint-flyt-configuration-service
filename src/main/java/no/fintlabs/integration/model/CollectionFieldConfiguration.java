@@ -15,7 +15,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @ValueParsableAsType
 @Entity
-public class FieldCollectionConfiguration {
+public class CollectionFieldConfiguration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +35,7 @@ public class FieldCollectionConfiguration {
     private Type type;
 
     @ElementCollection
-    @JoinColumn(name = "field_collection_configuration_id")
+    @JoinColumn
     Collection<String> values;
 
 }

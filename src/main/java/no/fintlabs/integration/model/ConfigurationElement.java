@@ -37,6 +37,6 @@ public class ConfigurationElement {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "configuration_element_id")
-    private Collection<@Valid FieldCollectionConfiguration> fieldCollectionConfigurations = new ArrayList<>();
+    private Collection<@Valid CollectionFieldConfiguration> collectionFieldConfigurations = new ArrayList<>();
 
 }

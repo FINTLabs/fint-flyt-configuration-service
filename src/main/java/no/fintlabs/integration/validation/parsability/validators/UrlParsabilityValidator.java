@@ -1,8 +1,8 @@
 package no.fintlabs.integration.validation.parsability.validators;
 
-import no.fintlabs.integration.model.FieldCollectionConfiguration;
+import no.fintlabs.integration.model.CollectionFieldConfiguration;
 import no.fintlabs.integration.model.FieldConfiguration;
-import no.fintlabs.integration.validation.parsability.FieldCollectionParsabilityValidator;
+import no.fintlabs.integration.validation.parsability.CollectionFieldParsabilityValidator;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +10,7 @@ import java.net.URL;
 import java.util.Collection;
 
 @Service
-public class UrlParsabilityValidator implements FieldParsabilityValidator, FieldCollectionParsabilityValidator {
+public class UrlParsabilityValidator implements FieldParsabilityValidator, CollectionFieldParsabilityValidator {
 
     @Override
     public FieldConfiguration.Type getTypeToValidate() {
@@ -18,8 +18,8 @@ public class UrlParsabilityValidator implements FieldParsabilityValidator, Field
     }
 
     @Override
-    public FieldCollectionConfiguration.Type getFieldCollectionType() {
-        return FieldCollectionConfiguration.Type.URL;
+    public CollectionFieldConfiguration.Type getCollectionFieldType() {
+        return CollectionFieldConfiguration.Type.URL;
     }
 
     @Override

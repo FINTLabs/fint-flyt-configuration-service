@@ -1,7 +1,7 @@
 package no.fintlabs.integration.validation.constraints;
 
 import no.fintlabs.integration.model.ConfigurationElement;
-import no.fintlabs.integration.model.FieldCollectionConfiguration;
+import no.fintlabs.integration.model.CollectionFieldConfiguration;
 import no.fintlabs.integration.model.FieldConfiguration;
 
 import java.util.HashSet;
@@ -18,7 +18,7 @@ public class UniqueChildrenKeysConfigurationElementValidator extends UniqueChild
         Set<String> checkedKeys = new HashSet<>();
         return Stream.of(
                         value.getFieldConfigurations().stream().map(FieldConfiguration::getKey),
-                        value.getFieldCollectionConfigurations().stream().map(FieldCollectionConfiguration::getKey),
+                        value.getCollectionFieldConfigurations().stream().map(CollectionFieldConfiguration::getKey),
                         value.getElements().stream().map(ConfigurationElement::getKey)
                 ).flatMap(Function.identity())
                 .filter(Objects::nonNull)

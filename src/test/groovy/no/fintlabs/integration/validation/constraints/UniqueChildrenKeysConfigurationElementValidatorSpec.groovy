@@ -1,7 +1,7 @@
 package no.fintlabs.integration.validation.constraints
 
 import no.fintlabs.integration.model.ConfigurationElement
-import no.fintlabs.integration.model.FieldCollectionConfiguration
+import no.fintlabs.integration.model.CollectionFieldConfiguration
 import no.fintlabs.integration.model.FieldConfiguration
 import spock.lang.Specification
 
@@ -21,23 +21,23 @@ class UniqueChildrenKeysConfigurationElementValidatorSpec extends Specification 
         return fieldConfiguration
     }
 
-    private FieldCollectionConfiguration mockFieldCollectionConfiguration(String key) {
-        FieldCollectionConfiguration fieldCollectionConfiguration = Mock(FieldCollectionConfiguration.class)
-        fieldCollectionConfiguration.getKey() >> key
-        return fieldCollectionConfiguration
+    private CollectionFieldConfiguration mockCollectionFieldConfiguration(String key) {
+        CollectionFieldConfiguration collectionFieldConfiguration = Mock(CollectionFieldConfiguration.class)
+        collectionFieldConfiguration.getKey() >> key
+        return collectionFieldConfiguration
     }
 
     private ConfigurationElement mockConfigurationElement(
             String key,
             Collection<ConfigurationElement> elements,
             Collection<FieldConfiguration> fieldConfigurations,
-            Collection<FieldCollectionConfiguration> fieldCollectionConfigurations
+            Collection<CollectionFieldConfiguration> collectionFieldConfigurations
     ) {
         ConfigurationElement configurationElement = Mock(ConfigurationElement.class)
         configurationElement.getKey() >> key
         configurationElement.getElements() >> elements
         configurationElement.getFieldConfigurations() >> fieldConfigurations
-        configurationElement.getFieldCollectionConfigurations() >> fieldCollectionConfigurations
+        configurationElement.getCollectionFieldConfigurations() >> collectionFieldConfigurations
         return configurationElement
     }
 
@@ -57,10 +57,10 @@ class UniqueChildrenKeysConfigurationElementValidatorSpec extends Specification 
                         mockFieldConfiguration("six"),
                 ),
                 List.of(
-                        mockFieldCollectionConfiguration("two"),
-                        mockFieldCollectionConfiguration("three"),
-                        mockFieldCollectionConfiguration("three"),
-                        mockFieldCollectionConfiguration("four"),
+                        mockCollectionFieldConfiguration("two"),
+                        mockCollectionFieldConfiguration("three"),
+                        mockCollectionFieldConfiguration("three"),
+                        mockCollectionFieldConfiguration("four"),
                 ),
         )
 
