@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.parsability;
 
-import no.fintlabs.integration.model.FieldConfiguration;
+import no.fintlabs.integration.model.configuration.FieldConfiguration;
 
 public interface FieldParsabilityValidator {
 

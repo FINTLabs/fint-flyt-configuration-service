@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.constraints
 
-import no.fintlabs.integration.model.CollectionFieldConfiguration
+import no.fintlabs.integration.model.configuration.CollectionFieldConfiguration
 import no.fintlabs.integration.validation.parsability.CollectionFieldParsabilityValidator
 import spock.lang.Specification
 

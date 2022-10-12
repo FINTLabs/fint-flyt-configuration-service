@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.constraints;
 
-import no.fintlabs.integration.model.FieldConfiguration;
+import no.fintlabs.integration.model.configuration.FieldConfiguration;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
 import org.springframework.stereotype.Service;
 

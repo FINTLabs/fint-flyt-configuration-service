@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.constraints
 
-import no.fintlabs.integration.model.ConfigurationElement
+import no.fintlabs.integration.model.configuration.ConfigurationElement
 import spock.lang.Specification
 
 class UniqueChildrenKeysElementsFieldValidatorSpec extends Specification {

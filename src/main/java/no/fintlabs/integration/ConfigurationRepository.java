@@ -1,7 +1,7 @@
 package no.fintlabs.integration;
 
 
-import no.fintlabs.integration.model.Configuration;
+import no.fintlabs.integration.model.configuration.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;

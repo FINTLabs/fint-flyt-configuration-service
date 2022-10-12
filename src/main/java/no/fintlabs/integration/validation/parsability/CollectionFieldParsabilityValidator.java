@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.parsability;
 
-import no.fintlabs.integration.model.CollectionFieldConfiguration;
+import no.fintlabs.integration.model.configuration.CollectionFieldConfiguration;
 
 import java.util.Collection;
 

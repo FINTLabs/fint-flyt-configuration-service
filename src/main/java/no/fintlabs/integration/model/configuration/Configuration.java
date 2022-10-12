@@ -1,4 +1,4 @@
-package no.fintlabs.integration.model;
+package no.fintlabs.integration.model.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;

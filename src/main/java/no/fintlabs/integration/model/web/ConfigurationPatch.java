@@ -1,7 +1,7 @@
 package no.fintlabs.integration.model.web;
 
 import lombok.Data;
-import no.fintlabs.integration.model.ConfigurationElement;
+import no.fintlabs.integration.model.configuration.ConfigurationElement;
 import no.fintlabs.integration.validation.constraints.UniqueChildrenKeys;
 
 import javax.validation.Valid;

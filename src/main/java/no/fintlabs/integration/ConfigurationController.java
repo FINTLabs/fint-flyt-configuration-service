@@ -1,6 +1,6 @@
 package no.fintlabs.integration;
 
-import no.fintlabs.integration.model.Configuration;
+import no.fintlabs.integration.model.configuration.Configuration;
 import no.fintlabs.integration.model.web.ConfigurationPatch;
 import no.fintlabs.integration.validation.ValidationErrorsFormattingService;
 import org.springframework.http.HttpStatus;

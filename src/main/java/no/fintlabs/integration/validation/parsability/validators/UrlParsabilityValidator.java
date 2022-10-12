@@ -1,7 +1,7 @@
 package no.fintlabs.integration.validation.parsability.validators;
 
-import no.fintlabs.integration.model.CollectionFieldConfiguration;
-import no.fintlabs.integration.model.FieldConfiguration;
+import no.fintlabs.integration.model.configuration.CollectionFieldConfiguration;
+import no.fintlabs.integration.model.configuration.FieldConfiguration;
 import no.fintlabs.integration.validation.parsability.CollectionFieldParsabilityValidator;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
 import org.springframework.stereotype.Service;
