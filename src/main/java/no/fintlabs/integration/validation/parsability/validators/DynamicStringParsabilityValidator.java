@@ -12,8 +12,8 @@ public class DynamicStringParsabilityValidator implements FieldParsabilityValida
     private static final Pattern textPattern = Pattern.compile("(?:(?!\\$if\\{).)*");
     private static final Pattern instanceFieldKeyPattern = Pattern.compile("(?:(?!\\$if\\{).)+");
     private static final Pattern ifReferencePattern = Pattern.compile("(?:\\$if\\{" + instanceFieldKeyPattern + "})*");
-    private static final Pattern validationPattern = Pattern.compile(
-            "^(?:" + textPattern + ifReferencePattern + textPattern + ")*$");
+    private static final Pattern dynamicStringPattern = Pattern.compile(
+            "^(?:" + textPattern + "|" + ifReferencePattern + ")*$");
 
     @Override
     public FieldConfiguration.Type getFieldValueType() {
@@ -22,7 +22,7 @@ public class DynamicStringParsabilityValidator implements FieldParsabilityValida
 
     @Override
     public boolean isValid(String value) {
-        return validationPattern.matcher(value).matches();
+        return dynamicStringPattern.matcher(value).matches();
     }
 
 }
