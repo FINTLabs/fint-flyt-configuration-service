@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class BooleanParsabilityValidator implements FieldParsabilityValidator {
 
     @Override
-    public FieldConfiguration.Type getFieldValueType() {
+    public FieldConfiguration.Type getTypeToValidate() {
         return FieldConfiguration.Type.BOOLEAN;
     }
 

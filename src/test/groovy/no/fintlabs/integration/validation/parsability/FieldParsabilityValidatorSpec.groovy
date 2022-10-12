@@ -11,7 +11,7 @@ class FieldParsabilityValidatorSpec extends Specification {
         fieldParsabilityValidator = Spy(
                 new FieldParsabilityValidator() {
                     @Override
-                    FieldConfiguration.Type getFieldValueType() {
+                    FieldConfiguration.Type getTypeToValidate() {
                         return FieldConfiguration.Type.STRING
                     }
 

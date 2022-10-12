@@ -16,7 +16,7 @@ public class DynamicStringParsabilityValidator implements FieldParsabilityValida
             "^(?:" + textPattern + "|" + ifReferencePattern + ")*$");
 
     @Override
-    public FieldConfiguration.Type getFieldValueType() {
+    public FieldConfiguration.Type getTypeToValidate() {
         return FieldConfiguration.Type.DYNAMIC_STRING;
     }
 

@@ -13,7 +13,7 @@ import java.util.Collection;
 public class UrlParsabilityValidator implements FieldParsabilityValidator, FieldCollectionParsabilityValidator {
 
     @Override
-    public FieldConfiguration.Type getFieldValueType() {
+    public FieldConfiguration.Type getTypeToValidate() {
         return FieldConfiguration.Type.URL;
     }
 
