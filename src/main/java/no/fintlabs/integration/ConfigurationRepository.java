@@ -11,10 +11,10 @@ public interface ConfigurationRepository extends JpaRepository<Configuration, Lo
 
     Collection<Configuration> findConfigurationsByIntegrationId(Long integrationId);
 
-    Optional<Configuration> findFirstByIntegrationIdLikeAndVersionNotNullOrderByVersionDesc(Long integrationId);
+    Optional<Configuration> findFirstByIntegrationIdAndVersionNotNullOrderByVersionDesc(Long integrationId);
 
     default int getNextVersionForIntegrationId(Long integrationId) {
-        return findFirstByIntegrationIdLikeAndVersionNotNullOrderByVersionDesc(integrationId)
+        return findFirstByIntegrationIdAndVersionNotNullOrderByVersionDesc(integrationId)
                 .map(Configuration::getVersion)
                 .map(version -> version + 1)
                 .orElse(1);
