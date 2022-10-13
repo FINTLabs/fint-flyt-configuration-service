@@ -1,5 +1,6 @@
 package no.fintlabs.integration.validation.parsability.validators
 
+
 import spock.lang.Specification
 
 class DynamicStringParsabilityValidatorSpec extends Specification {

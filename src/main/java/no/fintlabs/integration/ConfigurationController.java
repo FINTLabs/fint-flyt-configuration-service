@@ -1,6 +1,8 @@
 package no.fintlabs.integration;
 
+import no.fintlabs.integration.kafka.InstanceElementMetadataRequestProducerService;
 import no.fintlabs.integration.model.configuration.Configuration;
+import no.fintlabs.integration.model.metadata.InstanceElementMetadata;
 import no.fintlabs.integration.model.web.ConfigurationPatch;
 import no.fintlabs.integration.validation.ValidationErrorsFormattingService;
 import org.springframework.http.HttpStatus;
@@ -14,6 +16,7 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
+import no.fintlabs.integration.validation.ConfigurationValidatorFacory;
 import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 
 @RestController
@@ -21,17 +24,20 @@ import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
-    private final Validator validator;
+    private final ConfigurationValidatorFacory configurationValidatorFacory;
     private final ValidationErrorsFormattingService validationErrorsFormattingService;
+    private final InstanceElementMetadataRequestProducerService instanceElementMetadataRequestProducerService;
 
     public ConfigurationController(
             ConfigurationService configurationService,
-            Validator validator,
-            ValidationErrorsFormattingService validationErrorsFormattingService
+            ConfigurationValidatorFacory configurationValidatorFacory,
+            ValidationErrorsFormattingService validationErrorsFormattingService,
+            InstanceElementMetadataRequestProducerService instanceElementMetadataRequestProducerService
     ) {
         this.configurationService = configurationService;
-        this.validator = validator;
+        this.configurationValidatorFacory = configurationValidatorFacory;
         this.validationErrorsFormattingService = validationErrorsFormattingService;
+        this.instanceElementMetadataRequestProducerService = instanceElementMetadataRequestProducerService;
     }
 
     @GetMapping
@@ -60,6 +66,12 @@ public class ConfigurationController {
     public ResponseEntity<Configuration> postConfiguration(
             @RequestBody Configuration configuration
     ) {
+        Collection<InstanceElementMetadata> instanceElementMetadata = instanceElementMetadataRequestProducerService
+                .get(configuration.getIntegrationMetadataId())
+                .orElseThrow(() -> new CouldNotFindInstanceElementMetadataException(configuration.getIntegrationMetadataId()));
+
+        Validator validator = configurationValidatorFacory.getValidator(instanceElementMetadata);
+
         Set<ConstraintViolation<Configuration>> constraintViolations = validator.validate(configuration);
         if (!constraintViolations.isEmpty()) {
             throw new ResponseStatusException(
@@ -83,6 +95,12 @@ public class ConfigurationController {
                     "Configuration is already complete, and cannot be altered"
             );
         }
+
+        Collection<InstanceElementMetadata> instanceElementMetadata = instanceElementMetadataRequestProducerService
+                .get(configuration.getIntegrationMetadataId())
+                .orElseThrow(() -> new CouldNotFindInstanceElementMetadataException(configuration.getIntegrationMetadataId()));
+
+        Validator validator = configurationValidatorFacory.getValidator(instanceElementMetadata);
 
         Set<ConstraintViolation<ConfigurationPatch>> constraintViolations = validator.validate(configurationPatch);
         if (!constraintViolations.isEmpty()) {

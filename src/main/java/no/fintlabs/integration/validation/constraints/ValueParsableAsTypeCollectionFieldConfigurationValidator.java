@@ -1,6 +1,7 @@
 package no.fintlabs.integration.validation.constraints;
 
 import no.fintlabs.integration.model.configuration.CollectionFieldConfiguration;
+import no.fintlabs.integration.validation.ConfigurationValidationContext;
 import no.fintlabs.integration.validation.parsability.CollectionFieldParsabilityValidator;
 
 import java.util.Collection;
@@ -21,7 +22,7 @@ public class ValueParsableAsTypeCollectionFieldConfigurationValidator extends Va
     }
 
     @Override
-    protected boolean isValid(CollectionFieldConfiguration value) {
+    protected boolean isValid(CollectionFieldConfiguration value, ConfigurationValidationContext configurationValidationContext) {
         return collectionFieldParsabilityValidators
                 .stream()
                 .allMatch(fieldParsabilityValidator -> fieldParsabilityValidator.isValid(value));

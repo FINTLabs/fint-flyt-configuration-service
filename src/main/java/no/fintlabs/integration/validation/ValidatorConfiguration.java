@@ -16,8 +16,14 @@ import javax.validation.ValidatorFactory;
 public class ValidatorConfiguration {
 
     @Bean
+    ConfigurationValidatorFacory configurationValidatorFactory(ValidatorFactory validatorFactory) {
+        return new ConfigurationValidatorFacory(validatorFactory);
+    }
+
+    @Bean
     Validator validator(ValidatorFactory validatorFactory) {
-        return validatorFactory.getValidator();
+        return validatorFactory
+                .getValidator();
     }
 
     @Bean

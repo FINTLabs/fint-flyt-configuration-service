@@ -1,5 +1,6 @@
 package no.fintlabs.integration.validation.constraints;
 
+import no.fintlabs.integration.validation.ConfigurationValidationContext;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
 import javax.validation.ConstraintValidator;
@@ -11,19 +12,23 @@ public abstract class ValueParsableAsTypeValidator<T> implements ConstraintValid
 
     @Override
     public boolean isValid(T value, ConstraintValidatorContext constraintValidatorContext) {
-        boolean valid = isValid(value);
-        if (valid) {
-            return true;
-        }
         if (constraintValidatorContext instanceof HibernateConstraintValidatorContext) {
-            constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class)
-                    .addMessageParameter(FIELD_VALUE_TYPE_REF, getType(value));
+            HibernateConstraintValidatorContext hibernateConstraintValidatorContext =
+                    constraintValidatorContext.unwrap(HibernateConstraintValidatorContext.class);
+            boolean valid = isValid(
+                    value,
+                    hibernateConstraintValidatorContext.getConstraintValidatorPayload(ConfigurationValidationContext.class)
+            );
+            if (valid) {
+                return true;
+            }
+            hibernateConstraintValidatorContext.addMessageParameter(FIELD_VALUE_TYPE_REF, getType(value));
         }
         return false;
     }
 
     protected abstract String getType(T value);
 
-    protected abstract boolean isValid(T value);
+    protected abstract boolean isValid(T value, ConfigurationValidationContext configurationValidationContext);
 
 }

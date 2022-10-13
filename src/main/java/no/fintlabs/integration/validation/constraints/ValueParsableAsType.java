@@ -9,7 +9,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = {
         ValueParsableAsTypeFieldConfigurationValidator.class,
-        ValueParsableAsTypeCollectionFieldConfigurationValidator.class
+        ValueParsableAsTypeCollectionFieldConfigurationValidator.class,
 })
 public @interface ValueParsableAsType {
 

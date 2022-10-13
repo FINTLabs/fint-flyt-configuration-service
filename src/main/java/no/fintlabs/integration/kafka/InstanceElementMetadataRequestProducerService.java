@@ -2,6 +2,7 @@ package no.fintlabs.integration.kafka;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import no.fintlabs.integration.model.metadata.InstanceElementMetadata;
 import no.fintlabs.kafka.common.topic.TopicCleanupPolicyParameters;
 import no.fintlabs.kafka.requestreply.RequestProducer;
@@ -22,6 +23,7 @@ public class InstanceElementMetadataRequestProducerService {
 
     @Data
     @AllArgsConstructor
+    @NoArgsConstructor
     private static class InstanceElementMetadataWrapper {
         private Collection<InstanceElementMetadata> instanceElementMetadata;
     }
