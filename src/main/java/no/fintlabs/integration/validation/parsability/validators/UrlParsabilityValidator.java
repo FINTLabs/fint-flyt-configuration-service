@@ -2,17 +2,14 @@ package no.fintlabs.integration.validation.parsability.validators;
 
 import no.fintlabs.integration.model.configuration.CollectionFieldConfiguration;
 import no.fintlabs.integration.model.configuration.FieldConfiguration;
-import no.fintlabs.integration.validation.ConfigurationValidationContext;
 import no.fintlabs.integration.validation.parsability.CollectionFieldParsabilityValidator;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
 import java.util.Collection;
 
 @Service
-@Order(0)
 public class UrlParsabilityValidator implements FieldParsabilityValidator, CollectionFieldParsabilityValidator {
 
     @Override
@@ -27,11 +24,11 @@ public class UrlParsabilityValidator implements FieldParsabilityValidator, Colle
 
     @Override
     public boolean isValid(Collection<String> values) {
-        return values.stream().allMatch(value -> isValid(value, null));
+        return values.stream().allMatch(this::isValid);
     }
 
     @Override
-    public boolean isValid(String value, ConfigurationValidationContext configurationValidationContext) {
+    public boolean isValid(String value) {
         try {
             new URL(value).toURI();
             return true;

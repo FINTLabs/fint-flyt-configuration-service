@@ -1,13 +1,10 @@
 package no.fintlabs.integration.validation.parsability.validators;
 
 import no.fintlabs.integration.model.configuration.FieldConfiguration;
-import no.fintlabs.integration.validation.ConfigurationValidationContext;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 @Service
-@Order(0)
 public class BooleanParsabilityValidator implements FieldParsabilityValidator {
 
     @Override
@@ -16,7 +13,7 @@ public class BooleanParsabilityValidator implements FieldParsabilityValidator {
     }
 
     @Override
-    public boolean isValid(String value, ConfigurationValidationContext configurationValidationContext) {
+    public boolean isValid(String value) {
         return value.equals("true") || value.equals("false");
     }
 

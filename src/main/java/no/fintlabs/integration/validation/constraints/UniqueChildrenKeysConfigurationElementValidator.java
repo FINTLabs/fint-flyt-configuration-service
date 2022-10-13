@@ -1,8 +1,9 @@
 package no.fintlabs.integration.validation.constraints;
 
-import no.fintlabs.integration.model.configuration.ConfigurationElement;
 import no.fintlabs.integration.model.configuration.CollectionFieldConfiguration;
+import no.fintlabs.integration.model.configuration.ConfigurationElement;
 import no.fintlabs.integration.model.configuration.FieldConfiguration;
+import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+@Service
 public class UniqueChildrenKeysConfigurationElementValidator extends UniqueChildrenKeysValidator<ConfigurationElement> {
 
     protected List<String> findDuplicateKeys(ConfigurationElement value) {

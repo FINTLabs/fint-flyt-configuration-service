@@ -1,7 +1,6 @@
 package no.fintlabs.integration.validation.constraints;
 
 import no.fintlabs.integration.model.configuration.FieldConfiguration;
-import no.fintlabs.integration.validation.ConfigurationValidationContext;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +21,10 @@ public class ValueParsableAsTypeFieldConfigurationValidator extends ValueParsabl
     }
 
     @Override
-    protected boolean isValid(FieldConfiguration value, ConfigurationValidationContext configurationValidationContext) {
+    protected boolean isValid(FieldConfiguration value) {
         return fieldParsabilityValidators
                 .stream()
-                .allMatch(fieldParsabilityValidator -> fieldParsabilityValidator.isValid(value, configurationValidationContext));
+                .allMatch(fieldParsabilityValidator -> fieldParsabilityValidator.isValid(value));
     }
 
 }
