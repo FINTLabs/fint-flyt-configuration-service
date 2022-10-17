@@ -3,14 +3,12 @@ package no.fintlabs.integration.validation.instancefield.validators;
 import no.fintlabs.integration.model.configuration.FieldConfiguration;
 import no.fintlabs.integration.model.metadata.InstanceElementMetadata;
 import no.fintlabs.integration.validation.instancefield.InstanceFieldReferenceTypeCompatibilityValidator;
-import org.springframework.stereotype.Service;
 
 import java.util.Set;
 
 import static no.fintlabs.integration.model.metadata.InstanceElementMetadata.Type.*;
 
-@Service
-public class DynamicStringInstanceFieldReferenceTypeCompatibilityValidator implements InstanceFieldReferenceTypeCompatibilityValidator {
+public class ExampleInstanceFieldReferenceTypeCompatibilityValidator implements InstanceFieldReferenceTypeCompatibilityValidator {
 
     @Override
     public FieldConfiguration.Type getTypeToValidate() {

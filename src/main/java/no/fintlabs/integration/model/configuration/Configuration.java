@@ -2,6 +2,7 @@ package no.fintlabs.integration.model.configuration;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
+import no.fintlabs.integration.validation.constraints.IntegrationAndMetadataMatches;
 import no.fintlabs.integration.validation.constraints.UniqueChildrenKeys;
 
 import javax.persistence.*;
@@ -12,8 +13,10 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@IntegrationAndMetadataMatches
 @Entity
 public class Configuration {
 

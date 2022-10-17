@@ -49,7 +49,6 @@ class UniqueChildrenKeysValidatorSpec extends Specification {
         !valid
         1 * uniqueChildrenKeysValidator.isValid(object, constraintValidatorContext)
         1 * uniqueChildrenKeysValidator.findDuplicateKeys(object) >> duplicateKeys
-        1 * constraintValidatorContext.unwrap(_ as Class) >> constraintValidatorContext
         1 * constraintValidatorContext.addMessageParameter(DUPLICATE_CHILDREN_KEYS_REF, "['one', 'two']") >> constraintValidatorContext
         1 * constraintValidatorContext.withDynamicPayload(CollectionHelper.toImmutableList(duplicateKeys))
         0 * _

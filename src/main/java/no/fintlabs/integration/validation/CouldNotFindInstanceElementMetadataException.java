@@ -1,4 +1,4 @@
-package no.fintlabs.integration;
+package no.fintlabs.integration.validation;
 
 public class CouldNotFindInstanceElementMetadataException extends RuntimeException {
 

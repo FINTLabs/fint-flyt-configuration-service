@@ -1,9 +1,8 @@
 package no.fintlabs.integration;
 
-import no.fintlabs.integration.kafka.InstanceElementMetadataRequestProducerService;
 import no.fintlabs.integration.model.configuration.Configuration;
-import no.fintlabs.integration.model.metadata.InstanceElementMetadata;
 import no.fintlabs.integration.model.web.ConfigurationPatch;
+import no.fintlabs.integration.validation.ConfigurationValidatorFacory;
 import no.fintlabs.integration.validation.ValidationErrorsFormattingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,6 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
-import no.fintlabs.integration.validation.ConfigurationValidatorFacory;
 import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 
 @RestController
@@ -26,18 +24,15 @@ public class ConfigurationController {
     private final ConfigurationService configurationService;
     private final ConfigurationValidatorFacory configurationValidatorFacory;
     private final ValidationErrorsFormattingService validationErrorsFormattingService;
-    private final InstanceElementMetadataRequestProducerService instanceElementMetadataRequestProducerService;
 
     public ConfigurationController(
             ConfigurationService configurationService,
             ConfigurationValidatorFacory configurationValidatorFacory,
-            ValidationErrorsFormattingService validationErrorsFormattingService,
-            InstanceElementMetadataRequestProducerService instanceElementMetadataRequestProducerService
+            ValidationErrorsFormattingService validationErrorsFormattingService
     ) {
         this.configurationService = configurationService;
         this.configurationValidatorFacory = configurationValidatorFacory;
         this.validationErrorsFormattingService = validationErrorsFormattingService;
-        this.instanceElementMetadataRequestProducerService = instanceElementMetadataRequestProducerService;
     }
 
     @GetMapping
@@ -66,11 +61,9 @@ public class ConfigurationController {
     public ResponseEntity<Configuration> postConfiguration(
             @RequestBody Configuration configuration
     ) {
-        Collection<InstanceElementMetadata> instanceElementMetadata = instanceElementMetadataRequestProducerService
-                .get(configuration.getIntegrationMetadataId())
-                .orElseThrow(() -> new CouldNotFindInstanceElementMetadataException(configuration.getIntegrationMetadataId()));
-
-        Validator validator = configurationValidatorFacory.getValidator(instanceElementMetadata);
+        Validator validator = configurationValidatorFacory.getValidator(
+                configuration.getIntegrationId(), configuration.getIntegrationMetadataId()
+        );
 
         Set<ConstraintViolation<Configuration>> constraintViolations = validator.validate(configuration);
         if (!constraintViolations.isEmpty()) {
@@ -96,11 +89,9 @@ public class ConfigurationController {
             );
         }
 
-        Collection<InstanceElementMetadata> instanceElementMetadata = instanceElementMetadataRequestProducerService
-                .get(configuration.getIntegrationMetadataId())
-                .orElseThrow(() -> new CouldNotFindInstanceElementMetadataException(configuration.getIntegrationMetadataId()));
-
-        Validator validator = configurationValidatorFacory.getValidator(instanceElementMetadata);
+        Validator validator = configurationValidatorFacory.getValidator(
+                configuration.getIntegrationId(), configuration.getIntegrationMetadataId()
+        );
 
         Set<ConstraintViolation<ConfigurationPatch>> constraintViolations = validator.validate(configurationPatch);
         if (!constraintViolations.isEmpty()) {

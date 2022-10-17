@@ -55,7 +55,6 @@ class ValueParsableAsTypeValidatorSpec extends Specification {
         1 * valueParsableAsTypeValidator.isValid(object, constraintValidatorContext)
         1 * valueParsableAsTypeValidator.isValid(object) >> false
         1 * valueParsableAsTypeValidator.getType(object)
-        1 * constraintValidatorContext.unwrap(_ as Class) >> constraintValidatorContext
         1 * constraintValidatorContext.addMessageParameter(FIELD_VALUE_TYPE_REF, "STRING") >> constraintValidatorContext
         0 * _
     }

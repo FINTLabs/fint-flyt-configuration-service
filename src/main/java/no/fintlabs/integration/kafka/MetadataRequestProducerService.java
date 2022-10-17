@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class IntegrationMetadataRequestProducerService {
+public class MetadataRequestProducerService {
 
     private final RequestTopicNameParameters requestTopicNameParameters;
     private final RequestProducer<Long, IntegrationMetadata> requestProducer;
 
-    public IntegrationMetadataRequestProducerService(
+    public MetadataRequestProducerService(
             @Value("${fint.kafka.application-id}") String applicationId,
             RequestProducerFactory requestProducerFactory,
             ReplyTopicService replyTopicService
