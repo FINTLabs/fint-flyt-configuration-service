@@ -35,7 +35,7 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`viken-no-skjema.vigoiks.no`) && PathPrefix(`/api/intern/konfigurasjoner`)
+    - match: Host(`fint-flyt-demo.vigoiks.no`) && PathPrefix(`/api/intern/konfigurasjoner`)
       kind: Rule
       services:
         - name: fint-flyt-configuration-service
