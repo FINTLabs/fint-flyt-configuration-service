@@ -1,30 +1,29 @@
-package no.fintlabs.integration.model.configuration;
+package no.fintlabs.integration.model.configuration.dtos;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import no.fintlabs.integration.validation.constraints.IntegrationAndMetadataMatches;
 import no.fintlabs.integration.validation.constraints.UniqueChildrenKeys;
 
-import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Collection;
 
-@Getter
-@Setter
+import static com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @IntegrationAndMetadataMatches
-@Entity
-public class Configuration {
+public class ConfigurationDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    @Setter(AccessLevel.NONE)
-    private long id;
+    private Long id;
 
     @NotNull
     private Long integrationId;
@@ -32,15 +31,12 @@ public class Configuration {
     @NotNull
     private Long integrationMetadataId;
 
-    private Integer version;
-
     private boolean completed;
 
     private String comment;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "configuration_id")
+    @JsonInclude(Include.NON_NULL)
     @UniqueChildrenKeys
-    private Collection<@Valid ConfigurationElement> elements = new ArrayList<>();
+    private Collection<@Valid @NotNull ConfigurationElementDto> elements;
 
 }

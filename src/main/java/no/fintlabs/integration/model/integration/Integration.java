@@ -19,7 +19,7 @@ public class Integration {
     private Long sourceApplicationId;
     private String sourceApplicationIntegrationId;
     private String destination;
-    private Integration.State state;
+    private State state;
     private String activeConfigurationId;
 
 }

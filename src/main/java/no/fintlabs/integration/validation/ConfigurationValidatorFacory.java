@@ -50,7 +50,7 @@ public class ConfigurationValidatorFacory {
 
         Integration integration = integrationRequestProducerService
                 .get(integrationId)
-                .orElseThrow(() -> new CouldNotFindIntegrationException(metadataId));
+                .orElseThrow(() -> new CouldNotFindIntegrationException(integrationId));
 
         IntegrationMetadata metadata = metadataRequestProducerService
                 .get(metadataId)

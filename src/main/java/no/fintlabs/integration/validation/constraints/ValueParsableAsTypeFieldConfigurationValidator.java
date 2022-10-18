@@ -1,13 +1,13 @@
 package no.fintlabs.integration.validation.constraints;
 
-import no.fintlabs.integration.model.configuration.FieldConfiguration;
+import no.fintlabs.integration.model.configuration.dtos.FieldConfigurationDto;
 import no.fintlabs.integration.validation.parsability.FieldParsabilityValidator;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
 @Service
-public class ValueParsableAsTypeFieldConfigurationValidator extends ValueParsableAsTypeValidator<FieldConfiguration> {
+public class ValueParsableAsTypeFieldConfigurationValidator extends ValueParsableAsTypeValidator<FieldConfigurationDto> {
 
     private final Collection<FieldParsabilityValidator> fieldParsabilityValidators;
 
@@ -16,12 +16,12 @@ public class ValueParsableAsTypeFieldConfigurationValidator extends ValueParsabl
     }
 
     @Override
-    protected String getType(FieldConfiguration value) {
+    protected String getType(FieldConfigurationDto value) {
         return value.getType().toString();
     }
 
     @Override
-    protected boolean isValid(FieldConfiguration value) {
+    protected boolean isValid(FieldConfigurationDto value) {
         return fieldParsabilityValidators
                 .stream()
                 .allMatch(fieldParsabilityValidator -> fieldParsabilityValidator.isValid(value));

@@ -1,8 +1,7 @@
-package no.fintlabs.integration.model.configuration;
+package no.fintlabs.integration.model.configuration.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import no.fintlabs.integration.validation.constraints.ValueParsableAsType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -11,9 +10,9 @@ import java.util.Collection;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ValueParsableAsType
 @Entity
 public class CollectionFieldConfiguration {
 

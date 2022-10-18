@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.parsability
 
-import no.fintlabs.integration.model.configuration.FieldConfiguration
+import no.fintlabs.integration.model.configuration.entities.FieldConfiguration
 import spock.lang.Specification
 
 class FieldParsabilityValidatorSpec extends Specification {

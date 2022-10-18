@@ -1,9 +1,10 @@
 package no.fintlabs.integration;
 
-import no.fintlabs.integration.model.configuration.Configuration;
+import no.fintlabs.integration.model.configuration.dtos.ConfigurationDto;
+import no.fintlabs.integration.model.configuration.dtos.ConfigurationPatchDto;
+import no.fintlabs.integration.model.configuration.entities.Configuration;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -11,30 +12,73 @@ import java.util.Optional;
 public class ConfigurationService {
 
     private final ConfigurationRepository configurationRepository;
+    private final ConfigurationMappingService configurationMappingService;
 
-    public ConfigurationService(ConfigurationRepository configurationRepository) {
+    public ConfigurationService(
+            ConfigurationRepository configurationRepository,
+            ConfigurationMappingService configurationMappingService
+    ) {
         this.configurationRepository = configurationRepository;
+        this.configurationMappingService = configurationMappingService;
     }
 
-    public Collection<Configuration> findAll() {
-        return configurationRepository.findAll();
+    public boolean existsById(Long configurationId) {
+        return configurationRepository.existsById(configurationId);
     }
 
-    public Collection<Configuration> findAllForIntegrationId(Long integrationId) {
-        return configurationRepository.findConfigurationsByIntegrationId(integrationId);
+    public Optional<ConfigurationDto> findById(Long configurationId, boolean excludeElements) {
+        return configurationRepository
+                .findById(configurationId)
+                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeElements));
     }
 
-    public Optional<Configuration> findById(Long configurationId) {
-        return configurationRepository.findById(configurationId);
+    public Collection<ConfigurationDto> findAll(boolean excludeElements) {
+        return configurationRepository
+                .findAll()
+                .stream()
+                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeElements))
+                .toList();
     }
 
-    @Transactional
-    public Configuration save(Configuration configuration) {
-        if (configuration.isCompleted()) {
-            int nextVersion = configurationRepository.getNextVersionForIntegrationId(configuration.getIntegrationId());
-            configuration.setVersion(nextVersion);
-        }
-        return configurationRepository.save(configuration);
+    public Collection<ConfigurationDto> findByIntegrationId(Long integrationId, boolean excludeElements) {
+        return configurationRepository
+                .findConfigurationsByIntegrationId(integrationId)
+                .stream()
+                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeElements))
+                .toList();
+    }
+
+    public ConfigurationDto save(ConfigurationDto configurationDto) {
+        return configurationMappingService.toConfigurationDto(
+                configurationRepository.saveWithVersion(
+                        configurationMappingService.toConfiguration(configurationDto)
+                ),
+                false
+        );
+    }
+
+    public ConfigurationDto updateById(Long configurationId, ConfigurationPatchDto configurationPatchDto) {
+        Configuration configuration = configurationRepository.findById(configurationId)
+                .orElseThrow(IllegalArgumentException::new);
+
+        configurationPatchDto.getIntegrationMetadataId().ifPresent(configuration::setIntegrationMetadataId);
+        configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configuration::setCompleted);
+        configurationPatchDto.getComment().ifPresent(configuration::setComment);
+        configurationPatchDto.getElements().ifPresent(elementsDtos -> {
+            configuration.getElements().clear();
+            configuration.getElements().addAll(
+                    configurationMappingService.toElements(elementsDtos)
+            );
+        });
+
+        return configurationMappingService.toConfigurationDto(
+                configurationRepository.save(configuration),
+                false
+        );
+    }
+
+    public void deleteById(Long configurationId) {
+        configurationRepository.deleteById(configurationId);
     }
 
 }

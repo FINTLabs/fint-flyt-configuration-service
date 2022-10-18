@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.constraints
 
-import no.fintlabs.integration.model.configuration.FieldConfiguration
+import no.fintlabs.integration.model.configuration.entities.FieldConfiguration
 import no.fintlabs.integration.model.metadata.InstanceElementMetadata
 import no.fintlabs.integration.validation.ConfigurationValidationContext
 import no.fintlabs.integration.validation.instancefield.InstanceFieldReferenceKeyExtractionService

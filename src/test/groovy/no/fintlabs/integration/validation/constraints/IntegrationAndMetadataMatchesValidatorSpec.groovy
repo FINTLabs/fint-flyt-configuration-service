@@ -1,6 +1,6 @@
 package no.fintlabs.integration.validation.constraints
 
-import no.fintlabs.integration.model.configuration.Configuration
+import no.fintlabs.integration.model.configuration.entities.Configuration
 import no.fintlabs.integration.model.integration.Integration
 import no.fintlabs.integration.model.metadata.IntegrationMetadata
 import no.fintlabs.integration.validation.ConfigurationValidationContext

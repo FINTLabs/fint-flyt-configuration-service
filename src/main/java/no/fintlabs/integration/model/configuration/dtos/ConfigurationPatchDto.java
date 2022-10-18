@@ -1,24 +1,20 @@
-package no.fintlabs.integration.model.web;
+package no.fintlabs.integration.model.configuration.dtos;
 
 import lombok.Data;
-import no.fintlabs.integration.model.configuration.ConfigurationElement;
-import no.fintlabs.integration.validation.constraints.UniqueChildrenKeys;
 
-import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
 @Data
-public class ConfigurationPatch {
+public class ConfigurationPatchDto {
 
     private Long integrationMetadataId;
 
-    private Boolean completed;
+    private boolean completed;
 
     private String comment;
 
-    @UniqueChildrenKeys
-    private Collection<@Valid ConfigurationElement> elements;
+    private Collection<ConfigurationElementDto> elements;
 
     public Optional<Long> getIntegrationMetadataId() {
         return Optional.ofNullable(integrationMetadataId);
@@ -32,7 +28,7 @@ public class ConfigurationPatch {
         return Optional.ofNullable(comment);
     }
 
-    public Optional<Collection<ConfigurationElement>> getElements() {
+    public Optional<Collection<ConfigurationElementDto>> getElements() {
         return Optional.ofNullable(elements);
     }
 

@@ -1,19 +1,21 @@
 package no.fintlabs.integration.validation.constraints;
 
-import no.fintlabs.integration.model.configuration.ConfigurationElement;
+import no.fintlabs.integration.model.configuration.dtos.ConfigurationElementDto;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-public class UniqueChildrenKeysElementsFieldValidator extends UniqueChildrenKeysValidator<Collection<ConfigurationElement>> {
+public class UniqueChildrenKeysElementsFieldValidator extends UniqueChildrenKeysValidator<Collection<ConfigurationElementDto>> {
 
-    protected List<String> findDuplicateKeys(Collection<ConfigurationElement> value) {
+    protected List<String> findDuplicateKeys(Collection<ConfigurationElementDto> value) {
         Set<String> checkedKeys = new HashSet<>();
-        return value
+        return value == null
+                ? Collections.emptyList()
+                : value
                 .stream()
-                .map(ConfigurationElement::getKey)
+                .map(ConfigurationElementDto::getKey)
                 .filter(Objects::nonNull)
                 .filter(n -> !checkedKeys.add(n))
                 .collect(Collectors.toList());

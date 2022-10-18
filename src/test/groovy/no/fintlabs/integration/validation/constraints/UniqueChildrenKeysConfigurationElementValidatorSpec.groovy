@@ -1,8 +1,8 @@
 package no.fintlabs.integration.validation.constraints
 
-import no.fintlabs.integration.model.configuration.ConfigurationElement
-import no.fintlabs.integration.model.configuration.CollectionFieldConfiguration
-import no.fintlabs.integration.model.configuration.FieldConfiguration
+import no.fintlabs.integration.model.configuration.entities.CollectionFieldConfiguration
+import no.fintlabs.integration.model.configuration.entities.ConfigurationElement
+import no.fintlabs.integration.model.configuration.entities.FieldConfiguration
 import spock.lang.Specification
 
 import static java.util.Collections.emptyList
