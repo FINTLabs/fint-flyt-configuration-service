@@ -82,6 +82,7 @@ public class ConfigurationMappingService {
                 .integrationMetadataId(configuration.getIntegrationMetadataId())
                 .completed(configuration.isCompleted())
                 .comment(configuration.getComment())
+                .version(configuration.getVersion())
                 .elements(excludeElements
                         ? null
                         : toElementDtos(configuration.getElements())

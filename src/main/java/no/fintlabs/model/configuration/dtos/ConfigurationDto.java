@@ -35,6 +35,9 @@ public class ConfigurationDto {
 
     private String comment;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Integer version;
+
     @JsonInclude(Include.NON_NULL)
     @UniqueChildrenKeys
     private Collection<@Valid @NotNull ConfigurationElementDto> elements;

@@ -38,6 +38,8 @@ create table field_configuration
     configuration_element_id int8,
     primary key (id)
 );
+alter table configuration
+    add constraint UniqueIntegrationIdAndVersion unique (integration_id, version);
 alter table collection_field_configuration
     add constraint FKyoky7q0hj6rp42ei24tx6mhx foreign key (configuration_element_id) references configuration_element;
 alter table collection_field_configuration_values
