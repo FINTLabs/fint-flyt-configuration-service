@@ -3,6 +3,8 @@ package no.fintlabs.model.configuration.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
@@ -21,8 +23,10 @@ public class FieldConfiguration {
         STRING, URL, BOOLEAN, DYNAMIC_STRING
     }
 
+    @NotBlank
     private String key;
 
+    @NotNull
     @Enumerated(value = EnumType.STRING)
     private Type type;
 
