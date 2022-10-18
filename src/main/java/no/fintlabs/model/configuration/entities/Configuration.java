@@ -15,6 +15,9 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(name = "UniqueIntegrationIdAndVersion", columnNames = {"integrationId", "version"})
+})
 public class Configuration {
 
     @Id

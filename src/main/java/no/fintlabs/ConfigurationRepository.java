@@ -2,14 +2,26 @@ package no.fintlabs;
 
 
 import no.fintlabs.model.configuration.entities.Configuration;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Optional;
 
 public interface ConfigurationRepository extends JpaRepository<Configuration, Long> {
 
-    // TODO: 18/10/2022 Lock
+    @Retryable(
+            maxAttempts = 4,
+            value = ConstraintViolationException.class,
+            backoff = @Backoff(
+                    delay = 1000,
+                    multiplier = 2
+            )
+    )
+    @Transactional
     default Configuration saveWithVersion(Configuration configuration) {
         if (configuration.isCompleted()) {
             int nextVersion = getNextVersionForIntegrationId(configuration.getIntegrationId());
