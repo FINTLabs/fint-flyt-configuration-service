@@ -72,7 +72,7 @@ public class ConfigurationService {
         });
 
         return configurationMappingService.toConfigurationDto(
-                configurationRepository.save(configuration),
+                configurationRepository.saveWithVersion(configuration),
                 false
         );
     }
