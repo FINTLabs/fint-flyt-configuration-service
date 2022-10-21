@@ -25,7 +25,7 @@ class ConfigurationMappingServiceSpec extends Specification {
     Configuration createConfiguration() {
         return Configuration
                 .builder()
-                .id(0)
+                .id(1)
                 .integrationId(1)
                 .integrationMetadataId(2)
                 .elements(List.of(
@@ -198,7 +198,7 @@ class ConfigurationMappingServiceSpec extends Specification {
         ConfigurationDto result = configurationMappingService.toConfigurationDto(configuration, false)
 
         then:
-        result == configurationDto.toBuilder().id(0).build()
+        result == configurationDto.toBuilder().id(1).build()
     }
 
     def 'should keep all values when mapping to dto without elements'() {
@@ -208,7 +208,7 @@ class ConfigurationMappingServiceSpec extends Specification {
         then:
         result == ConfigurationDto
                 .builder()
-                .id(0)
+                .id(1)
                 .integrationId(1)
                 .integrationMetadataId(2)
                 .build()
@@ -220,7 +220,7 @@ class ConfigurationMappingServiceSpec extends Specification {
         ConfigurationDto secondResult = configurationMappingService.toConfigurationDto(firstResult, false)
 
         then:
-        secondResult == configurationDto.toBuilder().id(0).build()
+        secondResult == configurationDto.toBuilder().id(null).build()
     }
 
 }
