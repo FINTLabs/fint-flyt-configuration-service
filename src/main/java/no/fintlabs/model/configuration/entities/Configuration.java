@@ -24,7 +24,7 @@ public class Configuration {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Setter(AccessLevel.NONE)
-    private long id;
+    private Long id;
 
     @NotNull
     private Long integrationId;

@@ -4,6 +4,9 @@ import no.fintlabs.model.configuration.dtos.ConfigurationDto;
 import no.fintlabs.model.configuration.dtos.ConfigurationPatchDto;
 import no.fintlabs.validation.ConfigurationValidatorFacory;
 import no.fintlabs.validation.ValidationErrorsFormattingService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +14,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
@@ -36,15 +38,27 @@ public class ConfigurationController {
     }
 
     @GetMapping
-    public ResponseEntity<Collection<ConfigurationDto>> getConfigurations(
+    public ResponseEntity<Page<ConfigurationDto>> getConfigurations(
+            @RequestParam(name = "side") int page,
+            @RequestParam(name = "antall") int size,
             @RequestParam(name = "integrasjonId") Optional<Long> integrationId,
+            @RequestParam(name = "ferdigstilt") Optional<Boolean> complete,
             @RequestParam(name = "ekskluderElementer", required = false) boolean excludeElements
     ) {
-        return ResponseEntity.ok(
-                integrationId
-                        .map(iid -> configurationService.findByIntegrationId(iid, excludeElements))
-                        .orElseGet(() -> configurationService.findAll(excludeElements))
-        );
+        ConfigurationFilter filter = ConfigurationFilter
+                .builder()
+                .integrationId(integrationId.orElse(null))
+                .completed(complete.orElse(null))
+                .build();
+
+        PageRequest pageRequest = PageRequest
+                .of(page, size)
+                .withSort(
+                        Sort.Direction.DESC,
+                        "version"
+                );
+
+        return ResponseEntity.ok(configurationService.findAll(filter, excludeElements, pageRequest));
     }
 
     @GetMapping("{configurationId}")

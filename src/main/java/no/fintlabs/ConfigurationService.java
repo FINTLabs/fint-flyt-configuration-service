@@ -3,9 +3,11 @@ package no.fintlabs;
 import no.fintlabs.model.configuration.dtos.ConfigurationDto;
 import no.fintlabs.model.configuration.dtos.ConfigurationPatchDto;
 import no.fintlabs.model.configuration.entities.Configuration;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Service
@@ -22,30 +24,26 @@ public class ConfigurationService {
         this.configurationMappingService = configurationMappingService;
     }
 
-    public boolean existsById(Long configurationId) {
-        return configurationRepository.existsById(configurationId);
-    }
-
     public Optional<ConfigurationDto> findById(Long configurationId, boolean excludeElements) {
         return configurationRepository
                 .findById(configurationId)
                 .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeElements));
     }
 
-    public Collection<ConfigurationDto> findAll(boolean excludeElements) {
-        return configurationRepository
-                .findAll()
-                .stream()
-                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeElements))
-                .toList();
-    }
+    public Page<ConfigurationDto> findAll(ConfigurationFilter filter, boolean excludeElements, Pageable pageable) {
+        Configuration configurationExample = new Configuration();
+        filter.getIntegrationId().ifPresent(configurationExample::setIntegrationId);
+        filter.getCompleted().ifPresent(configurationExample::setCompleted);
 
-    public Collection<ConfigurationDto> findByIntegrationId(Long integrationId, boolean excludeElements) {
         return configurationRepository
-                .findConfigurationsByIntegrationId(integrationId)
-                .stream()
-                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeElements))
-                .toList();
+                .findAll(
+                        Example.of(configurationExample),
+                        pageable
+                )
+                .map(configuration -> configurationMappingService.toConfigurationDto(
+                        configuration,
+                        excludeElements
+                ));
     }
 
     public ConfigurationDto save(ConfigurationDto configurationDto) {
