@@ -41,6 +41,8 @@ public class ConfigurationController {
     public ResponseEntity<Page<ConfigurationDto>> getConfigurations(
             @RequestParam(name = "side") int page,
             @RequestParam(name = "antall") int size,
+            @RequestParam(name = "sorteringFelt") String sortProperty,
+            @RequestParam(name = "sorteringRetning") Sort.Direction sortDirection,
             @RequestParam(name = "integrasjonId") Optional<Long> integrationId,
             @RequestParam(name = "ferdigstilt") Optional<Boolean> complete,
             @RequestParam(name = "ekskluderElementer", required = false) boolean excludeElements
@@ -53,10 +55,7 @@ public class ConfigurationController {
 
         PageRequest pageRequest = PageRequest
                 .of(page, size)
-                .withSort(
-                        Sort.Direction.DESC,
-                        "version"
-                );
+                .withSort(sortDirection, sortProperty);
 
         return ResponseEntity.ok(configurationService.findAll(filter, excludeElements, pageRequest));
     }
