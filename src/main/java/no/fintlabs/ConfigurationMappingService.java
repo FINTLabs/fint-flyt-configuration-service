@@ -20,6 +20,7 @@ public class ConfigurationMappingService {
                 .builder()
                 .integrationId(configurationDto.getIntegrationId())
                 .integrationMetadataId(configurationDto.getIntegrationMetadataId())
+                .comment(configurationDto.getComment())
                 .completed(configurationDto.isCompleted())
                 .elements(toElements(configurationDto.getElements()))
                 .build();
