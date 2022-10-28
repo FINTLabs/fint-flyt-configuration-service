@@ -10,7 +10,7 @@ public class ConfigurationPatchDto {
 
     private Long integrationMetadataId;
 
-    private boolean completed;
+    private Boolean completed;
 
     private String comment;
 
