@@ -56,4 +56,20 @@ class FieldParsabilityValidatorSpec extends Specification {
         valid
     }
 
+    def 'should return true if value is null'() {
+        given:
+        FieldConfigurationDto fieldConfigurationDto = FieldConfigurationDto
+                .builder()
+                .type(FieldConfiguration.Type.STRING)
+                .value(null)
+                .build()
+
+        when:
+        boolean valid = fieldParsabilityValidator.isValid(fieldConfigurationDto)
+
+        then:
+        0 * fieldParsabilityValidator.isValid(_ as String)
+        valid
+    }
+
 }
