@@ -52,7 +52,7 @@ public class ConfigurationRequestConsumerConfiguration {
     ) {
         RequestTopicNameParameters requestTopicNameParameters = RequestTopicNameParameters
                 .builder()
-                .resource("configuration-elements")
+                .resource("mapping")
                 .parameterName("configuration-id")
                 .build();
         requestTopicService
