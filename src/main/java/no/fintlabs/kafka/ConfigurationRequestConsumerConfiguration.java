@@ -7,7 +7,7 @@ import no.fintlabs.kafka.requestreply.RequestConsumerFactoryService;
 import no.fintlabs.kafka.requestreply.topic.RequestTopicNameParameters;
 import no.fintlabs.kafka.requestreply.topic.RequestTopicService;
 import no.fintlabs.model.configuration.dtos.ConfigurationDto;
-import no.fintlabs.model.configuration.dtos.ConfigurationElementsDto;
+import no.fintlabs.model.configuration.dtos.ElementMappingDto;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -60,14 +60,13 @@ public class ConfigurationRequestConsumerConfiguration {
 
         return requestConsumerFactoryService.createFactory(
                 Long.class,
-                ConfigurationElementsDto.class,
+                ElementMappingDto.class,
                 (ConsumerRecord<String, Long> consumerRecord) -> ReplyProducerRecord
-                        .<ConfigurationElementsDto>builder()
+                        .<ElementMappingDto>builder()
                         .value(
                                 configurationService
                                         .findById(consumerRecord.value(), false)
-                                        .map(ConfigurationDto::getElements)
-                                        .map(ConfigurationElementsDto::new)
+                                        .map(ConfigurationDto::getMapping)
                                         .orElse(null))
                         .build(),
                 new CommonLoggingErrorHandler()

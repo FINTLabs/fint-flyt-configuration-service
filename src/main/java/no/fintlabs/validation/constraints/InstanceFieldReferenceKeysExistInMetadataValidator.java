@@ -1,6 +1,6 @@
 package no.fintlabs.validation.constraints;
 
-import no.fintlabs.model.configuration.dtos.FieldConfigurationDto;
+import no.fintlabs.model.configuration.dtos.ValueMappingDto;
 import no.fintlabs.validation.ConfigurationValidationContext;
 import no.fintlabs.validation.instancefield.InstanceFieldReferenceKeyExtractionService;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
@@ -14,7 +14,7 @@ import static no.fintlabs.validation.constraints.InstanceFieldReferenceKeysExist
 
 @Service
 public class InstanceFieldReferenceKeysExistInMetadataValidator
-        implements HibernateConstraintValidator<InstanceFieldReferenceKeysExistInMetadata, FieldConfigurationDto> {
+        implements HibernateConstraintValidator<InstanceFieldReferenceKeysExistInMetadata, ValueMappingDto> {
 
     private final InstanceFieldReferenceKeyExtractionService instanceFieldReferenceKeyExtractionService;
 
@@ -25,9 +25,9 @@ public class InstanceFieldReferenceKeysExistInMetadataValidator
     }
 
     @Override
-    public boolean isValid(FieldConfigurationDto fieldConfigurationDto, HibernateConstraintValidatorContext hibernateConstraintValidatorContext) {
+    public boolean isValid(ValueMappingDto valueMappingDto, HibernateConstraintValidatorContext hibernateConstraintValidatorContext) {
         Collection<String> configurationInstanceFieldReferenceKeys = instanceFieldReferenceKeyExtractionService
-                .extractIfReferenceKeys(fieldConfigurationDto.getValue());
+                .extractIfReferenceKeys(valueMappingDto.getMappingString());
 
         Set<String> metadataInstanceFieldKeySet = hibernateConstraintValidatorContext
                 .getConstraintValidatorPayload(ConfigurationValidationContext.class)

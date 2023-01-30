@@ -1,57 +1,47 @@
 package no.fintlabs.validation.constraints
 
-import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
-import org.hibernate.validator.internal.util.CollectionHelper
+import no.fintlabs.model.configuration.dtos.ElementCollectionMappingDto
+import no.fintlabs.model.configuration.dtos.ElementMappingDto
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import spock.lang.Specification
-
-import static no.fintlabs.validation.constraints.UniqueChildrenKeys.DUPLICATE_CHILDREN_KEYS_REF
 
 class UniqueChildrenKeysValidatorSpec extends Specification {
 
     UniqueChildrenKeysValidator uniqueChildrenKeysValidator
-    HibernateConstraintValidatorContext constraintValidatorContext
 
     def setup() {
-        uniqueChildrenKeysValidator = Spy(
-                new UniqueChildrenKeysValidator() {
-                    @Override
-                    List<String> findDuplicateKeys(Object value) {
-                        return null
-                    }
-                }
-        )
-        constraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
+        uniqueChildrenKeysValidator = new UniqueChildrenKeysValidator()
     }
 
-    def 'should return true if no duplicate keys are found'() {
+    def 'should return duplicate keys in a single collection and across child collections'() {
         given:
-        Object object = new Object()
+        ElementMappingDto elementMappingDto = ElementMappingDto
+                .builder()
+                .valueMappingPerKey(Map.of(
+                        "one", ValueMappingDto.builder().build(),
+                        "two", ValueMappingDto.builder().build(),
+                        "six", ValueMappingDto.builder().build(),
+                ))
+                .elementMappingPerKey(Map.of(
+                        "two", ElementMappingDto.builder().build(),
+                        "three", ElementMappingDto.builder().build(),
+                        "five", ElementMappingDto.builder().build(),
+                        "four", ElementMappingDto.builder()
+                        .valueMappingPerKey(Map.of("one", ValueMappingDto.builder().build()))
+                        .build()
+                ))
+                .elementCollectionMappingPerKey(Map.of(
+                        "five", ElementCollectionMappingDto.builder().build(),
+                        "seven", ElementCollectionMappingDto.builder().build()
+                ))
+                .build()
 
         when:
-        boolean valid = uniqueChildrenKeysValidator.isValid(object, constraintValidatorContext)
+        List<String> duplicateKeys = uniqueChildrenKeysValidator.findDuplicateKeys(elementMappingDto)
 
         then:
-        valid
-        1 * uniqueChildrenKeysValidator.isValid(object, constraintValidatorContext)
-        1 * uniqueChildrenKeysValidator.findDuplicateKeys(object) >> Collections.emptyList()
-        0 * _
-    }
-
-    def 'should return false and add error message parameters if duplicate keys are found'() {
-        given:
-        Object object = new Object()
-        List<String> duplicateKeys = List.of("one", "two")
-
-        when:
-        boolean valid = uniqueChildrenKeysValidator.isValid(object, constraintValidatorContext)
-
-        then:
-        !valid
-        1 * uniqueChildrenKeysValidator.isValid(object, constraintValidatorContext)
-        1 * uniqueChildrenKeysValidator.findDuplicateKeys(object) >> duplicateKeys
-        1 * constraintValidatorContext.addMessageParameter(DUPLICATE_CHILDREN_KEYS_REF, "['one', 'two']") >> constraintValidatorContext
-        1 * constraintValidatorContext.withDynamicPayload(CollectionHelper.toImmutableList(duplicateKeys))
-        0 * _
+        duplicateKeys.size() == 2
+        duplicateKeys.containsAll("two", "five")
     }
 
 }

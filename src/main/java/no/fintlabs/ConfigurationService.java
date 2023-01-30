@@ -62,12 +62,7 @@ public class ConfigurationService {
         configurationPatchDto.getIntegrationMetadataId().ifPresent(configuration::setIntegrationMetadataId);
         configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configuration::setCompleted);
         configurationPatchDto.getComment().ifPresent(configuration::setComment);
-        configurationPatchDto.getElements().ifPresent(elementDtos -> {
-            configuration.getElements().clear();
-            configuration.getElements().addAll(
-                    configurationMappingService.toElements(elementDtos)
-            );
-        });
+        configurationPatchDto.getMapping().map(configurationMappingService::toElementMapping).ifPresent(configuration::setMapping);
 
         return configurationMappingService.toConfigurationDto(
                 configurationRepository.saveWithVersion(configuration),

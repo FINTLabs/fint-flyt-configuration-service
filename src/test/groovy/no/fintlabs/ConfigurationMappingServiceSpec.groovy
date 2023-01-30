@@ -1,13 +1,11 @@
 package no.fintlabs
 
-import no.fintlabs.model.configuration.dtos.CollectionFieldConfigurationDto
 import no.fintlabs.model.configuration.dtos.ConfigurationDto
-import no.fintlabs.model.configuration.dtos.ConfigurationElementDto
-import no.fintlabs.model.configuration.dtos.FieldConfigurationDto
-import no.fintlabs.model.configuration.entities.CollectionFieldConfiguration
+import no.fintlabs.model.configuration.dtos.ElementMappingDto
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import no.fintlabs.model.configuration.entities.Configuration
-import no.fintlabs.model.configuration.entities.ConfigurationElement
-import no.fintlabs.model.configuration.entities.FieldConfiguration
+import no.fintlabs.model.configuration.entities.ElementMapping
+import no.fintlabs.model.configuration.entities.ValueMapping
 import spock.lang.Specification
 
 class ConfigurationMappingServiceSpec extends Specification {
@@ -28,88 +26,80 @@ class ConfigurationMappingServiceSpec extends Specification {
                 .id(1)
                 .integrationId(1)
                 .integrationMetadataId(2)
-                .elements(List.of(
-                        ConfigurationElement
+                .mapping(
+                        ElementMapping
                                 .builder()
-                                .id(0)
-                                .key("element1")
-                                .fieldConfigurations(List.of())
-                                .collectionFieldConfigurations(List.of())
-                                .elements(List.of())
-                                .build(),
-                        ConfigurationElement
-                                .builder()
-                                .id(1)
-                                .key("element2")
-                                .fieldConfigurations(List.of())
-                                .collectionFieldConfigurations(List.of())
-                                .elements(List.of(
-                                        ConfigurationElement
+                                .valueMappingPerKey(Map.of())
+                                .elementMappingPerKey(Map.of(
+                                        "element1",
+                                        ElementMapping
                                                 .builder()
-                                                .id(2)
-                                                .key("element21")
-                                                .fieldConfigurations(List.of(
-                                                        FieldConfiguration
-                                                                .builder()
-                                                                .id(0)
-                                                                .key("field211")
-                                                                .type(FieldConfiguration.Type.BOOLEAN)
-                                                                .value("true")
-                                                                .build(),
-                                                        FieldConfiguration
-                                                                .builder()
-                                                                .id(1)
-                                                                .key("field212")
-                                                                .type(FieldConfiguration.Type.STRING)
-                                                                .value("text")
-                                                                .build(),
-                                                ))
-                                                .collectionFieldConfigurations(List.of(
-                                                        CollectionFieldConfiguration
-                                                                .builder()
-                                                                .id(0)
-                                                                .key("collectionField211")
-                                                                .type(CollectionFieldConfiguration.Type.URL)
-                                                                .values(List.of("www.example.com"))
-                                                                .build(),
-                                                        CollectionFieldConfiguration
-                                                                .builder()
-                                                                .id(1)
-                                                                .key("collectionField212")
-                                                                .type(CollectionFieldConfiguration.Type.STRING)
-                                                                .values(List.of("text1", "text2"))
-                                                                .build()
-                                                ))
-                                                .elements(List.of(
-                                                        ConfigurationElement
-                                                                .builder()
-                                                                .id(3)
-                                                                .key("element211")
-                                                                .fieldConfigurations(List.of())
-                                                                .collectionFieldConfigurations(List.of())
-                                                                .elements(List.of())
-                                                                .build()
-                                                ))
+                                                .id(0)
+                                                .valueMappingPerKey(Map.of())
+                                                .elementMappingPerKey(Map.of())
+                                                .elementCollectionMappingPerKey(Map.of())
                                                 .build(),
-                                        ConfigurationElement
+                                        "element2",
+                                        ElementMapping
                                                 .builder()
-                                                .id(4)
-                                                .key("element22")
-                                                .fieldConfigurations(List.of(
-                                                        FieldConfiguration
+                                                .id(1)
+                                                .valueMappingPerKey(Map.of())
+                                                .elementMappingPerKey(Map.of(
+                                                        "element21",
+                                                        ElementMapping
                                                                 .builder()
                                                                 .id(2)
-                                                                .key("field221")
-                                                                .type(FieldConfiguration.Type.STRING)
-                                                                .value(null)
+                                                                .valueMappingPerKey(Map.of(
+                                                                        "field211",
+                                                                        ValueMapping
+                                                                                .builder()
+                                                                                .id(0)
+                                                                                .type(ValueMapping.Type.BOOLEAN)
+                                                                                .mappingString("true")
+                                                                                .build(),
+                                                                        "field212",
+                                                                        ValueMapping
+                                                                                .builder()
+                                                                                .id(1)
+                                                                                .type(ValueMapping.Type.STRING)
+                                                                                .mappingString("text")
+                                                                                .build(),
+                                                                ))
+                                                                .elementMappingPerKey(Map.of(
+                                                                        "element211",
+                                                                        ElementMapping
+                                                                                .builder()
+                                                                                .id(3)
+                                                                                .valueMappingPerKey(Map.of())
+                                                                                .elementMappingPerKey(Map.of())
+                                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                                .build()
+                                                                ))
+                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                .build(),
+                                                        "element22",
+                                                        ElementMapping
+                                                                .builder()
+                                                                .id(4)
+                                                                .valueMappingPerKey(Map.of(
+                                                                        "field221",
+                                                                        ValueMapping
+                                                                                .builder()
+                                                                                .id(2)
+                                                                                .type(ValueMapping.Type.STRING)
+                                                                                .mappingString(null)
+                                                                                .build()
+                                                                ))
+                                                                .elementMappingPerKey(Map.of())
+                                                                .elementCollectionMappingPerKey(Map.of())
                                                                 .build()
                                                 ))
-                                                .collectionFieldConfigurations(List.of())
-                                                .elements(List.of())
+                                                .elementCollectionMappingPerKey(Map.of())
                                                 .build()
                                 ))
+                                .elementCollectionMappingPerKey(Map.of())
                                 .build()
-                ))
+                )
                 .build()
     }
 
@@ -118,78 +108,72 @@ class ConfigurationMappingServiceSpec extends Specification {
                 .builder()
                 .integrationId(1)
                 .integrationMetadataId(2)
-                .elements(List.of(
-                        ConfigurationElementDto
+                .mapping(
+                        ElementMappingDto
                                 .builder()
-                                .key("element1")
-                                .fieldConfigurations(List.of())
-                                .collectionFieldConfigurations(List.of())
-                                .elements(List.of())
-                                .build(),
-                        ConfigurationElementDto
-                                .builder()
-                                .key("element2")
-                                .fieldConfigurations(List.of())
-                                .collectionFieldConfigurations(List.of())
-                                .elements(List.of(
-                                        ConfigurationElementDto
+                                .valueMappingPerKey(Map.of())
+                                .elementMappingPerKey(Map.of(
+                                        "element1",
+                                        ElementMappingDto
                                                 .builder()
-                                                .key("element21")
-                                                .fieldConfigurations(List.of(
-                                                        FieldConfigurationDto
-                                                                .builder()
-                                                                .key("field211")
-                                                                .type(FieldConfiguration.Type.BOOLEAN)
-                                                                .value("true")
-                                                                .build(),
-                                                        FieldConfigurationDto
-                                                                .builder()
-                                                                .key("field212")
-                                                                .type(FieldConfiguration.Type.STRING)
-                                                                .value("text")
-                                                                .build(),
-                                                ))
-                                                .collectionFieldConfigurations(List.of(
-                                                        CollectionFieldConfigurationDto
-                                                                .builder()
-                                                                .key("collectionField211")
-                                                                .type(CollectionFieldConfiguration.Type.URL)
-                                                                .values(List.of("www.example.com"))
-                                                                .build(),
-                                                        CollectionFieldConfigurationDto
-                                                                .builder()
-                                                                .key("collectionField212")
-                                                                .type(CollectionFieldConfiguration.Type.STRING)
-                                                                .values(List.of("text1", "text2"))
-                                                                .build()
-                                                ))
-                                                .elements(List.of(
-                                                        ConfigurationElementDto
-                                                                .builder()
-                                                                .key("element211")
-                                                                .fieldConfigurations(List.of())
-                                                                .collectionFieldConfigurations(List.of())
-                                                                .elements(List.of())
-                                                                .build()
-                                                ))
+                                                .valueMappingPerKey(Map.of())
+                                                .elementMappingPerKey(Map.of())
+                                                .elementCollectionMappingPerKey(Map.of())
                                                 .build(),
-                                        ConfigurationElementDto
+                                        "element2",
+                                        ElementMappingDto
                                                 .builder()
-                                                .key("element22")
-                                                .fieldConfigurations(List.of(
-                                                        FieldConfigurationDto
+                                                .valueMappingPerKey(Map.of())
+                                                .elementMappingPerKey(Map.of(
+                                                        "element21",
+                                                        ElementMappingDto
                                                                 .builder()
-                                                                .key("field221")
-                                                                .type(FieldConfiguration.Type.STRING)
-                                                                .value(null)
+                                                                .valueMappingPerKey(Map.of(
+                                                                        "field211",
+                                                                        ValueMappingDto
+                                                                                .builder()
+                                                                                .type(ValueMapping.Type.BOOLEAN)
+                                                                                .mappingString("true")
+                                                                                .build(),
+                                                                        "field212",
+                                                                        ValueMappingDto
+                                                                                .builder()
+                                                                                .type(ValueMapping.Type.STRING)
+                                                                                .mappingString("text")
+                                                                                .build(),
+                                                                ))
+                                                                .elementMappingPerKey(Map.of(
+                                                                        "element211",
+                                                                        ElementMappingDto
+                                                                                .builder()
+                                                                                .valueMappingPerKey(Map.of())
+                                                                                .elementMappingPerKey(Map.of())
+                                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                                .build()
+                                                                ))
+                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                .build(),
+                                                        "element22",
+                                                        ElementMappingDto
+                                                                .builder()
+                                                                .valueMappingPerKey(Map.of(
+                                                                        "field221",
+                                                                        ValueMappingDto
+                                                                                .builder()
+                                                                                .type(ValueMapping.Type.STRING)
+                                                                                .mappingString(null)
+                                                                                .build()
+                                                                ))
+                                                                .elementMappingPerKey(Map.of())
+                                                                .elementCollectionMappingPerKey(Map.of())
                                                                 .build()
                                                 ))
-                                                .collectionFieldConfigurations(List.of())
-                                                .elements(List.of())
+                                                .elementCollectionMappingPerKey(Map.of())
                                                 .build()
                                 ))
+                                .elementCollectionMappingPerKey(Map.of())
                                 .build()
-                ))
+                )
                 .build()
     }
 

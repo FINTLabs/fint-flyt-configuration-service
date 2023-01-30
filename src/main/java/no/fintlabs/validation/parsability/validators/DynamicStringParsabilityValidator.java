@@ -1,6 +1,6 @@
 package no.fintlabs.validation.parsability.validators;
 
-import no.fintlabs.model.configuration.entities.FieldConfiguration;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 import no.fintlabs.validation.parsability.FieldParsabilityValidator;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +15,8 @@ public class DynamicStringParsabilityValidator implements FieldParsabilityValida
     private static final Pattern dynamicStringPattern = Pattern.compile("^(?:" + textPattern + "|" + ifReferencePattern + ")*$");
 
     @Override
-    public FieldConfiguration.Type getTypeToValidate() {
-        return FieldConfiguration.Type.DYNAMIC_STRING;
+    public ValueMapping.Type getTypeToValidate() {
+        return ValueMapping.Type.DYNAMIC_STRING;
     }
 
     @Override

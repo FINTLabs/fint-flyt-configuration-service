@@ -4,17 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
+import java.util.List;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class CollectionFieldConfiguration {
+public class ElementsFromCollectionMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,19 +23,16 @@ public class CollectionFieldConfiguration {
     @Setter(AccessLevel.NONE)
     private long id;
 
-    public enum Type {
-        STRING, URL
-    }
-
-    @NotBlank
-    private String key;
-
-    @NotNull
-    @Enumerated(value = EnumType.STRING)
-    private Type type;
-
     @ElementCollection
+    @CollectionTable(name = "instanceCollectionReferencesOrdered")
+    @OrderColumn(name = "index")
     @JoinColumn
-    Collection<String> values;
+    @NotEmpty
+    private List<@NotBlank String> instanceCollectionReferencesOrdered;
+
+    @OneToOne
+    @Valid
+    @NotNull
+    private ElementMapping elementMapping;
 
 }

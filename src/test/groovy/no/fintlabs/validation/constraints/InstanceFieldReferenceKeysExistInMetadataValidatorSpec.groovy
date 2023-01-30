@@ -1,7 +1,7 @@
 package no.fintlabs.validation.constraints
 
-import no.fintlabs.model.configuration.dtos.FieldConfigurationDto
-import no.fintlabs.model.configuration.entities.FieldConfiguration
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
+import no.fintlabs.model.configuration.entities.ValueMapping
 import no.fintlabs.model.metadata.InstanceElementMetadata
 import no.fintlabs.validation.ConfigurationValidationContext
 import no.fintlabs.validation.instancefield.InstanceFieldReferenceKeyExtractionService
@@ -31,16 +31,15 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         HibernateConstraintValidatorContext hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
         hibernateConstraintValidatorContext.getConstraintValidatorPayload(ConfigurationValidationContext.class) >> configurationValidationContext
 
-        FieldConfigurationDto fieldConfigurationDto = FieldConfigurationDto
+        ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
-                .key("fieldConfigurationKey")
-                .type(FieldConfiguration.Type.DYNAMIC_STRING)
-                .value("Title")
+                .type(ValueMapping.Type.DYNAMIC_STRING)
+                .mappingString("Title")
                 .build()
 
         when:
         boolean valid = instanceFieldReferenceKeysExistInMetadataValidator.isValid(
-                fieldConfigurationDto,
+                valueMappingDto,
                 hibernateConstraintValidatorContext
         )
 
@@ -61,16 +60,15 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         HibernateConstraintValidatorContext hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
         hibernateConstraintValidatorContext.getConstraintValidatorPayload(ConfigurationValidationContext.class) >> configurationValidationContext
 
-        FieldConfigurationDto fieldConfigurationDto = FieldConfigurationDto
+        ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
-                .key("fieldConfigurationKey")
-                .type(FieldConfiguration.Type.DYNAMIC_STRING)
-                .value("Title \$if{instanceFieldKey1} \$if{instanceFieldKey2}")
+                .type(ValueMapping.Type.DYNAMIC_STRING)
+                .mappingString("Title \$if{instanceFieldKey1} \$if{instanceFieldKey2}")
                 .build()
 
         when:
         boolean valid = instanceFieldReferenceKeysExistInMetadataValidator.isValid(
-                fieldConfigurationDto,
+                valueMappingDto,
                 hibernateConstraintValidatorContext
         )
 
@@ -90,16 +88,15 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         HibernateConstraintValidatorContext hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
         hibernateConstraintValidatorContext.getConstraintValidatorPayload(ConfigurationValidationContext.class) >> configurationValidationContext
 
-        FieldConfigurationDto fieldConfigurationDto = FieldConfigurationDto
+        ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
-                .key("fieldConfigurationKey")
-                .type(FieldConfiguration.Type.DYNAMIC_STRING)
-                .value("Title \$if{instanceFieldKey1} \$if{instanceFieldKey2}")
+                .type(ValueMapping.Type.DYNAMIC_STRING)
+                .mappingString("Title \$if{instanceFieldKey1} \$if{instanceFieldKey2}")
                 .build()
 
         when:
         boolean valid = instanceFieldReferenceKeysExistInMetadataValidator.isValid(
-                fieldConfigurationDto,
+                valueMappingDto,
                 hibernateConstraintValidatorContext
         )
 

@@ -2,7 +2,6 @@ package no.fintlabs.model.configuration.dtos;
 
 import lombok.Data;
 
-import java.util.Collection;
 import java.util.Optional;
 
 @Data
@@ -14,7 +13,7 @@ public class ConfigurationPatchDto {
 
     private String comment;
 
-    private Collection<ConfigurationElementDto> elements;
+    private ElementMappingDto mapping;
 
     public Optional<Long> getIntegrationMetadataId() {
         return Optional.ofNullable(integrationMetadataId);
@@ -28,8 +27,8 @@ public class ConfigurationPatchDto {
         return Optional.ofNullable(comment);
     }
 
-    public Optional<Collection<ConfigurationElementDto>> getElements() {
-        return Optional.ofNullable(elements);
+    public Optional<ElementMappingDto> getMapping() {
+        return Optional.ofNullable(mapping);
     }
 
 }

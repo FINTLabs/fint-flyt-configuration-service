@@ -7,11 +7,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import no.fintlabs.validation.constraints.IntegrationAndMetadataMatches;
-import no.fintlabs.validation.constraints.UniqueChildrenKeys;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -39,7 +37,8 @@ public class ConfigurationDto {
     private Integer version;
 
     @JsonInclude(Include.NON_NULL)
-    @UniqueChildrenKeys
-    private Collection<@Valid @NotNull ConfigurationElementDto> elements;
+    @Valid
+    @NotNull
+    private ElementMappingDto mapping;
 
 }

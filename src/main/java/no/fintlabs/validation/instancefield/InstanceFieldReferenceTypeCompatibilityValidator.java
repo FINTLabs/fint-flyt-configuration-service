@@ -1,7 +1,7 @@
 package no.fintlabs.validation.instancefield;
 
-import no.fintlabs.model.configuration.dtos.FieldConfigurationDto;
-import no.fintlabs.model.configuration.entities.FieldConfiguration;
+import no.fintlabs.model.configuration.dtos.ValueMappingDto;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 import no.fintlabs.model.metadata.InstanceElementMetadata;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
@@ -11,11 +11,11 @@ import java.util.*;
 public interface InstanceFieldReferenceTypeCompatibilityValidator {
 
     default List<Tuple2<String, InstanceElementMetadata.Type>> findIncompatibleInstanceFieldsKeyAndType(
-            FieldConfigurationDto fieldConfigurationDto,
+            ValueMappingDto valueMappingDto,
             Collection<String> configurationInstanceFieldReferenceKeys,
             Map<String, InstanceElementMetadata.Type> metadataInstanceFieldTypePerKey
     ) {
-        if (fieldConfigurationDto.getType() != getTypeToValidate()) {
+        if (valueMappingDto.getType() != getTypeToValidate()) {
             return Collections.emptyList();
         }
 
@@ -26,7 +26,7 @@ public interface InstanceFieldReferenceTypeCompatibilityValidator {
                 .toList();
     }
 
-    FieldConfiguration.Type getTypeToValidate();
+    ValueMapping.Type getTypeToValidate();
 
     Set<InstanceElementMetadata.Type> getCompatibleTypes();
 

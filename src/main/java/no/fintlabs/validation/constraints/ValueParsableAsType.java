@@ -7,10 +7,7 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
-@Constraint(validatedBy = {
-        ValueParsableAsTypeFieldConfigurationValidator.class,
-        ValueParsableAsTypeCollectionFieldConfigurationValidator.class,
-})
+@Constraint(validatedBy = ValueParsableAsTypeValidator.class)
 public @interface ValueParsableAsType {
 
     String FIELD_VALUE_TYPE_REF = "fieldValueType";
