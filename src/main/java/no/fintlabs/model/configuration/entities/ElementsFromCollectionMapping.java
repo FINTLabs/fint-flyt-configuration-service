@@ -30,7 +30,7 @@ public class ElementsFromCollectionMapping {
     @NotEmpty
     private List<@NotBlank String> instanceCollectionReferencesOrdered;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
     @NotNull
     private ElementMapping elementMapping;
