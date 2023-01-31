@@ -66,7 +66,7 @@ create table instance_collection_references_ordered
 create table value_mapping
 (
     id             bigserial    not null,
-    mapping_string varchar(255) not null,
+    mapping_string varchar(255),
     type           varchar(255) not null,
     primary key (id)
 );
