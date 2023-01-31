@@ -12,6 +12,7 @@ import no.fintlabs.validation.groups.MetadataKeysValidationGroup;
 import no.fintlabs.validation.groups.MetadataTypeValidationGroup;
 
 import javax.validation.GroupSequence;
+import javax.validation.constraints.NotNull;
 
 @ValueParsableAsType
 @InstanceFieldReferenceKeysExistInMetadata(groups = MetadataKeysValidationGroup.class)
@@ -23,6 +24,9 @@ import javax.validation.GroupSequence;
 @NoArgsConstructor
 public class ValueMappingDto {
 
+    @NotNull
     private ValueMapping.Type type;
+
     private String mappingString;
+
 }

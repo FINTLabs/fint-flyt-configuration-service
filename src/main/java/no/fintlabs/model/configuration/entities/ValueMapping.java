@@ -27,7 +27,6 @@ public class ValueMapping {
     @Enumerated(value = EnumType.STRING)
     private Type type;
 
-    @NotNull
     private String mappingString;
 
 }

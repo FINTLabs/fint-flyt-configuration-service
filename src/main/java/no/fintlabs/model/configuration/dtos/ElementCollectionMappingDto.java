@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,9 +16,8 @@ import java.util.Collection;
 @NoArgsConstructor
 public class ElementCollectionMappingDto {
 
-    @Builder.Default
-    private Collection<ElementMappingDto> elementMappings = new ArrayList<>();
+    private Collection<@Valid @NotNull ElementMappingDto> elementMappings = new ArrayList<>();
 
-    @Builder.Default
-    private Collection<ElementsFromCollectionMappingDto> elementsFromCollectionMappings = new ArrayList<>();
+    private Collection<@Valid @NotNull ElementsFromCollectionMappingDto> elementsFromCollectionMappings = new ArrayList<>();
+
 }
