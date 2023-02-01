@@ -20,28 +20,28 @@ public class ElementMapping {
     @Setter(AccessLevel.NONE)
     private long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_element_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_value_mapping_id")
     )
     @MapKeyColumn(name = "key")
-    private Map<String, @Valid @NotNull ValueMapping> valueMappingPerKey = new HashMap<>();
+    private Map<String, @Valid @NotNull ValueMapping> valueMappingPerKey;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_element_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_element_mapping_id")
     )
     @MapKeyColumn(name = "key")
-    private Map<String, @Valid @NotNull ElementMapping> elementMappingPerKey = new HashMap<>();
+    private Map<String, @Valid @NotNull ElementMapping> elementMappingPerKey;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_element_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_elementCollection_mapping_id")
     )
     @MapKeyColumn(name = "key")
-    private Map<String, @Valid @NotNull ElementCollectionMapping> elementCollectionMappingPerKey = new HashMap<>();
+    private Map<String, @Valid @NotNull ElementCollectionMapping> elementCollectionMappingPerKey;
 
 }

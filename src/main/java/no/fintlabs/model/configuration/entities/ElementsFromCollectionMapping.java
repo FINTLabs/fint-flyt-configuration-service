@@ -5,10 +5,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Collection;
 
 @Data
 @Builder
@@ -23,12 +22,10 @@ public class ElementsFromCollectionMapping {
     @Setter(AccessLevel.NONE)
     private long id;
 
-    @ElementCollection
-    @CollectionTable(name = "instanceCollectionReferencesOrdered")
-    @OrderColumn(name = "index")
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn
     @NotEmpty
-    private List<@NotBlank String> instanceCollectionReferencesOrdered;
+    private Collection<@Valid @NotNull InstanceCollectionReference> instanceCollectionReferencesOrdered;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid

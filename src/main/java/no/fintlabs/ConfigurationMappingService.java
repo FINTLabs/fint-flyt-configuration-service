@@ -4,9 +4,11 @@ import no.fintlabs.model.configuration.dtos.*;
 import no.fintlabs.model.configuration.entities.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toMap;
 
@@ -86,10 +88,23 @@ public class ConfigurationMappingService {
         return ElementsFromCollectionMapping
                 .builder()
                 .instanceCollectionReferencesOrdered(
-                        new ArrayList<>(elementsFromCollectionMappingDto.getInstanceCollectionReferencesOrdered())
+                        toInstanceCollectionReferencesOrdered(
+                                elementsFromCollectionMappingDto.getInstanceCollectionReferencesOrdered()
+                        )
                 )
                 .elementMapping(toElementMapping(elementsFromCollectionMappingDto.getElementMapping()))
                 .build();
+    }
+
+    private List<InstanceCollectionReference> toInstanceCollectionReferencesOrdered(List<String> instanceCollectionReferencesOrderedFromDto) {
+        return IntStream.range(0, instanceCollectionReferencesOrderedFromDto.size())
+                .mapToObj(index -> InstanceCollectionReference
+                        .builder()
+                        .index(index)
+                        .reference(instanceCollectionReferencesOrderedFromDto.get(index))
+                        .build()
+                )
+                .toList();
     }
 
     public ConfigurationDto toConfigurationDto(Configuration configuration, boolean excludeMapping) {
@@ -154,7 +169,13 @@ public class ConfigurationMappingService {
     private ElementsFromCollectionMappingDto toElementsFromCollectionMappingDto(ElementsFromCollectionMapping elementsFromCollectionMapping) {
         return ElementsFromCollectionMappingDto
                 .builder()
-                .instanceCollectionReferencesOrdered(new ArrayList<>(elementsFromCollectionMapping.getInstanceCollectionReferencesOrdered()))
+                .instanceCollectionReferencesOrdered(
+                        elementsFromCollectionMapping.getInstanceCollectionReferencesOrdered()
+                                .stream()
+                                .sorted(Comparator.comparingInt(InstanceCollectionReference::getIndex))
+                                .map(InstanceCollectionReference::getReference)
+                                .toList()
+                )
                 .elementMapping(toElementMappingDto(elementsFromCollectionMapping.getElementMapping()))
                 .build();
     }

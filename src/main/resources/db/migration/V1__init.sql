@@ -6,7 +6,7 @@ create table configuration
     integration_id          int8      not null,
     integration_metadata_id int8      not null,
     version                 int4,
-    configuration_id        int8      not null,
+    mapping_id              int8      not null,
     primary key (id)
 );
 create table element_collection_mapping
@@ -56,12 +56,13 @@ create table elements_from_collection_mapping
     element_mapping_id int8      not null,
     primary key (id)
 );
-create table instance_collection_references_ordered
+create table instance_collection_reference
 (
-    elements_from_collection_mapping_id    int8 not null,
-    instance_collection_references_ordered varchar(255),
-    index                                  int4 not null,
-    primary key (elements_from_collection_mapping_id, index)
+    id                                        bigserial not null,
+    index                                     int4      not null,
+    reference                                 varchar(255),
+    instance_collection_references_ordered_id int8,
+    primary key (id)
 );
 create table value_mapping
 (
@@ -83,7 +84,7 @@ alter table element_mapping_element_mapping_per_key
 alter table element_mapping_value_mapping_per_key
     add constraint UK_juqik3o5f0sm4surga4hblsqo unique (child_value_mapping_id);
 alter table configuration
-    add constraint FKrugtd5wxkb7g3x4kmbu1y6hqa foreign key (configuration_id) references element_mapping;
+    add constraint FK3y1wygr7qpithkw8mcw24x1pm foreign key (mapping_id) references element_mapping;
 alter table element_collection_mapping_element_mappings
     add constraint FKiwqmg25wlvh7bytgssimhliu3 foreign key (child_element_mapping_id) references element_mapping;
 alter table element_collection_mapping_element_mappings
@@ -106,5 +107,5 @@ alter table element_mapping_value_mapping_per_key
     add constraint FKds6s4icj2ncnttlsuk75nr4qr foreign key (parent_element_mapping_id) references element_mapping;
 alter table elements_from_collection_mapping
     add constraint FK5us92lxojr44pigvwcljd8bh3 foreign key (element_mapping_id) references element_mapping;
-alter table instance_collection_references_ordered
-    add constraint FKr7c5h3bsqltx6wbhh4irjiih5 foreign key (elements_from_collection_mapping_id) references elements_from_collection_mapping;
+alter table instance_collection_reference
+    add constraint FKem3t8q5tqqpi6t516wnwtvfbh foreign key (instance_collection_references_ordered_id) references elements_from_collection_mapping;

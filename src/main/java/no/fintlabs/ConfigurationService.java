@@ -15,13 +15,15 @@ public class ConfigurationService {
 
     private final ConfigurationRepository configurationRepository;
     private final ConfigurationMappingService configurationMappingService;
+    private final ElementMappingRepository elementMappingRepository;
 
     public ConfigurationService(
             ConfigurationRepository configurationRepository,
-            ConfigurationMappingService configurationMappingService
-    ) {
+            ConfigurationMappingService configurationMappingService,
+            ElementMappingRepository elementMappingRepository) {
         this.configurationRepository = configurationRepository;
         this.configurationMappingService = configurationMappingService;
+        this.elementMappingRepository = elementMappingRepository;
     }
 
     public Optional<ConfigurationDto> findById(Long configurationId, boolean excludeElements) {
@@ -62,7 +64,9 @@ public class ConfigurationService {
         configurationPatchDto.getIntegrationMetadataId().ifPresent(configuration::setIntegrationMetadataId);
         configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configuration::setCompleted);
         configurationPatchDto.getComment().ifPresent(configuration::setComment);
-        configurationPatchDto.getMapping().map(configurationMappingService::toElementMapping).ifPresent(configuration::setMapping);
+        configurationPatchDto.getMapping().map(configurationMappingService::toElementMapping)
+                .map(elementMappingRepository::save)
+                .ifPresent(configuration::setMapping);
 
         return configurationMappingService.toConfigurationDto(
                 configurationRepository.saveWithVersion(configuration),

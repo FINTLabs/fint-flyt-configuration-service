@@ -37,9 +37,9 @@ public class Configuration {
     private String comment;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "configuration_id")
-    @NotNull
+    @JoinColumn(name = "mapping_id", referencedColumnName = "id")
     @Valid
+    @NotNull
     ElementMapping mapping;
 
 }

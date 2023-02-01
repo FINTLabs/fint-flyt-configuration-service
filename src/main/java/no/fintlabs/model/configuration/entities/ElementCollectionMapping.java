@@ -19,14 +19,14 @@ public class ElementCollectionMapping {
     @Setter(AccessLevel.NONE)
     private long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_element_collection_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_element_mapping_id")
     )
     private Collection<@Valid @NotNull ElementMapping> elementMappings;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_element_collection_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_elements_from_collection_mapping_id")
