@@ -6,8 +6,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.Collection;
 
 @Getter
 @Setter
@@ -38,8 +36,10 @@ public class Configuration {
 
     private String comment;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "configuration_id")
-    private Collection<@Valid @NotNull ConfigurationElement> elements = new ArrayList<>();
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "mapping_id", referencedColumnName = "id")
+    @Valid
+    @NotNull
+    ElementMapping mapping;
 
 }

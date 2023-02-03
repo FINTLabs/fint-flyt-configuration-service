@@ -1,6 +1,6 @@
 package no.fintlabs.validation.instancefield.validators;
 
-import no.fintlabs.model.configuration.entities.FieldConfiguration;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 import no.fintlabs.model.metadata.InstanceElementMetadata;
 import no.fintlabs.validation.instancefield.InstanceFieldReferenceTypeCompatibilityValidator;
 
@@ -11,8 +11,8 @@ import static no.fintlabs.model.metadata.InstanceElementMetadata.Type.*;
 public class ExampleInstanceFieldReferenceTypeCompatibilityValidator implements InstanceFieldReferenceTypeCompatibilityValidator {
 
     @Override
-    public FieldConfiguration.Type getTypeToValidate() {
-        return FieldConfiguration.Type.DYNAMIC_STRING;
+    public ValueMapping.Type getTypeToValidate() {
+        return ValueMapping.Type.DYNAMIC_STRING;
     }
 
     @Override

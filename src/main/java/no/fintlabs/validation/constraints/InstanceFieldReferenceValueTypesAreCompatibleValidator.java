@@ -1,6 +1,6 @@
 package no.fintlabs.validation.constraints;
 
-import no.fintlabs.model.configuration.dtos.FieldConfigurationDto;
+import no.fintlabs.model.configuration.dtos.ValueMappingDto;
 import no.fintlabs.model.metadata.InstanceElementMetadata;
 import no.fintlabs.validation.ConfigurationValidationContext;
 import no.fintlabs.validation.instancefield.InstanceFieldReferenceKeyExtractionService;
@@ -19,7 +19,7 @@ import static no.fintlabs.validation.constraints.InstanceFieldReferenceValueType
 
 @Service
 public class InstanceFieldReferenceValueTypesAreCompatibleValidator implements
-        HibernateConstraintValidator<InstanceFieldReferenceValueTypesAreCompatible, FieldConfigurationDto> {
+        HibernateConstraintValidator<InstanceFieldReferenceValueTypesAreCompatible, ValueMappingDto> {
 
     private final InstanceFieldReferenceKeyExtractionService instanceFieldReferenceKeyExtractionService;
     private final Collection<InstanceFieldReferenceTypeCompatibilityValidator> instanceFieldReferenceTypeCompatibilityValidators;
@@ -33,9 +33,9 @@ public class InstanceFieldReferenceValueTypesAreCompatibleValidator implements
     }
 
     @Override
-    public boolean isValid(FieldConfigurationDto fieldConfigurationDto, HibernateConstraintValidatorContext hibernateConstraintValidatorContext) {
+    public boolean isValid(ValueMappingDto valueMappingDto, HibernateConstraintValidatorContext hibernateConstraintValidatorContext) {
         Collection<String> configurationInstanceFieldReferenceKeys = instanceFieldReferenceKeyExtractionService
-                .extractIfReferenceKeys(fieldConfigurationDto.getValue());
+                .extractIfReferenceKeys(valueMappingDto.getMappingString());
 
         Map<String, InstanceElementMetadata.Type> metadataInstanceFieldTypePerKey = hibernateConstraintValidatorContext
                 .getConstraintValidatorPayload(ConfigurationValidationContext.class)
@@ -45,7 +45,7 @@ public class InstanceFieldReferenceValueTypesAreCompatibleValidator implements
                 .stream()
                 .map(instanceFieldReferenceTypeCompatibilityValidator -> instanceFieldReferenceTypeCompatibilityValidator
                         .findIncompatibleInstanceFieldsKeyAndType(
-                                fieldConfigurationDto,
+                                valueMappingDto,
                                 configurationInstanceFieldReferenceKeys,
                                 metadataInstanceFieldTypePerKey
                         )
@@ -56,7 +56,7 @@ public class InstanceFieldReferenceValueTypesAreCompatibleValidator implements
             return true;
         }
 
-        hibernateConstraintValidatorContext.addMessageParameter(CONFIGURATION_FIELD_TYPE, fieldConfigurationDto.getType().name());
+        hibernateConstraintValidatorContext.addMessageParameter(CONFIGURATION_FIELD_TYPE, valueMappingDto.getType().name());
         hibernateConstraintValidatorContext.addMessageParameter(
                 INCOMPATIBLE_INSTANCE_FIELDS_KEY_AND_TYPE,
                 incompatibleInstanceFieldsKeyAndType.stream()

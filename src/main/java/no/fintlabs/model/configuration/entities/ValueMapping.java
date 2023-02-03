@@ -1,35 +1,32 @@
 package no.fintlabs.model.configuration.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class FieldConfiguration {
+public class ValueMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
     @Setter(AccessLevel.NONE)
     private long id;
 
     public enum Type {
-        STRING, URL, BOOLEAN, DYNAMIC_STRING
+        STRING, URL, BOOLEAN, DYNAMIC_STRING, FILE
     }
-
-    @NotBlank
-    private String key;
 
     @NotNull
     @Enumerated(value = EnumType.STRING)
     private Type type;
 
-    private String value;
+    private String mappingString;
 
 }

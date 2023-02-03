@@ -1,62 +1,57 @@
 package no.fintlabs.validation.constraints
 
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
+import no.fintlabs.model.configuration.entities.ValueMapping
+import no.fintlabs.validation.parsability.FieldParsabilityValidator
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import spock.lang.Specification
 
-import static no.fintlabs.validation.constraints.ValueParsableAsType.FIELD_VALUE_TYPE_REF
-
 class ValueParsableAsTypeValidatorSpec extends Specification {
 
+    FieldParsabilityValidator fieldParsabilityValidator1
+    FieldParsabilityValidator fieldParsabilityValidator2
     ValueParsableAsTypeValidator valueParsableAsTypeValidator
-    HibernateConstraintValidatorContext constraintValidatorContext
+    HibernateConstraintValidatorContext hibernateConstraintValidatorContext
 
     def setup() {
-        valueParsableAsTypeValidator = Spy(
-                new ValueParsableAsTypeValidator() {
-
-                    @Override
-                    String getType(Object value) {
-                        return "STRING"
-                    }
-
-                    @Override
-                    boolean isValid(Object value) {
-                        return false
-                    }
-                }
+        fieldParsabilityValidator1 = Mock(FieldParsabilityValidator.class)
+        fieldParsabilityValidator2 = Mock(FieldParsabilityValidator.class)
+        valueParsableAsTypeValidator = new ValueParsableAsTypeValidator(
+                List.of(fieldParsabilityValidator1, fieldParsabilityValidator2)
         )
-        constraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
-        constraintValidatorContext.unwrap(_ as Class) >> constraintValidatorContext
+        hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
+        hibernateConstraintValidatorContext.addMessageParameter(_ as String, _) >> hibernateConstraintValidatorContext
+
     }
 
-    def 'should return true if abstract validation returns true'() {
+    def "should return true if all field parsability validators return true"() {
         given:
-        Object object = new Object()
+        fieldParsabilityValidator1.isValid(_ as ValueMappingDto) >> true
+        fieldParsabilityValidator2.isValid(_ as ValueMappingDto) >> true
 
         when:
-        boolean valid = valueParsableAsTypeValidator.isValid(object, constraintValidatorContext)
+        boolean valid = valueParsableAsTypeValidator.isValid(
+                ValueMappingDto.builder().type(ValueMapping.Type.STRING).build(),
+                Mock(HibernateConstraintValidatorContext.class)
+        )
 
         then:
         valid
-        1 * valueParsableAsTypeValidator.isValid(object, constraintValidatorContext)
-        1 * valueParsableAsTypeValidator.isValid(object) >> true
-        0 * _
     }
 
-    def 'should return false and add error message parameters if abstract validation returns false'() {
+    def "should return false if one field parsability validator returns false"() {
         given:
-        Object object = new Object()
+        fieldParsabilityValidator1.isValid(_ as ValueMappingDto) >> true
+        fieldParsabilityValidator2.isValid(_ as ValueMappingDto) >> false
 
         when:
-        boolean valid = valueParsableAsTypeValidator.isValid(object, constraintValidatorContext)
+        boolean valid = valueParsableAsTypeValidator.isValid(
+                ValueMappingDto.builder().type(ValueMapping.Type.STRING).build(),
+                Mock(HibernateConstraintValidatorContext.class)
+        )
 
         then:
         !valid
-        1 * valueParsableAsTypeValidator.isValid(object, constraintValidatorContext)
-        1 * valueParsableAsTypeValidator.isValid(object) >> false
-        1 * valueParsableAsTypeValidator.getType(object)
-        1 * constraintValidatorContext.addMessageParameter(FIELD_VALUE_TYPE_REF, "STRING") >> constraintValidatorContext
-        0 * _
     }
 
 }

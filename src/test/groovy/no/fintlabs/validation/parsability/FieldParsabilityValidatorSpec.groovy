@@ -1,7 +1,7 @@
 package no.fintlabs.validation.parsability
 
-import no.fintlabs.model.configuration.dtos.FieldConfigurationDto
-import no.fintlabs.model.configuration.entities.FieldConfiguration
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
+import no.fintlabs.model.configuration.entities.ValueMapping
 import spock.lang.Specification
 
 class FieldParsabilityValidatorSpec extends Specification {
@@ -12,8 +12,8 @@ class FieldParsabilityValidatorSpec extends Specification {
         fieldParsabilityValidator = Spy(
                 new FieldParsabilityValidator() {
                     @Override
-                    FieldConfiguration.Type getTypeToValidate() {
-                        return FieldConfiguration.Type.STRING
+                    ValueMapping.Type getTypeToValidate() {
+                        return ValueMapping.Type.STRING
                     }
 
                     @Override
@@ -26,14 +26,14 @@ class FieldParsabilityValidatorSpec extends Specification {
 
     def 'should validate value if validator type matches value type'() {
         given:
-        FieldConfigurationDto fieldConfigurationDto = FieldConfigurationDto
+        ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
-                .type(FieldConfiguration.Type.STRING)
-                .value("value")
+                .type(ValueMapping.Type.STRING)
+                .mappingString("value")
                 .build()
 
         when:
-        boolean valid = fieldParsabilityValidator.isValid(fieldConfigurationDto)
+        boolean valid = fieldParsabilityValidator.isValid(valueMappingDto)
 
         then:
         1 * fieldParsabilityValidator.isValid("value")
@@ -42,14 +42,14 @@ class FieldParsabilityValidatorSpec extends Specification {
 
     def 'should return true if validator type does not match value type'() {
         given:
-        FieldConfigurationDto fieldConfigurationDto = FieldConfigurationDto
+        ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
-                .type(FieldConfiguration.Type.BOOLEAN)
-                .value("value")
+                .type(ValueMapping.Type.BOOLEAN)
+                .mappingString("value")
                 .build()
 
         when:
-        boolean valid = fieldParsabilityValidator.isValid(fieldConfigurationDto)
+        boolean valid = fieldParsabilityValidator.isValid(valueMappingDto)
 
         then:
         0 * fieldParsabilityValidator.isValid("value")
@@ -58,14 +58,14 @@ class FieldParsabilityValidatorSpec extends Specification {
 
     def 'should return true if value is null'() {
         given:
-        FieldConfigurationDto fieldConfigurationDto = FieldConfigurationDto
+        ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
-                .type(FieldConfiguration.Type.STRING)
-                .value(null)
+                .type(ValueMapping.Type.STRING)
+                .mappingString(null)
                 .build()
 
         when:
-        boolean valid = fieldParsabilityValidator.isValid(fieldConfigurationDto)
+        boolean valid = fieldParsabilityValidator.isValid(valueMappingDto)
 
         then:
         0 * fieldParsabilityValidator.isValid(_ as String)

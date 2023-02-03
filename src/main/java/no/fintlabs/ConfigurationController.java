@@ -93,7 +93,7 @@ public class ConfigurationController {
         configurationPatchDto.getIntegrationMetadataId().ifPresent(configurationDto::setIntegrationMetadataId);
         configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configurationDto::setCompleted);
         configurationPatchDto.getComment().ifPresent(configurationDto::setComment);
-        configurationPatchDto.getElements().ifPresent(configurationDto::setElements);
+        configurationPatchDto.getMapping().ifPresent(configurationDto::setMapping);
 
         validateBeanConstraints(
                 configurationDto.getIntegrationId(),

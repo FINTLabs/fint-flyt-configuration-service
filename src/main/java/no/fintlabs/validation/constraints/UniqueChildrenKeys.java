@@ -7,9 +7,7 @@ import java.lang.annotation.Retention;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
-@Constraint(validatedBy = {
-        UniqueChildrenKeysElementsFieldValidator.class,
-        UniqueChildrenKeysConfigurationElementValidator.class}
+@Constraint(validatedBy = UniqueChildrenKeysValidator.class
 )
 public @interface UniqueChildrenKeys {
 
