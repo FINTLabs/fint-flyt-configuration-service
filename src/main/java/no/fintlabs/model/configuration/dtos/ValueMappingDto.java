@@ -8,16 +8,15 @@ import no.fintlabs.model.configuration.entities.ValueMapping;
 import no.fintlabs.validation.constraints.InstanceFieldReferenceKeysExistInMetadata;
 import no.fintlabs.validation.constraints.InstanceFieldReferenceValueTypesAreCompatible;
 import no.fintlabs.validation.constraints.ValueParsableAsType;
-import no.fintlabs.validation.groups.MetadataKeysValidationGroup;
-import no.fintlabs.validation.groups.MetadataTypeValidationGroup;
+import no.fintlabs.validation.groups.MetadataKeys;
+import no.fintlabs.validation.groups.MetadataType;
+import no.fintlabs.validation.groups.ValueParsability;
 
-import javax.validation.GroupSequence;
 import javax.validation.constraints.NotNull;
 
-@ValueParsableAsType
-@InstanceFieldReferenceKeysExistInMetadata(groups = MetadataKeysValidationGroup.class)
-@InstanceFieldReferenceValueTypesAreCompatible(groups = MetadataTypeValidationGroup.class)
-@GroupSequence({ValueMappingDto.class, MetadataKeysValidationGroup.class, MetadataTypeValidationGroup.class})
+@ValueParsableAsType(groups = ValueParsability.class)
+@InstanceFieldReferenceKeysExistInMetadata(groups = MetadataKeys.class)
+@InstanceFieldReferenceValueTypesAreCompatible(groups = MetadataType.class)
 @Data
 @Builder
 @AllArgsConstructor
