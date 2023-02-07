@@ -4,6 +4,7 @@ import no.fintlabs.model.configuration.dtos.ConfigurationDto;
 import no.fintlabs.model.configuration.dtos.ConfigurationPatchDto;
 import no.fintlabs.validation.ConfigurationValidatorFacory;
 import no.fintlabs.validation.ValidationErrorsFormattingService;
+import no.fintlabs.validation.groups.Completed;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import javax.validation.groups.Default;
 import java.util.Optional;
 import java.util.Set;
 
@@ -76,7 +78,11 @@ public class ConfigurationController {
     public ResponseEntity<ConfigurationDto> postConfiguration(
             @RequestBody ConfigurationDto configurationDto
     ) {
-        validateBeanConstraints(configurationDto.getIntegrationId(), configurationDto.getIntegrationMetadataId(), configurationDto);
+        validateBeanConstraints(
+                configurationDto.getIntegrationId(),
+                configurationDto.getIntegrationMetadataId(),
+                configurationDto
+        );
         return ResponseEntity.ok(configurationService.save(configurationDto));
     }
 
@@ -123,11 +129,13 @@ public class ConfigurationController {
         }
     }
 
-    private <T> void validateBeanConstraints(long integrationId, long metadataId, T object) {
+    private void validateBeanConstraints(long integrationId, long metadataId, ConfigurationDto configurationDto) {
         Validator validator = configurationValidatorFacory.getValidator(
                 integrationId, metadataId
         );
-        Set<ConstraintViolation<T>> constraintViolations = validator.validate(object);
+        Set<ConstraintViolation<ConfigurationDto>> constraintViolations = configurationDto.isCompleted()
+                ? validator.validate(configurationDto, Default.class, Completed.class)
+                : validator.validate(configurationDto, Default.class);
         if (!constraintViolations.isEmpty()) {
             throw new ResponseStatusException(
                     HttpStatus.UNPROCESSABLE_ENTITY,
