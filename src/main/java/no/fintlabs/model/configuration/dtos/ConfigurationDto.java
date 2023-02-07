@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import no.fintlabs.validation.constraints.IntegrationAndMetadataMatches;
-import no.fintlabs.validation.groups.IntegrationMetadataCorrelation;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -18,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 @Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@IntegrationAndMetadataMatches(groups = IntegrationMetadataCorrelation.class)
+@IntegrationAndMetadataMatches
 public class ConfigurationDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
