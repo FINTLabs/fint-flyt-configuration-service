@@ -26,6 +26,7 @@ public class ValueMappingDto {
     @NotNull
     private ValueMapping.Type type;
 
+    @NotNull
     private String mappingString;
 
 }
