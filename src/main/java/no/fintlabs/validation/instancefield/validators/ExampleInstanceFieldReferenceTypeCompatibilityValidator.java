@@ -25,7 +25,8 @@ public class ExampleInstanceFieldReferenceTypeCompatibilityValidator implements 
                 EMAIL,
                 PHONE,
                 INTEGER,
-                DOUBLE
+                DOUBLE,
+                FILE
         );
     }
 
