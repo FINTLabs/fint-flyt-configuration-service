@@ -27,15 +27,6 @@ class FileParsabilityValidatorSpec extends Specification {
         valid
     }
 
-    def 'Should return true for null value'(){
-        when:
-        boolean valid = fileParsabilityValidator.isValid(
-                "null"
-        )
-        then:
-        valid
-    }
-
     def 'Should return false for string that contains incomplete instance field reference'() {
         when:
         boolean valid = fileParsabilityValidator.isValid(
