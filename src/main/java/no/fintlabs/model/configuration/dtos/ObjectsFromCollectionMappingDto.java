@@ -1,27 +1,27 @@
 package no.fintlabs.model.configuration.dtos;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class ObjectsFromCollectionMappingDto {
 
     @NotEmpty
-    private List<@NotBlank String> instanceCollectionReferencesOrdered;
+    @Builder.Default
+    private final List<@NotBlank String> instanceCollectionReferencesOrdered = new ArrayList<>();
 
     @Valid
     @NotNull
-    private ObjectMappingDto objectMappingDto;
+    private final ObjectMappingDto objectMappingDto;
 
 }

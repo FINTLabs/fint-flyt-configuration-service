@@ -1,5 +1,6 @@
 package no.fintlabs
 
+
 import no.fintlabs.model.configuration.dtos.ConfigurationDto
 import no.fintlabs.model.configuration.dtos.ObjectMappingDto
 import no.fintlabs.model.configuration.dtos.ValueMappingDto

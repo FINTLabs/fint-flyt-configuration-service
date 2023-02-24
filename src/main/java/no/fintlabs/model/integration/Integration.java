@@ -1,14 +1,12 @@
 package no.fintlabs.model.integration;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class Integration {
 
     public enum State {
@@ -16,10 +14,10 @@ public class Integration {
         DEACTIVATED
     }
 
-    private Long sourceApplicationId;
-    private String sourceApplicationIntegrationId;
-    private String destination;
-    private State state;
-    private String activeConfigurationId;
+    private final Long sourceApplicationId;
+    private final String sourceApplicationIntegrationId;
+    private final String destination;
+    private final State state;
+    private final String activeConfigurationId;
 
 }

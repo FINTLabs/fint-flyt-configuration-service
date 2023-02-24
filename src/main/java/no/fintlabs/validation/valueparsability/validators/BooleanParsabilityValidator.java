@@ -1,11 +1,11 @@
-package no.fintlabs.validation.parsability.validators;
+package no.fintlabs.validation.valueparsability.validators;
 
 import no.fintlabs.model.configuration.entities.ValueMapping;
-import no.fintlabs.validation.parsability.FieldParsabilityValidator;
+import no.fintlabs.validation.valueparsability.ValueParsabilityValidator;
 import org.springframework.stereotype.Service;
 
 @Service
-public class BooleanParsabilityValidator implements FieldParsabilityValidator {
+public class BooleanParsabilityValidator implements ValueParsabilityValidator {
 
     @Override
     public ValueMapping.Type getTypeToValidate() {

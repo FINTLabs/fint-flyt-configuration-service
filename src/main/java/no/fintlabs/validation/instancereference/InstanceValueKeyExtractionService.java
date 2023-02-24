@@ -1,4 +1,4 @@
-package no.fintlabs.validation.instancefield;
+package no.fintlabs.validation.instancereference;
 
 import org.springframework.stereotype.Service;
 
@@ -8,7 +8,7 @@ import java.util.regex.MatchResult;
 import java.util.regex.Pattern;
 
 @Service
-public class InstanceFieldReferenceKeyExtractionService {
+public class InstanceValueKeyExtractionService {
 
     private static final Pattern ifReferenceExtractionPattern = Pattern.compile("\\$if\\{[^}]+}");
 

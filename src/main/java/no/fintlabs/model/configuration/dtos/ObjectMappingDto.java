@@ -1,9 +1,8 @@
 package no.fintlabs.model.configuration.dtos;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.validation.constraints.AtLeastOneChild;
 import no.fintlabs.validation.constraints.UniqueChildrenKeys;
 
@@ -14,16 +13,18 @@ import java.util.Map;
 
 @AtLeastOneChild
 @UniqueChildrenKeys
-@Data
+@Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@Jacksonized
 public class ObjectMappingDto {
 
-    private Map<String, @Valid @NotNull ValueMappingDto> valueMappingPerKey = new HashMap<>();
+    @Builder.Default
+    private final Map<String, @Valid @NotNull ValueMappingDto> valueMappingPerKey = new HashMap<>();
 
-    private Map<String, @Valid @NotNull ObjectMappingDto> objectMappingPerKey = new HashMap<>();
+    @Builder.Default
+    private final Map<String, @Valid @NotNull ObjectMappingDto> objectMappingPerKey = new HashMap<>();
 
-    private Map<String, @Valid @NotNull ObjectCollectionMappingDto> objectCollectionMappingPerKey = new HashMap<>();
+    @Builder.Default
+    private final Map<String, @Valid @NotNull ObjectCollectionMappingDto> objectCollectionMappingPerKey = new HashMap<>();
 
 }

@@ -1,4 +1,4 @@
 package no.fintlabs.validation.groups;
 
-public interface MetadataKeys {
+public interface InstanceValueKeys {
 }

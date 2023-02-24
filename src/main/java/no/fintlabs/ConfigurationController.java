@@ -96,15 +96,19 @@ public class ConfigurationController {
 
         validateIsNotCompleted(configurationDto);
 
-        configurationPatchDto.getIntegrationMetadataId().ifPresent(configurationDto::setIntegrationMetadataId);
-        configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configurationDto::setCompleted);
-        configurationPatchDto.getComment().ifPresent(configurationDto::setComment);
-        configurationPatchDto.getMapping().ifPresent(configurationDto::setMapping);
+        ConfigurationDto.ConfigurationDtoBuilder configurationDtoBuilder = configurationDto.toBuilder();
+
+        configurationPatchDto.getIntegrationMetadataId().ifPresent(configurationDtoBuilder::integrationMetadataId);
+        configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configurationDtoBuilder::completed);
+        configurationPatchDto.getComment().ifPresent(configurationDtoBuilder::comment);
+        configurationPatchDto.getMapping().ifPresent(configurationDtoBuilder::mapping);
+
+        ConfigurationDto newConfigurationDto = configurationDtoBuilder.build();
 
         validateBeanConstraints(
-                configurationDto.getIntegrationId(),
-                configurationDto.getIntegrationMetadataId(),
-                configurationDto
+                newConfigurationDto.getIntegrationId(),
+                newConfigurationDto.getIntegrationMetadataId(),
+                newConfigurationDto
         );
 
         return ResponseEntity.ok(configurationService.updateById(configurationId, configurationPatchDto));

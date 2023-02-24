@@ -1,9 +1,9 @@
-package no.fintlabs.validation.parsability;
+package no.fintlabs.validation.valueparsability;
 
 import no.fintlabs.model.configuration.dtos.ValueMappingDto;
 import no.fintlabs.model.configuration.entities.ValueMapping;
 
-public interface FieldParsabilityValidator {
+public interface ValueParsabilityValidator {
 
     default boolean isValid(ValueMappingDto valueMappingDto) {
         return valueMappingDto.getType() != getTypeToValidate() ||

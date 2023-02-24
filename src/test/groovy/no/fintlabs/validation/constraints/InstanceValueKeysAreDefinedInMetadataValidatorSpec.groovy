@@ -2,19 +2,19 @@ package no.fintlabs.validation.constraints
 
 import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import no.fintlabs.model.configuration.entities.ValueMapping
-import no.fintlabs.model.metadata.InstanceElementMetadata
+import no.fintlabs.model.metadata.InstanceValueMetadata
 import no.fintlabs.validation.ConfigurationValidationContext
-import no.fintlabs.validation.instancefield.InstanceFieldReferenceKeyExtractionService
+import no.fintlabs.validation.instancereference.InstanceValueKeyExtractionService
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import spock.lang.Specification
 
-class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specification {
+class InstanceValueKeysAreDefinedInMetadataValidatorSpec extends Specification {
 
-    InstanceFieldReferenceKeysExistInMetadataValidator instanceFieldReferenceKeysExistInMetadataValidator
+    InstanceValueKeysAreDefinedInMetadataValidator instanceValueExistInMetadataValidator
 
     def setup() {
-        instanceFieldReferenceKeysExistInMetadataValidator = new InstanceFieldReferenceKeysExistInMetadataValidator(
-                new InstanceFieldReferenceKeyExtractionService()
+        instanceValueExistInMetadataValidator = new InstanceValueKeysAreDefinedInMetadataValidator(
+                new InstanceValueKeyExtractionService()
         )
     }
 
@@ -22,10 +22,10 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         given:
         ConfigurationValidationContext configurationValidationContext = ConfigurationValidationContext
                 .builder()
-                .metadataInstanceFieldTypePerKey(Map.of(
-                        "instanceFieldKey1", InstanceElementMetadata.Type.STRING,
-                        "instanceFieldKey2", InstanceElementMetadata.Type.STRING,
-                        "instanceFieldKey3", InstanceElementMetadata.Type.STRING,
+                .instanceValueTypePerKey(Map.of(
+                        "instanceValueKey1", InstanceValueMetadata.Type.STRING,
+                        "instanceValueKey2", InstanceValueMetadata.Type.STRING,
+                        "instanceValueKey3", InstanceValueMetadata.Type.STRING,
                 ))
                 .build()
         HibernateConstraintValidatorContext hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
@@ -38,7 +38,7 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
                 .build()
 
         when:
-        boolean valid = instanceFieldReferenceKeysExistInMetadataValidator.isValid(
+        boolean valid = instanceValueExistInMetadataValidator.isValid(
                 valueMappingDto,
                 hibernateConstraintValidatorContext
         )
@@ -51,10 +51,10 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         given:
         ConfigurationValidationContext configurationValidationContext = ConfigurationValidationContext
                 .builder()
-                .metadataInstanceFieldTypePerKey(Map.of(
-                        "instanceFieldKey1", InstanceElementMetadata.Type.STRING,
-                        "instanceFieldKey2", InstanceElementMetadata.Type.STRING,
-                        "instanceFieldKey3", InstanceElementMetadata.Type.STRING,
+                .instanceValueTypePerKey(Map.of(
+                        "instanceValueKey1", InstanceValueMetadata.Type.STRING,
+                        "instanceValueKey2", InstanceValueMetadata.Type.STRING,
+                        "instanceValueKey3", InstanceValueMetadata.Type.STRING,
                 ))
                 .build()
         HibernateConstraintValidatorContext hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
@@ -63,11 +63,11 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
                 .type(ValueMapping.Type.DYNAMIC_STRING)
-                .mappingString("Title \$if{instanceFieldKey1} \$if{instanceFieldKey2}")
+                .mappingString("Title \$if{instanceValueKey1} \$if{instanceValueKey2}")
                 .build()
 
         when:
-        boolean valid = instanceFieldReferenceKeysExistInMetadataValidator.isValid(
+        boolean valid = instanceValueExistInMetadataValidator.isValid(
                 valueMappingDto,
                 hibernateConstraintValidatorContext
         )
@@ -80,9 +80,9 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         given:
         ConfigurationValidationContext configurationValidationContext = ConfigurationValidationContext
                 .builder()
-                .metadataInstanceFieldTypePerKey(Map.of(
-                        "instanceFieldKey1", InstanceElementMetadata.Type.STRING,
-                        "instanceFieldKey3", InstanceElementMetadata.Type.STRING,
+                .instanceValueTypePerKey(Map.of(
+                        "instanceValueKey1", InstanceValueMetadata.Type.STRING,
+                        "instanceValueKey3", InstanceValueMetadata.Type.STRING,
                 ))
                 .build()
         HibernateConstraintValidatorContext hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
@@ -91,11 +91,11 @@ class InstanceFieldReferenceKeysExistInMetadataValidatorSpec extends Specificati
         ValueMappingDto valueMappingDto = ValueMappingDto
                 .builder()
                 .type(ValueMapping.Type.DYNAMIC_STRING)
-                .mappingString("Title \$if{instanceFieldKey1} \$if{instanceFieldKey2}")
+                .mappingString("Title \$if{instanceValueKey1} \$if{instanceValueKey2}")
                 .build()
 
         when:
-        boolean valid = instanceFieldReferenceKeysExistInMetadataValidator.isValid(
+        boolean valid = instanceValueExistInMetadataValidator.isValid(
                 valueMappingDto,
                 hibernateConstraintValidatorContext
         )

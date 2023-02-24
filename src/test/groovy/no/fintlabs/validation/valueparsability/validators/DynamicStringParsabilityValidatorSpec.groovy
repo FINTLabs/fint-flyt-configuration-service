@@ -1,4 +1,4 @@
-package no.fintlabs.validation.parsability.validators
+package no.fintlabs.validation.valueparsability.validators
 
 
 import spock.lang.Specification

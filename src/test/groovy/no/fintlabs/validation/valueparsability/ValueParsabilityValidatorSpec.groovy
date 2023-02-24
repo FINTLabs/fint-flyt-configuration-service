@@ -1,16 +1,16 @@
-package no.fintlabs.validation.parsability
+package no.fintlabs.validation.valueparsability
 
 import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import no.fintlabs.model.configuration.entities.ValueMapping
 import spock.lang.Specification
 
-class FieldParsabilityValidatorSpec extends Specification {
+class ValueParsabilityValidatorSpec extends Specification {
 
-    FieldParsabilityValidator fieldParsabilityValidator
+    ValueParsabilityValidator valueParsabilityValidator
 
     def setup() {
-        fieldParsabilityValidator = Spy(
-                new FieldParsabilityValidator() {
+        valueParsabilityValidator = Spy(
+                new ValueParsabilityValidator() {
                     @Override
                     ValueMapping.Type getTypeToValidate() {
                         return ValueMapping.Type.STRING
@@ -33,10 +33,10 @@ class FieldParsabilityValidatorSpec extends Specification {
                 .build()
 
         when:
-        boolean valid = fieldParsabilityValidator.isValid(valueMappingDto)
+        boolean valid = valueParsabilityValidator.isValid(valueMappingDto)
 
         then:
-        1 * fieldParsabilityValidator.isValid("value")
+        1 * valueParsabilityValidator.isValid("value")
         !valid
     }
 
@@ -49,10 +49,10 @@ class FieldParsabilityValidatorSpec extends Specification {
                 .build()
 
         when:
-        boolean valid = fieldParsabilityValidator.isValid(valueMappingDto)
+        boolean valid = valueParsabilityValidator.isValid(valueMappingDto)
 
         then:
-        0 * fieldParsabilityValidator.isValid("value")
+        0 * valueParsabilityValidator.isValid("value")
         valid
     }
 
@@ -65,10 +65,10 @@ class FieldParsabilityValidatorSpec extends Specification {
                 .build()
 
         when:
-        boolean valid = fieldParsabilityValidator.isValid(valueMappingDto)
+        boolean valid = valueParsabilityValidator.isValid(valueMappingDto)
 
         then:
-        0 * fieldParsabilityValidator.isValid(_ as String)
+        0 * valueParsabilityValidator.isValid(_ as String)
         valid
     }
 

@@ -1,13 +1,13 @@
-package no.fintlabs.validation.parsability.validators;
+package no.fintlabs.validation.valueparsability.validators;
 
 import no.fintlabs.model.configuration.entities.ValueMapping;
-import no.fintlabs.validation.parsability.FieldParsabilityValidator;
+import no.fintlabs.validation.valueparsability.ValueParsabilityValidator;
 import org.springframework.stereotype.Service;
 
 import java.net.URL;
 
 @Service
-public class UrlParsabilityValidator implements FieldParsabilityValidator {
+public class UrlParsabilityValidator implements ValueParsabilityValidator {
 
     @Override
     public ValueMapping.Type getTypeToValidate() {
