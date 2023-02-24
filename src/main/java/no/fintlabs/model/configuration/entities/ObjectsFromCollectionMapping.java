@@ -14,7 +14,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ElementsFromCollectionMapping {
+public class ObjectsFromCollectionMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,6 @@ public class ElementsFromCollectionMapping {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
     @NotNull
-    private ElementMapping elementMapping;
+    private ObjectMapping objectMapping;
 
 }

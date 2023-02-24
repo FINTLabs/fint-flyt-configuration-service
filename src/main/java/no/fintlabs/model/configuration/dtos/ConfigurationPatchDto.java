@@ -13,7 +13,7 @@ public class ConfigurationPatchDto {
 
     private String comment;
 
-    private ElementMappingDto mapping;
+    private ObjectMappingDto mapping;
 
     public Optional<Long> getIntegrationMetadataId() {
         return Optional.ofNullable(integrationMetadataId);
@@ -27,7 +27,7 @@ public class ConfigurationPatchDto {
         return Optional.ofNullable(comment);
     }
 
-    public Optional<ElementMappingDto> getMapping() {
+    public Optional<ObjectMappingDto> getMapping() {
         return Optional.ofNullable(mapping);
     }
 

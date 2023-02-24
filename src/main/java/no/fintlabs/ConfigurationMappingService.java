@@ -35,21 +35,21 @@ public class ConfigurationMappingService {
                 .integrationMetadataId(configurationDto.getIntegrationMetadataId())
                 .comment(configurationDto.getComment())
                 .completed(configurationDto.isCompleted())
-                .mapping(toElementMapping(configurationDto.getMapping()))
+                .mapping(toObjectMapping(configurationDto.getMapping()))
                 .build();
     }
 
-    public ElementMapping toElementMapping(ElementMappingDto elementMappingDto) {
-        return ElementMapping
+    public ObjectMapping toObjectMapping(ObjectMappingDto objectMappingDto) {
+        return ObjectMapping
                 .builder()
                 .valueMappingPerKey(
-                        mapObjectPerKey(elementMappingDto.getValueMappingPerKey(), this::toValueMapping)
+                        mapObjectPerKey(objectMappingDto.getValueMappingPerKey(), this::toValueMapping)
                 )
-                .elementMappingPerKey(
-                        mapObjectPerKey(elementMappingDto.getElementMappingPerKey(), this::toElementMapping)
+                .objectMappingPerKey(
+                        mapObjectPerKey(objectMappingDto.getObjectMappingPerKey(), this::toObjectMapping)
                 )
-                .elementCollectionMappingPerKey(
-                        mapObjectPerKey(elementMappingDto.getElementCollectionMappingPerKey(), this::toElementCollectionMapping)
+                .objectCollectionMappingPerKey(
+                        mapObjectPerKey(objectMappingDto.getObjectCollectionMappingPerKey(), this::toObjectCollectionMapping)
                 )
                 .build();
     }
@@ -62,37 +62,37 @@ public class ConfigurationMappingService {
                 .build();
     }
 
-    private ElementCollectionMapping toElementCollectionMapping(ElementCollectionMappingDto elementCollectionMappingDto) {
-        return ElementCollectionMapping
+    private ObjectCollectionMapping toObjectCollectionMapping(ObjectCollectionMappingDto objectCollectionMappingDto) {
+        return ObjectCollectionMapping
                 .builder()
-                .elementMappings(
-                        elementCollectionMappingDto
-                                .getElementMappings()
+                .objectMappings(
+                        objectCollectionMappingDto
+                                .getObjectMappings()
                                 .stream()
-                                .map(this::toElementMapping)
+                                .map(this::toObjectMapping)
                                 .toList()
                 )
-                .elementsFromCollectionMappings(
-                        elementCollectionMappingDto
-                                .getElementsFromCollectionMappings()
+                .objectsFromCollectionMappings(
+                        objectCollectionMappingDto
+                                .getObjectsFromCollectionMappings()
                                 .stream()
-                                .map(this::toElementsFromCollectionMapping)
+                                .map(this::toObjectsFromCollectionMapping)
                                 .toList()
                 )
                 .build();
     }
 
-    private ElementsFromCollectionMapping toElementsFromCollectionMapping(
-            ElementsFromCollectionMappingDto elementsFromCollectionMappingDto
+    private ObjectsFromCollectionMapping toObjectsFromCollectionMapping(
+            ObjectsFromCollectionMappingDto objectsFromCollectionMappingDto
     ) {
-        return ElementsFromCollectionMapping
+        return ObjectsFromCollectionMapping
                 .builder()
                 .instanceCollectionReferencesOrdered(
                         toInstanceCollectionReferencesOrdered(
-                                elementsFromCollectionMappingDto.getInstanceCollectionReferencesOrdered()
+                                objectsFromCollectionMappingDto.getInstanceCollectionReferencesOrdered()
                         )
                 )
-                .elementMapping(toElementMapping(elementsFromCollectionMappingDto.getElementMapping()))
+                .objectMapping(toObjectMapping(objectsFromCollectionMappingDto.getObjectMappingDto()))
                 .build();
     }
 
@@ -118,7 +118,7 @@ public class ConfigurationMappingService {
                 .version(configuration.getVersion())
                 .mapping(excludeMapping
                         ? null
-                        : toElementMappingDto(configuration.getMapping())
+                        : toObjectMappingDto(configuration.getMapping())
                 )
                 .build();
     }
@@ -131,52 +131,52 @@ public class ConfigurationMappingService {
                 .build();
     }
 
-    private ElementMappingDto toElementMappingDto(ElementMapping elementMapping) {
-        return ElementMappingDto
+    private ObjectMappingDto toObjectMappingDto(ObjectMapping objectMapping) {
+        return ObjectMappingDto
                 .builder()
                 .valueMappingPerKey(
-                        mapObjectPerKey(elementMapping.getValueMappingPerKey(), this::toValueMappingDto)
+                        mapObjectPerKey(objectMapping.getValueMappingPerKey(), this::toValueMappingDto)
                 )
-                .elementMappingPerKey(
-                        mapObjectPerKey(elementMapping.getElementMappingPerKey(), this::toElementMappingDto)
+                .objectMappingPerKey(
+                        mapObjectPerKey(objectMapping.getObjectMappingPerKey(), this::toObjectMappingDto)
                 )
-                .elementCollectionMappingPerKey(
-                        mapObjectPerKey(elementMapping.getElementCollectionMappingPerKey(), this::toElementCollectionMappingDto)
+                .objectCollectionMappingPerKey(
+                        mapObjectPerKey(objectMapping.getObjectCollectionMappingPerKey(), this::toObjectCollectionMappingDto)
                 )
                 .build();
     }
 
-    private ElementCollectionMappingDto toElementCollectionMappingDto(ElementCollectionMapping elementCollectionMapping) {
-        return ElementCollectionMappingDto
+    private ObjectCollectionMappingDto toObjectCollectionMappingDto(ObjectCollectionMapping objectCollectionMapping) {
+        return ObjectCollectionMappingDto
                 .builder()
-                .elementMappings(
-                        elementCollectionMapping
-                                .getElementMappings()
+                .objectMappings(
+                        objectCollectionMapping
+                                .getObjectMappings()
                                 .stream()
-                                .map(this::toElementMappingDto)
+                                .map(this::toObjectMappingDto)
                                 .toList()
                 )
-                .elementsFromCollectionMappings(
-                        elementCollectionMapping
-                                .getElementsFromCollectionMappings()
+                .objectsFromCollectionMappings(
+                        objectCollectionMapping
+                                .getObjectsFromCollectionMappings()
                                 .stream()
-                                .map(this::toElementsFromCollectionMappingDto)
+                                .map(this::toObjectsFromCollectionMappingDto)
                                 .toList()
                 )
                 .build();
     }
 
-    private ElementsFromCollectionMappingDto toElementsFromCollectionMappingDto(ElementsFromCollectionMapping elementsFromCollectionMapping) {
-        return ElementsFromCollectionMappingDto
+    private ObjectsFromCollectionMappingDto toObjectsFromCollectionMappingDto(ObjectsFromCollectionMapping objectsFromCollectionMapping) {
+        return ObjectsFromCollectionMappingDto
                 .builder()
                 .instanceCollectionReferencesOrdered(
-                        elementsFromCollectionMapping.getInstanceCollectionReferencesOrdered()
+                        objectsFromCollectionMapping.getInstanceCollectionReferencesOrdered()
                                 .stream()
                                 .sorted(Comparator.comparingInt(InstanceCollectionReference::getIndex))
                                 .map(InstanceCollectionReference::getReference)
                                 .toList()
                 )
-                .elementMapping(toElementMappingDto(elementsFromCollectionMapping.getElementMapping()))
+                .objectMappingDto(toObjectMappingDto(objectsFromCollectionMapping.getObjectMapping()))
                 .build();
     }
 

@@ -12,7 +12,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ElementCollectionMapping {
+public class ObjectCollectionMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,16 +21,16 @@ public class ElementCollectionMapping {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "parent_element_collection_mapping_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_element_mapping_id")
+            joinColumns = @JoinColumn(name = "parent_object_collection_mapping_id"),
+            inverseJoinColumns = @JoinColumn(name = "child_object_mapping_id")
     )
-    private Collection<@Valid @NotNull ElementMapping> elementMappings;
+    private Collection<@Valid @NotNull ObjectMapping> objectMappings;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "parent_element_collection_mapping_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_elements_from_collection_mapping_id")
+            joinColumns = @JoinColumn(name = "parent_object_collection_mapping_id"),
+            inverseJoinColumns = @JoinColumn(name = "child_objects_from_collection_mapping_id")
     )
-    private Collection<@Valid @NotNull ElementsFromCollectionMapping> elementsFromCollectionMappings;
+    private Collection<@Valid @NotNull ObjectsFromCollectionMapping> objectsFromCollectionMappings;
 
 }

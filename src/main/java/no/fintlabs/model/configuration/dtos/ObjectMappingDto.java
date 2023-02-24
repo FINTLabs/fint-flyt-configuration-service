@@ -18,12 +18,12 @@ import java.util.Map;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ElementMappingDto {
+public class ObjectMappingDto {
 
     private Map<String, @Valid @NotNull ValueMappingDto> valueMappingPerKey = new HashMap<>();
 
-    private Map<String, @Valid @NotNull ElementMappingDto> elementMappingPerKey = new HashMap<>();
+    private Map<String, @Valid @NotNull ObjectMappingDto> objectMappingPerKey = new HashMap<>();
 
-    private Map<String, @Valid @NotNull ElementCollectionMappingDto> elementCollectionMappingPerKey = new HashMap<>();
+    private Map<String, @Valid @NotNull ObjectCollectionMappingDto> objectCollectionMappingPerKey = new HashMap<>();
 
 }

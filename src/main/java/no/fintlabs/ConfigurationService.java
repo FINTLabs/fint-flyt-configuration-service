@@ -15,24 +15,24 @@ public class ConfigurationService {
 
     private final ConfigurationRepository configurationRepository;
     private final ConfigurationMappingService configurationMappingService;
-    private final ElementMappingRepository elementMappingRepository;
+    private final ObjectMappingRepository objectMappingRepository;
 
     public ConfigurationService(
             ConfigurationRepository configurationRepository,
             ConfigurationMappingService configurationMappingService,
-            ElementMappingRepository elementMappingRepository) {
+            ObjectMappingRepository objectMappingRepository) {
         this.configurationRepository = configurationRepository;
         this.configurationMappingService = configurationMappingService;
-        this.elementMappingRepository = elementMappingRepository;
+        this.objectMappingRepository = objectMappingRepository;
     }
 
-    public Optional<ConfigurationDto> findById(Long configurationId, boolean excludeElements) {
+    public Optional<ConfigurationDto> findById(Long configurationId, boolean excludeMapping) {
         return configurationRepository
                 .findById(configurationId)
-                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeElements));
+                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeMapping));
     }
 
-    public Page<ConfigurationDto> findAll(ConfigurationFilter filter, boolean excludeElements, Pageable pageable) {
+    public Page<ConfigurationDto> findAll(ConfigurationFilter filter, boolean excludeMapping, Pageable pageable) {
         Configuration configurationExample = new Configuration();
         filter.getIntegrationId().ifPresent(configurationExample::setIntegrationId);
         filter.getCompleted().ifPresent(configurationExample::setCompleted);
@@ -44,7 +44,7 @@ public class ConfigurationService {
                 )
                 .map(configuration -> configurationMappingService.toConfigurationDto(
                         configuration,
-                        excludeElements
+                        excludeMapping
                 ));
     }
 
@@ -64,8 +64,8 @@ public class ConfigurationService {
         configurationPatchDto.getIntegrationMetadataId().ifPresent(configuration::setIntegrationMetadataId);
         configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configuration::setCompleted);
         configurationPatchDto.getComment().ifPresent(configuration::setComment);
-        configurationPatchDto.getMapping().map(configurationMappingService::toElementMapping)
-                .map(elementMappingRepository::save)
+        configurationPatchDto.getMapping().map(configurationMappingService::toObjectMapping)
+                .map(objectMappingRepository::save)
                 .ifPresent(configuration::setMapping);
 
         return configurationMappingService.toConfigurationDto(

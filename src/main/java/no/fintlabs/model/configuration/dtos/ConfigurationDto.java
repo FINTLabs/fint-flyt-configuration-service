@@ -39,6 +39,6 @@ public class ConfigurationDto {
     @JsonInclude(Include.NON_NULL)
     @Valid
     @NotNull
-    private ElementMappingDto mapping;
+    private ObjectMappingDto mapping;
 
 }

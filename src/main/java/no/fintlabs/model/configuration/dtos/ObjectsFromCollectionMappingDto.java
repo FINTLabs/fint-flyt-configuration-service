@@ -15,13 +15,13 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ElementsFromCollectionMappingDto {
+public class ObjectsFromCollectionMappingDto {
 
     @NotEmpty
     private List<@NotBlank String> instanceCollectionReferencesOrdered;
 
     @Valid
     @NotNull
-    private ElementMappingDto elementMapping;
+    private ObjectMappingDto objectMappingDto;
 
 }

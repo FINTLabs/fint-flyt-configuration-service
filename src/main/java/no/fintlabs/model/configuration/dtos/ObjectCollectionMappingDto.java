@@ -14,10 +14,10 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ElementCollectionMappingDto {
+public class ObjectCollectionMappingDto {
 
-    private Collection<@Valid @NotNull ElementMappingDto> elementMappings = new ArrayList<>();
+    private Collection<@Valid @NotNull ObjectMappingDto> objectMappings = new ArrayList<>();
 
-    private Collection<@Valid @NotNull ElementsFromCollectionMappingDto> elementsFromCollectionMappings = new ArrayList<>();
+    private Collection<@Valid @NotNull ObjectsFromCollectionMappingDto> objectsFromCollectionMappings = new ArrayList<>();
 
 }

@@ -1,10 +1,10 @@
 package no.fintlabs
 
 import no.fintlabs.model.configuration.dtos.ConfigurationDto
-import no.fintlabs.model.configuration.dtos.ElementMappingDto
+import no.fintlabs.model.configuration.dtos.ObjectMappingDto
 import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import no.fintlabs.model.configuration.entities.Configuration
-import no.fintlabs.model.configuration.entities.ElementMapping
+import no.fintlabs.model.configuration.entities.ObjectMapping
 import no.fintlabs.model.configuration.entities.ValueMapping
 import spock.lang.Specification
 
@@ -27,37 +27,37 @@ class ConfigurationMappingServiceSpec extends Specification {
                 .integrationId(1)
                 .integrationMetadataId(2)
                 .mapping(
-                        ElementMapping
+                        ObjectMapping
                                 .builder()
                                 .valueMappingPerKey(Map.of())
-                                .elementMappingPerKey(Map.of(
-                                        "element1",
-                                        ElementMapping
+                                .objectMappingPerKey(Map.of(
+                                        "objectKey1",
+                                        ObjectMapping
                                                 .builder()
                                                 .id(0)
                                                 .valueMappingPerKey(Map.of())
-                                                .elementMappingPerKey(Map.of())
-                                                .elementCollectionMappingPerKey(Map.of())
+                                                .objectMappingPerKey(Map.of())
+                                                .objectCollectionMappingPerKey(Map.of())
                                                 .build(),
-                                        "element2",
-                                        ElementMapping
+                                        "objectKey2",
+                                        ObjectMapping
                                                 .builder()
                                                 .id(1)
                                                 .valueMappingPerKey(Map.of())
-                                                .elementMappingPerKey(Map.of(
-                                                        "element21",
-                                                        ElementMapping
+                                                .objectMappingPerKey(Map.of(
+                                                        "objectKey21",
+                                                        ObjectMapping
                                                                 .builder()
                                                                 .id(2)
                                                                 .valueMappingPerKey(Map.of(
-                                                                        "field211",
+                                                                        "valueKey211",
                                                                         ValueMapping
                                                                                 .builder()
                                                                                 .id(0)
                                                                                 .type(ValueMapping.Type.BOOLEAN)
                                                                                 .mappingString("true")
                                                                                 .build(),
-                                                                        "field212",
+                                                                        "valueKey212",
                                                                         ValueMapping
                                                                                 .builder()
                                                                                 .id(1)
@@ -65,24 +65,24 @@ class ConfigurationMappingServiceSpec extends Specification {
                                                                                 .mappingString("text")
                                                                                 .build(),
                                                                 ))
-                                                                .elementMappingPerKey(Map.of(
-                                                                        "element211",
-                                                                        ElementMapping
+                                                                .objectMappingPerKey(Map.of(
+                                                                        "objectKey211",
+                                                                        ObjectMapping
                                                                                 .builder()
                                                                                 .id(3)
                                                                                 .valueMappingPerKey(Map.of())
-                                                                                .elementMappingPerKey(Map.of())
-                                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                                .objectMappingPerKey(Map.of())
+                                                                                .objectCollectionMappingPerKey(Map.of())
                                                                                 .build()
                                                                 ))
-                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                .objectCollectionMappingPerKey(Map.of())
                                                                 .build(),
-                                                        "element22",
-                                                        ElementMapping
+                                                        "objectKey22",
+                                                        ObjectMapping
                                                                 .builder()
                                                                 .id(4)
                                                                 .valueMappingPerKey(Map.of(
-                                                                        "field221",
+                                                                        "valueKey221",
                                                                         ValueMapping
                                                                                 .builder()
                                                                                 .id(2)
@@ -90,14 +90,14 @@ class ConfigurationMappingServiceSpec extends Specification {
                                                                                 .mappingString(null)
                                                                                 .build()
                                                                 ))
-                                                                .elementMappingPerKey(Map.of())
-                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                .objectMappingPerKey(Map.of())
+                                                                .objectCollectionMappingPerKey(Map.of())
                                                                 .build()
                                                 ))
-                                                .elementCollectionMappingPerKey(Map.of())
+                                                .objectCollectionMappingPerKey(Map.of())
                                                 .build()
                                 ))
-                                .elementCollectionMappingPerKey(Map.of())
+                                .objectCollectionMappingPerKey(Map.of())
                                 .build()
                 )
                 .build()
@@ -109,75 +109,75 @@ class ConfigurationMappingServiceSpec extends Specification {
                 .integrationId(1)
                 .integrationMetadataId(2)
                 .mapping(
-                        ElementMappingDto
+                        ObjectMappingDto
                                 .builder()
                                 .valueMappingPerKey(Map.of())
-                                .elementMappingPerKey(Map.of(
-                                        "element1",
-                                        ElementMappingDto
+                                .objectMappingPerKey(Map.of(
+                                        "objectKey1",
+                                        ObjectMappingDto
                                                 .builder()
                                                 .valueMappingPerKey(Map.of())
-                                                .elementMappingPerKey(Map.of())
-                                                .elementCollectionMappingPerKey(Map.of())
+                                                .objectMappingPerKey(Map.of())
+                                                .objectCollectionMappingPerKey(Map.of())
                                                 .build(),
-                                        "element2",
-                                        ElementMappingDto
+                                        "objectKey2",
+                                        ObjectMappingDto
                                                 .builder()
                                                 .valueMappingPerKey(Map.of())
-                                                .elementMappingPerKey(Map.of(
-                                                        "element21",
-                                                        ElementMappingDto
+                                                .objectMappingPerKey(Map.of(
+                                                        "objectKey21",
+                                                        ObjectMappingDto
                                                                 .builder()
                                                                 .valueMappingPerKey(Map.of(
-                                                                        "field211",
+                                                                        "valueKey211",
                                                                         ValueMappingDto
                                                                                 .builder()
                                                                                 .type(ValueMapping.Type.BOOLEAN)
                                                                                 .mappingString("true")
                                                                                 .build(),
-                                                                        "field212",
+                                                                        "valueKey212",
                                                                         ValueMappingDto
                                                                                 .builder()
                                                                                 .type(ValueMapping.Type.STRING)
                                                                                 .mappingString("text")
                                                                                 .build(),
                                                                 ))
-                                                                .elementMappingPerKey(Map.of(
-                                                                        "element211",
-                                                                        ElementMappingDto
+                                                                .objectMappingPerKey(Map.of(
+                                                                        "objectKey211",
+                                                                        ObjectMappingDto
                                                                                 .builder()
                                                                                 .valueMappingPerKey(Map.of())
-                                                                                .elementMappingPerKey(Map.of())
-                                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                                .objectMappingPerKey(Map.of())
+                                                                                .objectCollectionMappingPerKey(Map.of())
                                                                                 .build()
                                                                 ))
-                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                .objectCollectionMappingPerKey(Map.of())
                                                                 .build(),
-                                                        "element22",
-                                                        ElementMappingDto
+                                                        "objectKey22",
+                                                        ObjectMappingDto
                                                                 .builder()
                                                                 .valueMappingPerKey(Map.of(
-                                                                        "field221",
+                                                                        "valueKey221",
                                                                         ValueMappingDto
                                                                                 .builder()
                                                                                 .type(ValueMapping.Type.STRING)
                                                                                 .mappingString(null)
                                                                                 .build()
                                                                 ))
-                                                                .elementMappingPerKey(Map.of())
-                                                                .elementCollectionMappingPerKey(Map.of())
+                                                                .objectMappingPerKey(Map.of())
+                                                                .objectCollectionMappingPerKey(Map.of())
                                                                 .build()
                                                 ))
-                                                .elementCollectionMappingPerKey(Map.of())
+                                                .objectCollectionMappingPerKey(Map.of())
                                                 .build()
                                 ))
-                                .elementCollectionMappingPerKey(Map.of())
+                                .objectCollectionMappingPerKey(Map.of())
                                 .build()
                 )
                 .build()
     }
 
-    def 'should keep all values when mapping to dto with elements'() {
+    def 'should keep all values when mapping to dto with objects'() {
         when:
         ConfigurationDto result = configurationMappingService.toConfigurationDto(configuration, false)
 
@@ -185,7 +185,7 @@ class ConfigurationMappingServiceSpec extends Specification {
         result == configurationDto.toBuilder().id(1).build()
     }
 
-    def 'should keep all values when mapping to dto without elements'() {
+    def 'should keep all values when mapping to dto without objects'() {
         when:
         ConfigurationDto result = configurationMappingService.toConfigurationDto(configuration, true)
 

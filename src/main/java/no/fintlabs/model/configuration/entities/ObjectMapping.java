@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
 import java.util.Map;
 
 @Data
@@ -13,7 +12,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ElementMapping {
+public class ObjectMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +21,7 @@ public class ElementMapping {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "parent_element_mapping_id"),
+            joinColumns = @JoinColumn(name = "parent_object_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_value_mapping_id")
     )
     @MapKeyColumn(name = "key")
@@ -30,18 +29,18 @@ public class ElementMapping {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "parent_element_mapping_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_element_mapping_id")
+            joinColumns = @JoinColumn(name = "parent_object_mapping_id"),
+            inverseJoinColumns = @JoinColumn(name = "child_object_mapping_id")
     )
     @MapKeyColumn(name = "key")
-    private Map<String, @Valid @NotNull ElementMapping> elementMappingPerKey;
+    private Map<String, @Valid @NotNull ObjectMapping> objectMappingPerKey;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "parent_element_mapping_id"),
-            inverseJoinColumns = @JoinColumn(name = "child_elementCollection_mapping_id")
+            joinColumns = @JoinColumn(name = "parent_object_mapping_id"),
+            inverseJoinColumns = @JoinColumn(name = "child_object_collection_mapping_id")
     )
     @MapKeyColumn(name = "key")
-    private Map<String, @Valid @NotNull ElementCollectionMapping> elementCollectionMappingPerKey;
+    private Map<String, @Valid @NotNull ObjectCollectionMapping> objectCollectionMappingPerKey;
 
 }
