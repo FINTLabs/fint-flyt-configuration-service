@@ -3,6 +3,7 @@ package no.fintlabs.model.configuration.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.validation.constraints.IntegrationAndMetadataMatches;
@@ -14,6 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Getter
 @Builder(toBuilder = true)
+@EqualsAndHashCode
 @Jacksonized
 @IntegrationAndMetadataMatches
 public class ConfigurationDto {

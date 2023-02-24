@@ -15,7 +15,7 @@ class AtLeastOneChildValidatorSpec extends Specification {
 
     def 'should return true when object mapping has children'() {
         given:
-        ObjectMappingDto objectMappingDto = new ObjectMappingDto()
+        ObjectMappingDto objectMappingDto = ObjectMappingDto.builder().build()
         objectMappingDto.getValueMappingPerKey().put("valueMappingKey", Mock(ValueMappingDto.class))
 
         when:
@@ -31,7 +31,7 @@ class AtLeastOneChildValidatorSpec extends Specification {
     def 'should return false when object mapping has no children'() {
         when:
         boolean valid = atLeastOneChildValidator.isValid(
-                new ObjectMappingDto(),
+                ObjectMappingDto.builder().build(),
                 Mock(HibernateConstraintValidatorContext.class)
         )
 

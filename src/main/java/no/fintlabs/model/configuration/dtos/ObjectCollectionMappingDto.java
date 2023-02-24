@@ -1,6 +1,7 @@
 package no.fintlabs.model.configuration.dtos;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
@@ -11,6 +12,7 @@ import java.util.Collection;
 
 @Getter
 @Builder
+@EqualsAndHashCode
 @Jacksonized
 public class ObjectCollectionMappingDto {
 

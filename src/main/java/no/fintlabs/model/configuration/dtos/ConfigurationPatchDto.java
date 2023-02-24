@@ -1,11 +1,13 @@
 package no.fintlabs.model.configuration.dtos;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.extern.jackson.Jacksonized;
 
 import java.util.Optional;
 
 @Builder
+@EqualsAndHashCode
 @Jacksonized
 public class ConfigurationPatchDto {
 

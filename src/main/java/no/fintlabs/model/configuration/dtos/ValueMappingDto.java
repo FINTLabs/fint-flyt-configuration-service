@@ -1,6 +1,7 @@
 package no.fintlabs.model.configuration.dtos;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.model.configuration.entities.ValueMapping;
@@ -18,6 +19,7 @@ import javax.validation.constraints.NotNull;
 @InstanceValueTypesAreCompatible(groups = InstanceValueTypes.class)
 @Getter
 @Builder
+@EqualsAndHashCode
 @Jacksonized
 public class ValueMappingDto {
 
