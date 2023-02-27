@@ -53,10 +53,10 @@ create table object_mapping_object_mapping_per_key
 );
 create table object_mapping_value_collection_mapping_per_key
 (
-    parent_value_mapping_id           int8         not null,
+    parent_object_mapping_id          int8         not null,
     child_value_collection_mapping_id int8         not null,
     key                               varchar(255) not null,
-    primary key (parent_value_mapping_id, key)
+    primary key (parent_object_mapping_id, key)
 );
 create table object_mapping_value_mapping_per_key
 (
@@ -140,7 +140,7 @@ alter table object_mapping_object_mapping_per_key
 alter table object_mapping_value_collection_mapping_per_key
     add constraint FKgdxnmi62aysfe0k36bg1xvj2q foreign key (child_value_collection_mapping_id) references value_collection_mapping;
 alter table object_mapping_value_collection_mapping_per_key
-    add constraint FK4fma39r6x5jloxtd9rnn3a3lc foreign key (parent_value_mapping_id) references object_mapping;
+    add constraint FK3hwrf845eir5dd1asjrxu2yyv foreign key (parent_object_mapping_id) references object_mapping;
 alter table object_mapping_value_mapping_per_key
     add constraint FKndkecr6l963y10f4a8yjad09c foreign key (child_value_mapping_id) references value_mapping;
 alter table object_mapping_value_mapping_per_key

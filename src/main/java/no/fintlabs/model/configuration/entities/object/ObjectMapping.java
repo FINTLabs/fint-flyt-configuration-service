@@ -31,7 +31,7 @@ public class ObjectMapping {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
-            joinColumns = @JoinColumn(name = "parent_value_mapping_id"),
+            joinColumns = @JoinColumn(name = "parent_object_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_value_collection_mapping_id")
     )
     @MapKeyColumn(name = "key")
