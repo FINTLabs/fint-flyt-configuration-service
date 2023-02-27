@@ -1,7 +1,8 @@
-package no.fintlabs.model.configuration.entities;
+package no.fintlabs.model.configuration.entities.value;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import no.fintlabs.model.configuration.entities.InstanceCollectionReference;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -14,7 +15,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ObjectsFromCollectionMapping {
+public class ValuesFromCollectionMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +31,6 @@ public class ObjectsFromCollectionMapping {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
     @NotNull
-    private ObjectMapping objectMapping;
+    private ValueMapping valueMapping;
 
 }

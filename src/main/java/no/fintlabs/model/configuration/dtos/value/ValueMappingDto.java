@@ -1,10 +1,10 @@
-package no.fintlabs.model.configuration.dtos;
+package no.fintlabs.model.configuration.dtos.value;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-import no.fintlabs.model.configuration.entities.ValueMapping;
+import no.fintlabs.model.configuration.entities.value.ValueMapping;
 import no.fintlabs.validation.constraints.InstanceValueKeysAreDefinedInMetadata;
 import no.fintlabs.validation.constraints.InstanceValueTypesAreCompatible;
 import no.fintlabs.validation.constraints.ValueParsableAsType;

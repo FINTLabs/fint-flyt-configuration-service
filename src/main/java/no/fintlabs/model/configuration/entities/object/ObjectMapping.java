@@ -1,6 +1,8 @@
-package no.fintlabs.model.configuration.entities;
+package no.fintlabs.model.configuration.entities.object;
 
 import lombok.*;
+import no.fintlabs.model.configuration.entities.value.ValueCollectionMapping;
+import no.fintlabs.model.configuration.entities.value.ValueMapping;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -26,6 +28,14 @@ public class ObjectMapping {
     )
     @MapKeyColumn(name = "key")
     private Map<String, @Valid @NotNull ValueMapping> valueMappingPerKey;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @JoinTable(
+            joinColumns = @JoinColumn(name = "parent_value_mapping_id"),
+            inverseJoinColumns = @JoinColumn(name = "child_value_collection_mapping_id")
+    )
+    @MapKeyColumn(name = "key")
+    private Map<String, @Valid @NotNull ValueCollectionMapping> valueCollectionMappingPerKey;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(

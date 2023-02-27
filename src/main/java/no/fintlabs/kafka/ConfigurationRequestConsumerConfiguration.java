@@ -7,7 +7,7 @@ import no.fintlabs.kafka.requestreply.RequestConsumerFactoryService;
 import no.fintlabs.kafka.requestreply.topic.RequestTopicNameParameters;
 import no.fintlabs.kafka.requestreply.topic.RequestTopicService;
 import no.fintlabs.model.configuration.dtos.ConfigurationDto;
-import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
+import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

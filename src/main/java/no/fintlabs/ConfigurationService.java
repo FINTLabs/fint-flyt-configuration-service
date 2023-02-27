@@ -1,5 +1,6 @@
 package no.fintlabs;
 
+import no.fintlabs.mapping.ConfigurationMappingService;
 import no.fintlabs.model.configuration.dtos.ConfigurationDto;
 import no.fintlabs.model.configuration.dtos.ConfigurationPatchDto;
 import no.fintlabs.model.configuration.entities.Configuration;
@@ -29,7 +30,7 @@ public class ConfigurationService {
     public Optional<ConfigurationDto> findById(Long configurationId, boolean excludeMapping) {
         return configurationRepository
                 .findById(configurationId)
-                .map(configuration -> configurationMappingService.toConfigurationDto(configuration, excludeMapping));
+                .map(configuration -> configurationMappingService.toDto(configuration, excludeMapping));
     }
 
     public Page<ConfigurationDto> findAll(ConfigurationFilter filter, boolean excludeMapping, Pageable pageable) {
@@ -42,16 +43,16 @@ public class ConfigurationService {
                         Example.of(configurationExample),
                         pageable
                 )
-                .map(configuration -> configurationMappingService.toConfigurationDto(
+                .map(configuration -> configurationMappingService.toDto(
                         configuration,
                         excludeMapping
                 ));
     }
 
     public ConfigurationDto save(ConfigurationDto configurationDto) {
-        return configurationMappingService.toConfigurationDto(
+        return configurationMappingService.toDto(
                 configurationRepository.saveWithVersion(
-                        configurationMappingService.toConfiguration(configurationDto)
+                        configurationMappingService.toEntity(configurationDto)
                 ),
                 false
         );
@@ -64,11 +65,11 @@ public class ConfigurationService {
         configurationPatchDto.getIntegrationMetadataId().ifPresent(configuration::setIntegrationMetadataId);
         configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configuration::setCompleted);
         configurationPatchDto.getComment().ifPresent(configuration::setComment);
-        configurationPatchDto.getMapping().map(configurationMappingService::toObjectMapping)
+        configurationPatchDto.getMapping().map(configurationMappingService::toEntity)
                 .map(objectMappingRepository::save)
                 .ifPresent(configuration::setMapping);
 
-        return configurationMappingService.toConfigurationDto(
+        return configurationMappingService.toDto(
                 configurationRepository.saveWithVersion(configuration),
                 false
         );

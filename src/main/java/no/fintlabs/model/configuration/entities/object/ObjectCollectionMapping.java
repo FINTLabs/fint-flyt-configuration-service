@@ -1,4 +1,4 @@
-package no.fintlabs.model.configuration.entities;
+package no.fintlabs.model.configuration.entities.object;
 
 import lombok.*;
 

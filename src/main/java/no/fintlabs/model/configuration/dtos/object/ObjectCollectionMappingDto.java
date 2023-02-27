@@ -1,4 +1,4 @@
-package no.fintlabs.model.configuration.dtos;
+package no.fintlabs.model.configuration.dtos.object;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;

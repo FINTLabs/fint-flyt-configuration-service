@@ -1,6 +1,6 @@
 package no.fintlabs.validation.constraints;
 
-import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
+import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 import org.hibernate.validator.internal.util.CollectionHelper;
 
@@ -34,6 +34,7 @@ public class UniqueChildrenKeysValidator implements HibernateConstraintValidator
         Set<String> checkedKeys = new HashSet<>();
         return Stream.of(
                         value.getValueMappingPerKey(),
+                        value.getValueCollectionMappingPerKey(),
                         value.getObjectMappingPerKey(),
                         value.getObjectCollectionMappingPerKey()
                 )

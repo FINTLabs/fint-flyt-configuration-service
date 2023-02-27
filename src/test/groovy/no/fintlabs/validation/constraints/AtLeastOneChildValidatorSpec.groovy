@@ -1,7 +1,7 @@
 package no.fintlabs.validation.constraints
 
-import no.fintlabs.model.configuration.dtos.ObjectMappingDto
-import no.fintlabs.model.configuration.dtos.ValueMappingDto
+import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto
+import no.fintlabs.model.configuration.dtos.value.ValueMappingDto
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import spock.lang.Specification
 
