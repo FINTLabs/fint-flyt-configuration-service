@@ -23,7 +23,7 @@ public class ObjectsFromCollectionMapping {
     @Setter(AccessLevel.NONE)
     private long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn
     @NotEmpty
     private Collection<@Valid @NotNull InstanceCollectionReference> instanceCollectionReferencesOrdered;

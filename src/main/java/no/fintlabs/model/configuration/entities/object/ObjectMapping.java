@@ -21,7 +21,7 @@ public class ObjectMapping {
     @Setter(AccessLevel.NONE)
     private long id;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_object_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_value_mapping_id")
@@ -29,7 +29,7 @@ public class ObjectMapping {
     @MapKeyColumn(name = "key")
     private Map<String, @Valid @NotNull ValueMapping> valueMappingPerKey;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_value_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_value_collection_mapping_id")
@@ -37,7 +37,7 @@ public class ObjectMapping {
     @MapKeyColumn(name = "key")
     private Map<String, @Valid @NotNull ValueCollectionMapping> valueCollectionMappingPerKey;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_object_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_object_mapping_id")
@@ -45,7 +45,7 @@ public class ObjectMapping {
     @MapKeyColumn(name = "key")
     private Map<String, @Valid @NotNull ObjectMapping> objectMappingPerKey;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(
             joinColumns = @JoinColumn(name = "parent_object_mapping_id"),
             inverseJoinColumns = @JoinColumn(name = "child_object_collection_mapping_id")
