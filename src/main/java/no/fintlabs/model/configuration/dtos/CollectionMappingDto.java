@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @Getter
 @Builder
@@ -16,10 +17,16 @@ import java.util.Collection;
 @Jacksonized
 public class CollectionMappingDto<T> {
 
-    @Builder.Default
-    private final Collection<@Valid @NotNull T> elementMappings = new ArrayList<>();
+    public CollectionMappingDto(
+            Collection<T> elementMappings,
+            Collection<FromCollectionMappingDto<T>> fromCollectionMappings
+    ) {
+        this.elementMappings = Optional.ofNullable(elementMappings).orElse(new ArrayList<>());
+        this.fromCollectionMappings = Optional.ofNullable(fromCollectionMappings).orElse(new ArrayList<>());
+    }
 
-    @Builder.Default
-    private final Collection<@Valid @NotNull FromCollectionMappingDto<T>> fromCollectionMappings = new ArrayList<>();
+    private final Collection<@Valid @NotNull T> elementMappings;
+
+    private final Collection<@Valid @NotNull FromCollectionMappingDto<T>> fromCollectionMappings;
 
 }

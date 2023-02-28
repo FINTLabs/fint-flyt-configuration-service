@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @AtLeastOneChild
 @UniqueChildrenKeys
@@ -20,16 +21,21 @@ import java.util.Map;
 @Jacksonized
 public class ObjectMappingDto {
 
-    @Builder.Default
-    private final Map<String, @Valid @NotNull ValueMappingDto> valueMappingPerKey = new HashMap<>();
+    public ObjectMappingDto(
+            Map<String, ValueMappingDto> valueMappingPerKey,
+            Map<String, CollectionMappingDto<ValueMappingDto>> valueCollectionMappingPerKey,
+            Map<String, ObjectMappingDto> objectMappingPerKey,
+            Map<String, CollectionMappingDto<ObjectMappingDto>> objectCollectionMappingPerKey
+    ) {
+        this.valueMappingPerKey = Optional.ofNullable(valueMappingPerKey).orElse(new HashMap<>());
+        this.valueCollectionMappingPerKey = Optional.ofNullable(valueCollectionMappingPerKey).orElse(new HashMap<>());
+        this.objectMappingPerKey = Optional.ofNullable(objectMappingPerKey).orElse(new HashMap<>());
+        this.objectCollectionMappingPerKey = Optional.ofNullable(objectCollectionMappingPerKey).orElse(new HashMap<>());
+    }
 
-    @Builder.Default
-    private final Map<String, @Valid @NotNull CollectionMappingDto<ValueMappingDto>> valueCollectionMappingPerKey = new HashMap<>();
-
-    @Builder.Default
-    private final Map<String, @Valid @NotNull ObjectMappingDto> objectMappingPerKey = new HashMap<>();
-
-    @Builder.Default
-    private final Map<String, @Valid @NotNull CollectionMappingDto<ObjectMappingDto>> objectCollectionMappingPerKey = new HashMap<>();
+    private final Map<String, @Valid @NotNull ValueMappingDto> valueMappingPerKey;
+    private final Map<String, @Valid @NotNull CollectionMappingDto<ValueMappingDto>> valueCollectionMappingPerKey;
+    private final Map<String, @Valid @NotNull ObjectMappingDto> objectMappingPerKey;
+    private final Map<String, @Valid @NotNull CollectionMappingDto<ObjectMappingDto>> objectCollectionMappingPerKey;
 
 }

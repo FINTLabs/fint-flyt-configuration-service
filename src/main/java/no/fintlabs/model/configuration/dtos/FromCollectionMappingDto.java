@@ -11,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 @Builder
@@ -18,9 +19,13 @@ import java.util.List;
 @Jacksonized
 public class FromCollectionMappingDto<T> {
 
+    public FromCollectionMappingDto(List<String> instanceCollectionReferencesOrdered, T elementMapping) {
+        this.instanceCollectionReferencesOrdered = Optional.ofNullable(instanceCollectionReferencesOrdered).orElse(new ArrayList<>());
+        this.elementMapping = elementMapping;
+    }
+
     @NotEmpty
-    @Builder.Default
-    private final List<@NotBlank String> instanceCollectionReferencesOrdered = new ArrayList<>();
+    private final List<@NotBlank String> instanceCollectionReferencesOrdered;
 
     @Valid
     @NotNull
