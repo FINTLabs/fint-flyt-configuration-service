@@ -5,7 +5,7 @@ import no.fintlabs.model.configuration.entities.ValueMapping;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ValueMappingMappingService implements ElementMappingMappingService<ValueMapping, ValueMappingDto> {
+public class ValueMappingMappingService {
 
     public ValueMapping toEntity(ValueMappingDto valueMappingDto) {
         return ValueMapping

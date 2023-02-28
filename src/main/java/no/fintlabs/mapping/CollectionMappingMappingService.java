@@ -5,6 +5,7 @@ import no.fintlabs.model.configuration.entities.collection.CollectionMapping;
 import no.fintlabs.model.configuration.entities.collection.FromCollectionMapping;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 @Service
@@ -18,17 +19,17 @@ public class CollectionMappingMappingService {
 
     public <E_M, E_CM extends CollectionMapping<E_M, E_FCM>, E_FCM extends FromCollectionMapping<E_M>, DTO_M>
     E_CM toEntity(
-            ElementMappingMappingService<E_M, DTO_M> elementMappingMappingService,
-            CollectionMappingDto<DTO_M> collectionMappingDto,
+            Function<DTO_M, E_M> elementMappingToEntityFunction,
             Supplier<E_CM> collectionMappingConstructor,
-            Supplier<E_FCM> fromCollectionMappingConstructor
+            Supplier<E_FCM> fromCollectionMappingConstructor,
+            CollectionMappingDto<DTO_M> collectionMappingDto
     ) {
         E_CM newInstance = collectionMappingConstructor.get();
         newInstance.setElementMappings(
                 collectionMappingDto
                         .getElementMappings()
                         .stream()
-                        .map(elementMappingMappingService::toEntity)
+                        .map(elementMappingToEntityFunction)
                         .toList()
         );
         newInstance.setFromCollectionMappings(
@@ -36,9 +37,9 @@ public class CollectionMappingMappingService {
                         .getFromCollectionMappings()
                         .stream()
                         .map(fromCollectionMappingDto -> fromCollectionMappingMappingService.toEntity(
-                                elementMappingMappingService,
-                                fromCollectionMappingDto,
-                                fromCollectionMappingConstructor
+                                elementMappingToEntityFunction,
+                                fromCollectionMappingConstructor,
+                                fromCollectionMappingDto
                         ))
                         .toList()
         );
@@ -47,7 +48,7 @@ public class CollectionMappingMappingService {
 
     public <E_M, E_CM extends CollectionMapping<E_M, E_FCM>, E_FCM extends FromCollectionMapping<E_M>, DTO_M>
     CollectionMappingDto<DTO_M> toDto(
-            ElementMappingMappingService<E_M, DTO_M> elementMappingMappingService,
+            Function<E_M, DTO_M> elementMappingToDtoMappingFunction,
             E_CM entity
     ) {
         return CollectionMappingDto
@@ -56,7 +57,7 @@ public class CollectionMappingMappingService {
                         entity
                                 .getElementMappings()
                                 .stream()
-                                .map(elementMappingMappingService::toDto)
+                                .map(elementMappingToDtoMappingFunction)
                                 .toList()
                 )
                 .fromCollectionMappings(
@@ -64,7 +65,7 @@ public class CollectionMappingMappingService {
                                 .getFromCollectionMappings()
                                 .stream()
                                 .map(fromCollectionMapping -> fromCollectionMappingMappingService.toDto(
-                                        elementMappingMappingService,
+                                        elementMappingToDtoMappingFunction,
                                         fromCollectionMapping
                                 ))
                                 .toList()

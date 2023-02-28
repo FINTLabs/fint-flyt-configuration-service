@@ -6,7 +6,7 @@ import no.fintlabs.model.configuration.entities.ObjectMapping;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ObjectMappingMappingService implements ElementMappingMappingService<ObjectMapping, ObjectMappingDto> {
+public class ObjectMappingMappingService {
 
     private final PerKeyMappingService perKeyMappingService;
     private final ValueMappingMappingService valueMappingMappingService;

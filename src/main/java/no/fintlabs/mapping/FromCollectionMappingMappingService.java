@@ -4,6 +4,7 @@ import no.fintlabs.model.configuration.dtos.FromCollectionMappingDto;
 import no.fintlabs.model.configuration.entities.collection.FromCollectionMapping;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 
@@ -19,9 +20,9 @@ public class FromCollectionMappingMappingService {
     }
 
     public <E_FCM extends FromCollectionMapping<E_M>, E_M, DTO_M> E_FCM toEntity(
-            ElementMappingMappingService<E_M, DTO_M> elementMappingMappingService,
-            FromCollectionMappingDto<DTO_M> fromCollectionMappingDto,
-            Supplier<E_FCM> fromCollectionMappingConstructor
+            Function<DTO_M, E_M> elementMappingToEntityMappingFunction,
+            Supplier<E_FCM> fromCollectionMappingConstructor,
+            FromCollectionMappingDto<DTO_M> fromCollectionMappingDto
     ) {
         E_FCM newInstance = fromCollectionMappingConstructor.get();
         newInstance.setInstanceCollectionReferencesOrdered(
@@ -29,12 +30,12 @@ public class FromCollectionMappingMappingService {
                         fromCollectionMappingDto.getInstanceCollectionReferencesOrdered()
                 )
         );
-        newInstance.setElementMapping(elementMappingMappingService.toEntity(fromCollectionMappingDto.getElementMapping()));
+        newInstance.setElementMapping(elementMappingToEntityMappingFunction.apply(fromCollectionMappingDto.getElementMapping()));
         return newInstance;
     }
 
     public <E_M, DTO_M> FromCollectionMappingDto<DTO_M> toDto(
-            ElementMappingMappingService<E_M, DTO_M> elementMappingMappingService,
+            Function<E_M, DTO_M> elementMappingToDtoMappingFunction,
             FromCollectionMapping<E_M> fromCollectionMapping
     ) {
         return FromCollectionMappingDto
@@ -44,7 +45,7 @@ public class FromCollectionMappingMappingService {
                                 fromCollectionMapping.getInstanceCollectionReferencesOrdered()
                         )
                 )
-                .elementMapping(elementMappingMappingService.toDto(fromCollectionMapping.getElementMapping()))
+                .elementMapping(elementMappingToDtoMappingFunction.apply(fromCollectionMapping.getElementMapping()))
                 .build();
     }
 

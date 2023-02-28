@@ -23,16 +23,16 @@ public class ObjectCollectionMappingMappingService {
 
     public ObjectCollectionMapping toEntity(CollectionMappingDto<ObjectMappingDto> dto) {
         return collectionMappingMappingService.toEntity(
-                objectMappingMappingService,
-                dto,
+                objectMappingMappingService::toEntity,
                 ObjectCollectionMapping::new,
-                ObjectsFromCollectionMapping::new
+                ObjectsFromCollectionMapping::new,
+                dto
         );
     }
 
     public CollectionMappingDto<ObjectMappingDto> toDto(ObjectCollectionMapping entity) {
         return collectionMappingMappingService.toDto(
-                objectMappingMappingService,
+                objectMappingMappingService::toDto,
                 entity
         );
     }

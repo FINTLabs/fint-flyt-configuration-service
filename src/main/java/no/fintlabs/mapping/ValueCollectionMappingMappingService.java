@@ -23,16 +23,16 @@ public class ValueCollectionMappingMappingService {
 
     public ValueCollectionMapping toEntity(CollectionMappingDto<ValueMappingDto> dto) {
         return collectionMappingMappingService.toEntity(
-                valueMappingMappingService,
-                dto,
+                valueMappingMappingService::toEntity,
                 ValueCollectionMapping::new,
-                ValuesFromCollectionMapping::new
+                ValuesFromCollectionMapping::new,
+                dto
         );
     }
 
     public CollectionMappingDto<ValueMappingDto> toDto(ValueCollectionMapping entity) {
         return collectionMappingMappingService.toDto(
-                valueMappingMappingService,
+                valueMappingMappingService::toDto,
                 entity
         );
     }
