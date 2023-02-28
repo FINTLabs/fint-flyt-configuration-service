@@ -1,6 +1,6 @@
 package no.fintlabs.mapping;
 
-import no.fintlabs.model.configuration.entities.InstanceCollectionReference;
+import no.fintlabs.model.configuration.entities.collection.InstanceCollectionReference;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;

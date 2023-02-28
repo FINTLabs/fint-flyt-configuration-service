@@ -1,11 +1,11 @@
-package no.fintlabs.mapping.value;
+package no.fintlabs.mapping;
 
-import no.fintlabs.model.configuration.dtos.value.ValueMappingDto;
-import no.fintlabs.model.configuration.entities.value.ValueMapping;
+import no.fintlabs.model.configuration.dtos.ValueMappingDto;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ValueMappingMappingService {
+public class ValueMappingMappingService implements ElementMappingMappingService<ValueMapping, ValueMappingDto> {
 
     public ValueMapping toEntity(ValueMappingDto valueMappingDto) {
         return ValueMapping

@@ -1,16 +1,16 @@
 package no.fintlabs.validation.constraints
 
-import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto
-import no.fintlabs.model.configuration.dtos.value.ValueMappingDto
+import no.fintlabs.model.configuration.dtos.ObjectMappingDto
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import spock.lang.Specification
 
 class AtLeastOneChildValidatorSpec extends Specification {
 
-    AtLeastOneChildValidator atLeastOneChildValidator;
+    AtLeastOneChildValidator atLeastOneChildValidator
 
     def setup() {
-        atLeastOneChildValidator = new AtLeastOneChildValidator();
+        atLeastOneChildValidator = new AtLeastOneChildValidator()
     }
 
     def 'should return true when object mapping has children'() {

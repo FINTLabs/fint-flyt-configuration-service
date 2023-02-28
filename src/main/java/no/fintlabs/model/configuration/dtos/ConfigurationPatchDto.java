@@ -3,7 +3,6 @@ package no.fintlabs.model.configuration.dtos;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.extern.jackson.Jacksonized;
-import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto;
 
 import java.util.Optional;
 

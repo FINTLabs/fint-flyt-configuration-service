@@ -1,7 +1,7 @@
 package no.fintlabs.validation.constraints
 
-import no.fintlabs.model.configuration.dtos.value.ValueMappingDto
-import no.fintlabs.model.configuration.entities.value.ValueMapping
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
+import no.fintlabs.model.configuration.entities.ValueMapping
 import no.fintlabs.model.metadata.InstanceValueMetadata
 import no.fintlabs.validation.ConfigurationValidationContext
 import no.fintlabs.validation.instancereference.InstanceValueKeyExtractionService

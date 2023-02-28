@@ -1,9 +1,8 @@
 package no.fintlabs.validation.constraints
 
-import no.fintlabs.model.configuration.dtos.object.ObjectCollectionMappingDto
-import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto
-import no.fintlabs.model.configuration.dtos.value.ValueCollectionMappingDto
-import no.fintlabs.model.configuration.dtos.value.ValueMappingDto
+import no.fintlabs.model.configuration.dtos.CollectionMappingDto
+import no.fintlabs.model.configuration.dtos.ObjectMappingDto
+import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import spock.lang.Specification
 
 class UniqueChildrenKeysValidatorSpec extends Specification {
@@ -24,8 +23,8 @@ class UniqueChildrenKeysValidatorSpec extends Specification {
                         "six", ValueMappingDto.builder().build(),
                 ))
                 .valueCollectionMappingPerKey(Map.of(
-                        "one", ValueCollectionMappingDto.builder().build(),
-                        "eight", ValueCollectionMappingDto.builder().build()
+                        "one", CollectionMappingDto.<ValueMappingDto> builder().build(),
+                        "eight", CollectionMappingDto.<ValueMappingDto> builder().build()
                 ))
                 .objectMappingPerKey(Map.of(
                         "two", ObjectMappingDto.builder().build(),
@@ -36,8 +35,8 @@ class UniqueChildrenKeysValidatorSpec extends Specification {
                         .build()
                 ))
                 .objectCollectionMappingPerKey(Map.of(
-                        "five", ObjectCollectionMappingDto.builder().build(),
-                        "seven", ObjectCollectionMappingDto.builder().build()
+                        "five", CollectionMappingDto.<ObjectMappingDto> builder().build(),
+                        "seven", CollectionMappingDto.<ObjectMappingDto> builder().build()
                 ))
                 .build()
 

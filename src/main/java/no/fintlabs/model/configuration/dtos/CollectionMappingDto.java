@@ -1,4 +1,4 @@
-package no.fintlabs.model.configuration.dtos.object;
+package no.fintlabs.model.configuration.dtos;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -14,11 +14,12 @@ import java.util.Collection;
 @Builder
 @EqualsAndHashCode
 @Jacksonized
-public class ObjectCollectionMappingDto {
+public class CollectionMappingDto<T> {
 
     @Builder.Default
-    private final Collection<@Valid @NotNull ObjectMappingDto> objectMappings = new ArrayList<>();
+    private final Collection<@Valid @NotNull T> elementMappings = new ArrayList<>();
 
     @Builder.Default
-    private final Collection<@Valid @NotNull ObjectsFromCollectionMappingDto> objectsFromCollectionMappings = new ArrayList<>();
+    private final Collection<@Valid @NotNull FromCollectionMappingDto<T>> fromCollectionMappings = new ArrayList<>();
+
 }

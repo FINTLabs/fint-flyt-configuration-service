@@ -1,6 +1,6 @@
 package no.fintlabs.validation.constraints;
 
-import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto;
+import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
 public class AtLeastOneChildValidator implements HibernateConstraintValidator<AtLeastOneChild, ObjectMappingDto> {

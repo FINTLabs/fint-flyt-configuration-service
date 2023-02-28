@@ -1,10 +1,9 @@
 package no.fintlabs.mapping;
 
-import no.fintlabs.mapping.object.ObjectMappingMappingService;
 import no.fintlabs.model.configuration.dtos.ConfigurationDto;
-import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto;
+import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
 import no.fintlabs.model.configuration.entities.Configuration;
-import no.fintlabs.model.configuration.entities.object.ObjectMapping;
+import no.fintlabs.model.configuration.entities.ObjectMapping;
 import org.springframework.stereotype.Service;
 
 @Service

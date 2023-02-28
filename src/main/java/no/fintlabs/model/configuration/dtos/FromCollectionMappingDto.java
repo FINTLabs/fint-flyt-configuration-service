@@ -1,4 +1,4 @@
-package no.fintlabs.model.configuration.dtos.object;
+package no.fintlabs.model.configuration.dtos;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
@@ -16,7 +16,7 @@ import java.util.List;
 @Builder
 @EqualsAndHashCode
 @Jacksonized
-public class ObjectsFromCollectionMappingDto {
+public class FromCollectionMappingDto<T> {
 
     @NotEmpty
     @Builder.Default
@@ -24,6 +24,6 @@ public class ObjectsFromCollectionMappingDto {
 
     @Valid
     @NotNull
-    private final ObjectMappingDto objectMapping;
+    private final T elementMapping;
 
 }

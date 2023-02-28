@@ -1,6 +1,6 @@
 package no.fintlabs.validation.valueparsability.validators;
 
-import no.fintlabs.model.configuration.entities.value.ValueMapping;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 import no.fintlabs.validation.valueparsability.ValueParsabilityValidator;
 import org.springframework.stereotype.Service;
 

@@ -1,11 +1,9 @@
-package no.fintlabs.model.configuration.dtos.object;
+package no.fintlabs.model.configuration.dtos;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
-import no.fintlabs.model.configuration.dtos.value.ValueCollectionMappingDto;
-import no.fintlabs.model.configuration.dtos.value.ValueMappingDto;
 import no.fintlabs.validation.constraints.AtLeastOneChild;
 import no.fintlabs.validation.constraints.UniqueChildrenKeys;
 
@@ -26,12 +24,12 @@ public class ObjectMappingDto {
     private final Map<String, @Valid @NotNull ValueMappingDto> valueMappingPerKey = new HashMap<>();
 
     @Builder.Default
-    private final Map<String, @Valid @NotNull ValueCollectionMappingDto> valueCollectionMappingPerKey = new HashMap<>();
+    private final Map<String, @Valid @NotNull CollectionMappingDto<ValueMappingDto>> valueCollectionMappingPerKey = new HashMap<>();
 
     @Builder.Default
     private final Map<String, @Valid @NotNull ObjectMappingDto> objectMappingPerKey = new HashMap<>();
 
     @Builder.Default
-    private final Map<String, @Valid @NotNull ObjectCollectionMappingDto> objectCollectionMappingPerKey = new HashMap<>();
+    private final Map<String, @Valid @NotNull CollectionMappingDto<ObjectMappingDto>> objectCollectionMappingPerKey = new HashMap<>();
 
 }

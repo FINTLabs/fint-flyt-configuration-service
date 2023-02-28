@@ -1,7 +1,7 @@
 package no.fintlabs.validation.instancereference;
 
-import no.fintlabs.model.configuration.dtos.value.ValueMappingDto;
-import no.fintlabs.model.configuration.entities.value.ValueMapping;
+import no.fintlabs.model.configuration.dtos.ValueMappingDto;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 import no.fintlabs.model.metadata.InstanceValueMetadata;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;

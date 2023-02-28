@@ -1,6 +1,6 @@
 package no.fintlabs.validation.instancereference.validators;
 
-import no.fintlabs.model.configuration.entities.value.ValueMapping;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 import no.fintlabs.model.metadata.InstanceValueMetadata;
 import no.fintlabs.validation.instancereference.InstanceValueTypeCompatibilityValidator;
 

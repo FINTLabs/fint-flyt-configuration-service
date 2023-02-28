@@ -1,15 +1,12 @@
-package no.fintlabs.mapping.object;
+package no.fintlabs.mapping;
 
 
-import no.fintlabs.mapping.PerKeyMappingService;
-import no.fintlabs.mapping.value.ValueCollectionMappingMappingService;
-import no.fintlabs.mapping.value.ValueMappingMappingService;
-import no.fintlabs.model.configuration.dtos.object.ObjectMappingDto;
-import no.fintlabs.model.configuration.entities.object.ObjectMapping;
+import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
+import no.fintlabs.model.configuration.entities.ObjectMapping;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ObjectMappingMappingService {
+public class ObjectMappingMappingService implements ElementMappingMappingService<ObjectMapping, ObjectMappingDto> {
 
     private final PerKeyMappingService perKeyMappingService;
     private final ValueMappingMappingService valueMappingMappingService;

@@ -1,8 +1,8 @@
-package no.fintlabs.model.configuration.entities.object;
+package no.fintlabs.model.configuration.entities.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
-import no.fintlabs.model.configuration.entities.InstanceCollectionReference;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -11,11 +11,11 @@ import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class ObjectsFromCollectionMapping {
+@MappedSuperclass
+public abstract class FromCollectionMapping<T> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +31,6 @@ public class ObjectsFromCollectionMapping {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @Valid
     @NotNull
-    private ObjectMapping objectMapping;
+    private T elementMapping;
 
 }

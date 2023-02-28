@@ -3,18 +3,15 @@ package no.fintlabs.model.configuration.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class InstanceCollectionReference {
+public class ValueMapping {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,9 +19,14 @@ public class InstanceCollectionReference {
     @Setter(AccessLevel.NONE)
     private long id;
 
-    private int index;
+    public enum Type {
+        STRING, URL, BOOLEAN, DYNAMIC_STRING, FILE
+    }
 
-    @NotBlank
-    private String reference;
+    @NotNull
+    @Enumerated(value = EnumType.STRING)
+    private Type type;
+
+    private String mappingString;
 
 }

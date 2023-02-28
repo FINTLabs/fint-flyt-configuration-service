@@ -2,7 +2,6 @@ package no.fintlabs.model.configuration.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import no.fintlabs.model.configuration.entities.object.ObjectMapping;
 
 import javax.persistence.*;
 import javax.validation.Valid;

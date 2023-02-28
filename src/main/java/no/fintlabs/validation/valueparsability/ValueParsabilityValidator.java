@@ -1,7 +1,7 @@
 package no.fintlabs.validation.valueparsability;
 
-import no.fintlabs.model.configuration.dtos.value.ValueMappingDto;
-import no.fintlabs.model.configuration.entities.value.ValueMapping;
+import no.fintlabs.model.configuration.dtos.ValueMappingDto;
+import no.fintlabs.model.configuration.entities.ValueMapping;
 
 public interface ValueParsabilityValidator {
 
