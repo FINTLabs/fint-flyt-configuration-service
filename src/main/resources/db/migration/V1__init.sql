@@ -11,10 +11,9 @@ create table configuration
 );
 create table instance_collection_reference
 (
-    id                                        bigserial not null,
-    index                                     int4      not null,
-    reference                                 varchar(255),
-    instance_collection_references_ordered_id int8,
+    id        bigserial not null,
+    index     int4      not null,
+    reference varchar(255),
     primary key (id)
 );
 create table object_collection_mapping
@@ -22,12 +21,12 @@ create table object_collection_mapping
     id bigserial not null,
     primary key (id)
 );
-create table object_collection_mapping_element_mappings
+create table object_collection_mapping_object_mappings
 (
     collection_mapping_id int8 not null,
     element_mapping_id    int8 not null
 );
-create table object_collection_mapping_from_collection_mappings
+create table object_collection_mapping_objects_from_collection_mappings
 (
     collection_mapping_id      int8 not null,
     from_collection_mapping_id int8 not null
@@ -65,10 +64,15 @@ create table object_mapping_value_mapping_per_key
     key               varchar(255) not null,
     primary key (object_mapping_id, key)
 );
+create table objects_from_collection_mapping_references_ordered
+(
+    objects_from_collection_mapping_id int8 not null,
+    instance_collection_reference_id   int8 not null
+);
 create table objects_from_collection_mapping
 (
-    id                 bigserial not null,
-    element_mapping_id int8      not null,
+    id                bigserial not null,
+    object_mapping_id int8      not null,
     primary key (id)
 );
 create table value_collection_mapping
@@ -76,12 +80,12 @@ create table value_collection_mapping
     id bigserial not null,
     primary key (id)
 );
-create table value_collection_mapping_element_mappings
+create table value_collection_mapping_value_mappings
 (
     collection_mapping_id int8 not null,
     element_mapping_id    int8 not null
 );
-create table value_collection_mapping_from_collection_mappings
+create table value_collection_mapping_values_from_collection_mappings
 (
     collection_mapping_id      int8 not null,
     from_collection_mapping_id int8 not null
@@ -93,18 +97,23 @@ create table value_mapping
     type           varchar(255) not null,
     primary key (id)
 );
+create table values_from_collection_mapping_references_ordered
+(
+    values_from_collection_mapping_id int8 not null,
+    instance_collection_reference_id  int8 not null
+);
 create table values_from_collection_mapping
 (
-    id                 bigserial not null,
-    element_mapping_id int8      not null,
+    id               bigserial not null,
+    value_mapping_id int8      not null,
     primary key (id)
 );
 alter table configuration
     add constraint UniqueIntegrationIdAndVersion unique (integration_id, version);
-alter table object_collection_mapping_element_mappings
-    add constraint UK_9ue5v3pqut9462hmi156v8272 unique (element_mapping_id);
-alter table object_collection_mapping_from_collection_mappings
-    add constraint UK_ahnvvudqy7ihpljxo0ixbv589 unique (from_collection_mapping_id);
+alter table object_collection_mapping_object_mappings
+    add constraint UK_a0vn9eam7l35afm90k6ylu7le unique (element_mapping_id);
+alter table object_collection_mapping_objects_from_collection_mappings
+    add constraint UK_o8qrmt9mvri5n6rv9ag3bu3ey unique (from_collection_mapping_id);
 alter table object_mapping_object_collection_mapping_per_key
     add constraint UK_2adm7ftc95kgcrvt1nfsgjw3c unique (object_collection_mapping_id);
 alter table object_mapping_object_mapping_per_key
@@ -113,22 +122,24 @@ alter table object_mapping_value_collection_mapping_per_key
     add constraint UK_156j33a8q9p9nm8el5fwq6jxi unique (value_collection_mapping_id);
 alter table object_mapping_value_mapping_per_key
     add constraint UK_ptwngyxt6t1up273t6ertw40t unique (value_mapping_id);
-alter table value_collection_mapping_element_mappings
-    add constraint UK_lc9gapk5rkftb7dq3xnjkr7g8 unique (element_mapping_id);
-alter table value_collection_mapping_from_collection_mappings
-    add constraint UK_5txh0cu49n06idrqh6xvl762o unique (from_collection_mapping_id);
+alter table objects_from_collection_mapping_references_ordered
+    add constraint UK_k8tdwivvk7pex39aw8uckoyt1 unique (instance_collection_reference_id);
+alter table value_collection_mapping_value_mappings
+    add constraint UK_81o2214022lytsm691por0b9j unique (element_mapping_id);
+alter table value_collection_mapping_values_from_collection_mappings
+    add constraint UK_6tsyyv1pvnqmdr7f2avn239m7 unique (from_collection_mapping_id);
+alter table values_from_collection_mapping_references_ordered
+    add constraint UK_nxe1x7yq6o3f3lf9gyepwsoqq unique (instance_collection_reference_id);
 alter table configuration
     add constraint FKwmivbmg8cyv1hyhr9951xu47 foreign key (mapping_id) references object_mapping;
-alter table instance_collection_reference
-    add constraint FK6q2d8n31nhwxoe2pfbl6kru7v foreign key (instance_collection_references_ordered_id) references values_from_collection_mapping;
-alter table object_collection_mapping_element_mappings
-    add constraint FKe83vo803kbli19f17ly00y5m4 foreign key (element_mapping_id) references object_mapping;
-alter table object_collection_mapping_element_mappings
-    add constraint FKfxulc26gr7jnfhqk3bj4w2os2 foreign key (collection_mapping_id) references object_collection_mapping;
-alter table object_collection_mapping_from_collection_mappings
-    add constraint FK3kukap8n54aoqk5xjvmwt5f06 foreign key (from_collection_mapping_id) references objects_from_collection_mapping;
-alter table object_collection_mapping_from_collection_mappings
-    add constraint FK5iot1jwbkpqqgto76g20517t1 foreign key (collection_mapping_id) references object_collection_mapping;
+alter table object_collection_mapping_object_mappings
+    add constraint FKsdk72agykqag4xjoq9y12aeyj foreign key (element_mapping_id) references object_mapping;
+alter table object_collection_mapping_object_mappings
+    add constraint FKln0boomy063wg78kown5bjr09 foreign key (collection_mapping_id) references object_collection_mapping;
+alter table object_collection_mapping_objects_from_collection_mappings
+    add constraint FKbkbieyhnkl906t7ag1fnlriah foreign key (from_collection_mapping_id) references objects_from_collection_mapping;
+alter table object_collection_mapping_objects_from_collection_mappings
+    add constraint FKs0hyfa9qqtao8vecqm2ikumxu foreign key (collection_mapping_id) references object_collection_mapping;
 alter table object_mapping_object_collection_mapping_per_key
     add constraint FKoajrfdkq22yk7y64xbior6oo0 foreign key (object_collection_mapping_id) references object_collection_mapping;
 alter table object_mapping_object_collection_mapping_per_key
@@ -145,15 +156,23 @@ alter table object_mapping_value_mapping_per_key
     add constraint FKmbs8y6aekhqoo3i5ugohgdmqi foreign key (value_mapping_id) references value_mapping;
 alter table object_mapping_value_mapping_per_key
     add constraint FK7u1q81aimulsgn0k13ri5r9nr foreign key (object_mapping_id) references object_mapping;
+alter table objects_from_collection_mapping_references_ordered
+    add constraint FK3qcj55prtvetwrrtvvbnr7so4 foreign key (instance_collection_reference_id) references instance_collection_reference;
+alter table objects_from_collection_mapping_references_ordered
+    add constraint FKfcttpi2dhdcwmn60irnbdw3yn foreign key (objects_from_collection_mapping_id) references objects_from_collection_mapping;
 alter table objects_from_collection_mapping
-    add constraint FKnjogdhnvaxdb548kvep8n6ok4 foreign key (element_mapping_id) references object_mapping;
-alter table value_collection_mapping_element_mappings
-    add constraint FKh29twjyr20bu0681robqsemkx foreign key (element_mapping_id) references value_mapping;
-alter table value_collection_mapping_element_mappings
-    add constraint FK7w914r2v5bxhdik83ow4imjj4 foreign key (collection_mapping_id) references value_collection_mapping;
-alter table value_collection_mapping_from_collection_mappings
-    add constraint FKfm4sv2g9biu1ohhpd3463klc foreign key (from_collection_mapping_id) references values_from_collection_mapping;
-alter table value_collection_mapping_from_collection_mappings
-    add constraint FK5kir798qf3cs7ve1ho8c9c3if foreign key (collection_mapping_id) references value_collection_mapping;
+    add constraint FKg9htsc08dvpg63kjxxn2914ds foreign key (object_mapping_id) references object_mapping;
+alter table value_collection_mapping_value_mappings
+    add constraint FKi75h2s4t9d09en05yrwvugygg foreign key (element_mapping_id) references value_mapping;
+alter table value_collection_mapping_value_mappings
+    add constraint FK3fy02sw4xbqik3snec1mwc0d8 foreign key (collection_mapping_id) references value_collection_mapping;
+alter table value_collection_mapping_values_from_collection_mappings
+    add constraint FKjiu8cel9pfatl3f9lgcx6e3nl foreign key (from_collection_mapping_id) references values_from_collection_mapping;
+alter table value_collection_mapping_values_from_collection_mappings
+    add constraint FKdxr5x6iqfmlewo8p8re4t7b67 foreign key (collection_mapping_id) references value_collection_mapping;
+alter table values_from_collection_mapping_references_ordered
+    add constraint FK2tq5ntbxvf0fg5578p8t334ce foreign key (instance_collection_reference_id) references instance_collection_reference;
+alter table values_from_collection_mapping_references_ordered
+    add constraint FKps8hyj2oqagd7q2a6w2dtx251 foreign key (values_from_collection_mapping_id) references values_from_collection_mapping;
 alter table values_from_collection_mapping
-    add constraint FKlssrlxhw8bn9ndq9gbe4voy1w foreign key (element_mapping_id) references value_mapping;
+    add constraint FKe99xh6knmllx5olj1rjpj5gcg foreign key (value_mapping_id) references value_mapping;

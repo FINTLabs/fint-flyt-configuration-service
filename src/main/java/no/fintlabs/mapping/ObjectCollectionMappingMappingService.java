@@ -3,7 +3,6 @@ package no.fintlabs.mapping;
 import no.fintlabs.model.configuration.dtos.CollectionMappingDto;
 import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
 import no.fintlabs.model.configuration.entities.collection.ObjectCollectionMapping;
-import no.fintlabs.model.configuration.entities.collection.ObjectsFromCollectionMapping;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
@@ -11,30 +10,55 @@ import org.springframework.stereotype.Service;
 public class ObjectCollectionMappingMappingService {
 
     private final ObjectMappingMappingService objectMappingMappingService;
-    private final CollectionMappingMappingService collectionMappingMappingService;
+    private final ObjectsFromCollectionMappingMappingService objectsFromCollectionMappingMappingService;
 
     public ObjectCollectionMappingMappingService(
             @Lazy ObjectMappingMappingService objectMappingMappingService,
-            CollectionMappingMappingService collectionMappingMappingService
+            ObjectsFromCollectionMappingMappingService objectsFromCollectionMappingMappingService
     ) {
+        this.objectsFromCollectionMappingMappingService = objectsFromCollectionMappingMappingService;
         this.objectMappingMappingService = objectMappingMappingService;
-        this.collectionMappingMappingService = collectionMappingMappingService;
     }
 
-    public ObjectCollectionMapping toEntity(CollectionMappingDto<ObjectMappingDto> dto) {
-        return collectionMappingMappingService.toEntity(
-                objectMappingMappingService::toEntity,
-                ObjectCollectionMapping::new,
-                ObjectsFromCollectionMapping::new,
-                dto
-        );
+
+    public ObjectCollectionMapping toEntity(CollectionMappingDto<ObjectMappingDto> objectCollectionMappingDto) {
+        return ObjectCollectionMapping
+                .builder()
+                .objectMappings(
+                        objectCollectionMappingDto
+                                .getElementMappings()
+                                .stream()
+                                .map(objectMappingMappingService::toEntity)
+                                .toList()
+                )
+                .objectsFromCollectionMappings(
+                        objectCollectionMappingDto
+                                .getFromCollectionMappings()
+                                .stream()
+                                .map(objectsFromCollectionMappingMappingService::toEntity)
+                                .toList()
+                )
+                .build();
     }
 
-    public CollectionMappingDto<ObjectMappingDto> toDto(ObjectCollectionMapping entity) {
-        return collectionMappingMappingService.toDto(
-                objectMappingMappingService::toDto,
-                entity
-        );
+    public CollectionMappingDto<ObjectMappingDto> toDto(ObjectCollectionMapping objectCollectionMapping) {
+        return CollectionMappingDto
+                .<ObjectMappingDto>builder()
+                .elementMappings(
+                        objectCollectionMapping
+                                .getObjectMappings()
+                                .stream()
+                                .map(objectMappingMappingService::toDto)
+                                .toList()
+                )
+                .fromCollectionMappings(
+                        objectCollectionMapping
+                                .getObjectsFromCollectionMappings()
+                                .stream()
+                                .map(objectsFromCollectionMappingMappingService::toDto)
+                                .toList()
+                )
+                .build();
     }
 
 }

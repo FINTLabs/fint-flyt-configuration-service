@@ -3,38 +3,60 @@ package no.fintlabs.mapping;
 import no.fintlabs.model.configuration.dtos.CollectionMappingDto;
 import no.fintlabs.model.configuration.dtos.ValueMappingDto;
 import no.fintlabs.model.configuration.entities.collection.ValueCollectionMapping;
-import no.fintlabs.model.configuration.entities.collection.ValuesFromCollectionMapping;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ValueCollectionMappingMappingService {
 
     private final ValueMappingMappingService valueMappingMappingService;
-    private final CollectionMappingMappingService collectionMappingMappingService;
+    private final ValuesFromCollectionMappingMappingService valuesFromCollectionMappingMappingService;
 
     public ValueCollectionMappingMappingService(
-            @Lazy ValueMappingMappingService valueMappingMappingService,
-            CollectionMappingMappingService collectionMappingMappingService
+            ValueMappingMappingService valueMappingMappingService,
+            ValuesFromCollectionMappingMappingService valuesFromCollectionMappingMappingService
     ) {
         this.valueMappingMappingService = valueMappingMappingService;
-        this.collectionMappingMappingService = collectionMappingMappingService;
+        this.valuesFromCollectionMappingMappingService = valuesFromCollectionMappingMappingService;
     }
 
-    public ValueCollectionMapping toEntity(CollectionMappingDto<ValueMappingDto> dto) {
-        return collectionMappingMappingService.toEntity(
-                valueMappingMappingService::toEntity,
-                ValueCollectionMapping::new,
-                ValuesFromCollectionMapping::new,
-                dto
-        );
+    public ValueCollectionMapping toEntity(CollectionMappingDto<ValueMappingDto> valueCollectionMappingDto) {
+        return ValueCollectionMapping
+                .builder()
+                .valueMappings(
+                        valueCollectionMappingDto
+                                .getElementMappings()
+                                .stream()
+                                .map(valueMappingMappingService::toEntity)
+                                .toList()
+                )
+                .valuesFromCollectionMappings(
+                        valueCollectionMappingDto
+                                .getFromCollectionMappings()
+                                .stream()
+                                .map(valuesFromCollectionMappingMappingService::toEntity)
+                                .toList()
+                )
+                .build();
     }
 
-    public CollectionMappingDto<ValueMappingDto> toDto(ValueCollectionMapping entity) {
-        return collectionMappingMappingService.toDto(
-                valueMappingMappingService::toDto,
-                entity
-        );
+    public CollectionMappingDto<ValueMappingDto> toDto(ValueCollectionMapping valueCollectionMapping) {
+        return CollectionMappingDto
+                .<ValueMappingDto>builder()
+                .elementMappings(
+                        valueCollectionMapping
+                                .getValueMappings()
+                                .stream()
+                                .map(valueMappingMappingService::toDto)
+                                .toList()
+                )
+                .fromCollectionMappings(
+                        valueCollectionMapping
+                                .getValuesFromCollectionMappings()
+                                .stream()
+                                .map(valuesFromCollectionMappingMappingService::toDto)
+                                .toList()
+                )
+                .build();
     }
 
 }

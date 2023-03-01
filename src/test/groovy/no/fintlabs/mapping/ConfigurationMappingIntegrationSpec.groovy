@@ -11,8 +11,10 @@ import org.springframework.test.context.ContextConfiguration
 import spock.lang.Specification
 
 @ContextConfiguration(classes = [
-        FromCollectionMappingMappingService.class,
-        CollectionMappingMappingService.class,
+        ObjectsFromCollectionMappingMappingService.class,
+        ObjectCollectionMappingMappingService.class,
+        ValuesFromCollectionMappingMappingService.class,
+        ValueCollectionMappingMappingService.class,
         InstanceCollectionReferencesMappingService.class,
         PerKeyMappingService.class,
         ValueMappingMappingService.class,
@@ -79,7 +81,7 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                         "object2object1valueCollection1",
                                                                         ValueCollectionMapping
                                                                                 .builder()
-                                                                                .elementMappings(List.of(
+                                                                                .valueMappings(List.of(
                                                                                         ValueMapping
                                                                                                 .builder()
                                                                                                 .type(ValueMapping.Type.STRING)
@@ -91,7 +93,7 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                                 .mappingString("dynamicString1")
                                                                                                 .build()
                                                                                 ))
-                                                                                .fromCollectionMappings(List.of(
+                                                                                .valuesFromCollectionMappings(List.of(
                                                                                         ValuesFromCollectionMapping
                                                                                                 .builder()
                                                                                                 .instanceCollectionReferencesOrdered(List.of(
@@ -101,7 +103,7 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                                                 .reference("reference1")
                                                                                                                 .build()
                                                                                                 ))
-                                                                                                .elementMapping(
+                                                                                                .valueMapping(
                                                                                                         ValueMapping
                                                                                                                 .builder()
                                                                                                                 .type(ValueMapping.Type.DYNAMIC_STRING)
@@ -123,7 +125,7 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                                                 .reference("reference3")
                                                                                                                 .build()
                                                                                                 ))
-                                                                                                .elementMapping(
+                                                                                                .valueMapping(
                                                                                                         ValueMapping
                                                                                                                 .builder()
                                                                                                                 .type(ValueMapping.Type.STRING)
@@ -169,8 +171,8 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                         "objectCollection1",
                                         ObjectCollectionMapping
                                                 .builder()
-                                                .elementMappings(List.of())
-                                                .fromCollectionMappings(List.of(
+                                                .objectMappings(List.of())
+                                                .objectsFromCollectionMappings(List.of(
                                                         ObjectsFromCollectionMapping
                                                                 .builder()
                                                                 .instanceCollectionReferencesOrdered(List.of(
@@ -185,7 +187,7 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                 .reference("reference5")
                                                                                 .build()
                                                                 ))
-                                                                .elementMapping(
+                                                                .objectMapping(
                                                                         ObjectMapping
                                                                                 .builder()
                                                                                 .valueMappingPerKey(Map.of(

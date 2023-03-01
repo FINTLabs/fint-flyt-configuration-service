@@ -1,13 +1,40 @@
 package no.fintlabs.model.configuration.entities.collection;
 
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import no.fintlabs.model.configuration.entities.ValueMapping;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.util.Collection;
 
-@SuperBuilder
+@Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class ValuesFromCollectionMapping extends FromCollectionMapping<ValueMapping> {
+public class ValuesFromCollectionMapping {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonIgnore
+    @Setter(AccessLevel.NONE)
+    private long id;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinTable(
+            name = "values_from_collection_mapping_references_ordered",
+            joinColumns = @JoinColumn(name = "values_from_collection_mapping_id"),
+            inverseJoinColumns = @JoinColumn(name = "instance_collection_reference_id")
+    )
+    @NotEmpty
+    private Collection<@Valid @NotNull InstanceCollectionReference> instanceCollectionReferencesOrdered;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @Valid
+    @NotNull
+    private ValueMapping valueMapping;
+
 }
