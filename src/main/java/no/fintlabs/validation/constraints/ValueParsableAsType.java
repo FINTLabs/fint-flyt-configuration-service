@@ -10,9 +10,9 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy = ValueParsableAsTypeValidator.class)
 public @interface ValueParsableAsType {
 
-    String FIELD_VALUE_TYPE_REF = "fieldValueType";
+    String VALUE_TYPE = "valueType";
 
-    String message() default "contains value that is not parsable as type={" + FIELD_VALUE_TYPE_REF + "}";
+    String message() default "contains value that is not parsable as type={" + VALUE_TYPE + "}";
 
     Class<?>[] groups() default {};
 

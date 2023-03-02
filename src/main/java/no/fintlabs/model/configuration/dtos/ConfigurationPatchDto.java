@@ -1,19 +1,23 @@
 package no.fintlabs.model.configuration.dtos;
 
-import lombok.Data;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
+import lombok.extern.jackson.Jacksonized;
 
 import java.util.Optional;
 
-@Data
+@Builder
+@EqualsAndHashCode
+@Jacksonized
 public class ConfigurationPatchDto {
 
-    private Long integrationMetadataId;
+    private final Long integrationMetadataId;
 
-    private Boolean completed;
+    private final Boolean completed;
 
-    private String comment;
+    private final String comment;
 
-    private ElementMappingDto mapping;
+    private final ObjectMappingDto mapping;
 
     public Optional<Long> getIntegrationMetadataId() {
         return Optional.ofNullable(integrationMetadataId);
@@ -27,7 +31,7 @@ public class ConfigurationPatchDto {
         return Optional.ofNullable(comment);
     }
 
-    public Optional<ElementMappingDto> getMapping() {
+    public Optional<ObjectMappingDto> getMapping() {
         return Optional.ofNullable(mapping);
     }
 

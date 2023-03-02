@@ -2,10 +2,10 @@ package no.fintlabs.model.configuration.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.validation.constraints.IntegrationAndMetadataMatches;
 
 import javax.validation.Valid;
@@ -13,32 +13,32 @@ import javax.validation.constraints.NotNull;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-@Data
+@Getter
 @Builder(toBuilder = true)
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode
+@Jacksonized
 @IntegrationAndMetadataMatches
 public class ConfigurationDto {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long id;
+    private final Long id;
 
     @NotNull
-    private Long integrationId;
+    private final Long integrationId;
 
     @NotNull
-    private Long integrationMetadataId;
+    private final Long integrationMetadataId;
 
-    private boolean completed;
+    private final boolean completed;
 
-    private String comment;
+    private final String comment;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Integer version;
+    private final Integer version;
 
     @JsonInclude(Include.NON_NULL)
     @Valid
     @NotNull
-    private ElementMappingDto mapping;
+    private final ObjectMappingDto mapping;
 
 }

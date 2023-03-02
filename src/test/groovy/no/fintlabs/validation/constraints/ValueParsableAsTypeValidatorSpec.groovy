@@ -2,22 +2,22 @@ package no.fintlabs.validation.constraints
 
 import no.fintlabs.model.configuration.dtos.ValueMappingDto
 import no.fintlabs.model.configuration.entities.ValueMapping
-import no.fintlabs.validation.parsability.FieldParsabilityValidator
+import no.fintlabs.validation.valueparsability.ValueParsabilityValidator
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext
 import spock.lang.Specification
 
 class ValueParsableAsTypeValidatorSpec extends Specification {
 
-    FieldParsabilityValidator fieldParsabilityValidator1
-    FieldParsabilityValidator fieldParsabilityValidator2
+    ValueParsabilityValidator valueParsabilityValidator1
+    ValueParsabilityValidator valueParsabilityValidator2
     ValueParsableAsTypeValidator valueParsableAsTypeValidator
     HibernateConstraintValidatorContext hibernateConstraintValidatorContext
 
     def setup() {
-        fieldParsabilityValidator1 = Mock(FieldParsabilityValidator.class)
-        fieldParsabilityValidator2 = Mock(FieldParsabilityValidator.class)
+        valueParsabilityValidator1 = Mock(ValueParsabilityValidator.class)
+        valueParsabilityValidator2 = Mock(ValueParsabilityValidator.class)
         valueParsableAsTypeValidator = new ValueParsableAsTypeValidator(
-                List.of(fieldParsabilityValidator1, fieldParsabilityValidator2)
+                List.of(valueParsabilityValidator1, valueParsabilityValidator2)
         )
         hibernateConstraintValidatorContext = Mock(HibernateConstraintValidatorContext.class)
         hibernateConstraintValidatorContext.addMessageParameter(_ as String, _) >> hibernateConstraintValidatorContext
@@ -26,8 +26,8 @@ class ValueParsableAsTypeValidatorSpec extends Specification {
 
     def "should return true if all field parsability validators return true"() {
         given:
-        fieldParsabilityValidator1.isValid(_ as ValueMappingDto) >> true
-        fieldParsabilityValidator2.isValid(_ as ValueMappingDto) >> true
+        valueParsabilityValidator1.isValid(_ as ValueMappingDto) >> true
+        valueParsabilityValidator2.isValid(_ as ValueMappingDto) >> true
 
         when:
         boolean valid = valueParsableAsTypeValidator.isValid(
@@ -41,8 +41,8 @@ class ValueParsableAsTypeValidatorSpec extends Specification {
 
     def "should return false if one field parsability validator returns false"() {
         given:
-        fieldParsabilityValidator1.isValid(_ as ValueMappingDto) >> true
-        fieldParsabilityValidator2.isValid(_ as ValueMappingDto) >> false
+        valueParsabilityValidator1.isValid(_ as ValueMappingDto) >> true
+        valueParsabilityValidator2.isValid(_ as ValueMappingDto) >> false
 
         when:
         boolean valid = valueParsableAsTypeValidator.isValid(

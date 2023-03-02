@@ -47,7 +47,7 @@ public class ConfigurationController {
             @RequestParam(name = "sorteringRetning") Sort.Direction sortDirection,
             @RequestParam(name = "integrasjonId") Optional<Long> integrationId,
             @RequestParam(name = "ferdigstilt") Optional<Boolean> complete,
-            @RequestParam(name = "ekskluderElementer", required = false) boolean excludeElements
+            @RequestParam(name = "ekskluderMapping", required = false) boolean excludeMapping
     ) {
         ConfigurationFilter filter = ConfigurationFilter
                 .builder()
@@ -59,17 +59,17 @@ public class ConfigurationController {
                 .of(page, size)
                 .withSort(sortDirection, sortProperty);
 
-        return ResponseEntity.ok(configurationService.findAll(filter, excludeElements, pageRequest));
+        return ResponseEntity.ok(configurationService.findAll(filter, excludeMapping, pageRequest));
     }
 
     @GetMapping("{configurationId}")
     public ResponseEntity<ConfigurationDto> getConfiguration(
             @PathVariable Long configurationId,
-            @RequestParam(name = "ekskluderElementer", required = false) boolean excludeElements
+            @RequestParam(name = "ekskluderMapping", required = false) boolean excludeMapping
     ) {
         return ResponseEntity.ok(
                 configurationService
-                        .findById(configurationId, excludeElements)
+                        .findById(configurationId, excludeMapping)
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND))
         );
     }
@@ -96,15 +96,19 @@ public class ConfigurationController {
 
         validateIsNotCompleted(configurationDto);
 
-        configurationPatchDto.getIntegrationMetadataId().ifPresent(configurationDto::setIntegrationMetadataId);
-        configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configurationDto::setCompleted);
-        configurationPatchDto.getComment().ifPresent(configurationDto::setComment);
-        configurationPatchDto.getMapping().ifPresent(configurationDto::setMapping);
+        ConfigurationDto.ConfigurationDtoBuilder configurationDtoBuilder = configurationDto.toBuilder();
+
+        configurationPatchDto.getIntegrationMetadataId().ifPresent(configurationDtoBuilder::integrationMetadataId);
+        configurationPatchDto.isCompleted().filter(Boolean::booleanValue).ifPresent(configurationDtoBuilder::completed);
+        configurationPatchDto.getComment().ifPresent(configurationDtoBuilder::comment);
+        configurationPatchDto.getMapping().ifPresent(configurationDtoBuilder::mapping);
+
+        ConfigurationDto newConfigurationDto = configurationDtoBuilder.build();
 
         validateBeanConstraints(
-                configurationDto.getIntegrationId(),
-                configurationDto.getIntegrationMetadataId(),
-                configurationDto
+                newConfigurationDto.getIntegrationId(),
+                newConfigurationDto.getIntegrationMetadataId(),
+                newConfigurationDto
         );
 
         return ResponseEntity.ok(configurationService.updateById(configurationId, configurationPatchDto));

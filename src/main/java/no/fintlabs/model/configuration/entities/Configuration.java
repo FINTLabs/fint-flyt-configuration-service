@@ -40,6 +40,6 @@ public class Configuration {
     @JoinColumn(name = "mapping_id", referencedColumnName = "id")
     @Valid
     @NotNull
-    ElementMapping mapping;
+    ObjectMapping mapping;
 
 }

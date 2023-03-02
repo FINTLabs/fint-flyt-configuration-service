@@ -1,32 +1,32 @@
 package no.fintlabs.model.configuration.dtos;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.model.configuration.entities.ValueMapping;
-import no.fintlabs.validation.constraints.InstanceFieldReferenceKeysExistInMetadata;
-import no.fintlabs.validation.constraints.InstanceFieldReferenceValueTypesAreCompatible;
+import no.fintlabs.validation.constraints.InstanceValueKeysAreDefinedInMetadata;
+import no.fintlabs.validation.constraints.InstanceValueTypesAreCompatible;
 import no.fintlabs.validation.constraints.ValueParsableAsType;
-import no.fintlabs.validation.groups.MetadataKeys;
-import no.fintlabs.validation.groups.MetadataType;
+import no.fintlabs.validation.groups.InstanceValueKeys;
+import no.fintlabs.validation.groups.InstanceValueTypes;
 import no.fintlabs.validation.groups.ValueParsability;
 
 import javax.validation.constraints.NotNull;
 
 @ValueParsableAsType(groups = ValueParsability.class)
-@InstanceFieldReferenceKeysExistInMetadata(groups = MetadataKeys.class)
-@InstanceFieldReferenceValueTypesAreCompatible(groups = MetadataType.class)
-@Data
+@InstanceValueKeysAreDefinedInMetadata(groups = InstanceValueKeys.class)
+@InstanceValueTypesAreCompatible(groups = InstanceValueTypes.class)
+@Getter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@EqualsAndHashCode
+@Jacksonized
 public class ValueMappingDto {
 
     @NotNull
-    private ValueMapping.Type type;
+    private final ValueMapping.Type type;
 
     @NotNull
-    private String mappingString;
+    private final String mappingString;
 
 }

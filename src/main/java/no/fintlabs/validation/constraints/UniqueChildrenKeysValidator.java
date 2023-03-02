@@ -1,6 +1,6 @@
 package no.fintlabs.validation.constraints;
 
-import no.fintlabs.model.configuration.dtos.ElementMappingDto;
+import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 import org.hibernate.validator.internal.util.CollectionHelper;
 
@@ -10,10 +10,10 @@ import java.util.stream.Stream;
 
 import static no.fintlabs.validation.constraints.UniqueChildrenKeys.DUPLICATE_CHILDREN_KEYS_REF;
 
-public class UniqueChildrenKeysValidator implements HibernateConstraintValidator<UniqueChildrenKeys, ElementMappingDto> {
+public class UniqueChildrenKeysValidator implements HibernateConstraintValidator<UniqueChildrenKeys, ObjectMappingDto> {
 
     @Override
-    public boolean isValid(ElementMappingDto value, HibernateConstraintValidatorContext hibernateConstraintValidatorContext) {
+    public boolean isValid(ObjectMappingDto value, HibernateConstraintValidatorContext hibernateConstraintValidatorContext) {
         List<String> duplicateKeys = findDuplicateKeys(value);
         if (duplicateKeys.isEmpty()) {
             return true;
@@ -30,12 +30,13 @@ public class UniqueChildrenKeysValidator implements HibernateConstraintValidator
     }
 
 
-    protected List<String> findDuplicateKeys(ElementMappingDto value) {
+    protected List<String> findDuplicateKeys(ObjectMappingDto value) {
         Set<String> checkedKeys = new HashSet<>();
         return Stream.of(
                         value.getValueMappingPerKey(),
-                        value.getElementMappingPerKey(),
-                        value.getElementCollectionMappingPerKey()
+                        value.getValueCollectionMappingPerKey(),
+                        value.getObjectMappingPerKey(),
+                        value.getObjectCollectionMappingPerKey()
                 )
                 .map(Map::keySet)
                 .flatMap(Collection::stream)

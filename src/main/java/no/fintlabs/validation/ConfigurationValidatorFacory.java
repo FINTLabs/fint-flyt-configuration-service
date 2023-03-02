@@ -1,10 +1,12 @@
 package no.fintlabs.validation;
 
-import no.fintlabs.kafka.InstanceElementMetadataRequestProducerService;
+import no.fintlabs.kafka.InstanceMetadataRequestProducerService;
 import no.fintlabs.kafka.IntegrationRequestProducerService;
 import no.fintlabs.kafka.MetadataRequestProducerService;
 import no.fintlabs.model.integration.Integration;
-import no.fintlabs.model.metadata.InstanceElementMetadata;
+import no.fintlabs.model.metadata.InstanceMetadataCategory;
+import no.fintlabs.model.metadata.InstanceMetadataContent;
+import no.fintlabs.model.metadata.InstanceValueMetadata;
 import no.fintlabs.model.metadata.IntegrationMetadata;
 import org.hibernate.validator.HibernateValidatorFactory;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ConfigurationValidatorFacory {
@@ -24,18 +27,18 @@ public class ConfigurationValidatorFacory {
 
     private final IntegrationRequestProducerService integrationRequestProducerService;
     private final MetadataRequestProducerService metadataRequestProducerService;
-    private final InstanceElementMetadataRequestProducerService instanceElementMetadataRequestProducerService;
+    private final InstanceMetadataRequestProducerService instanceMetadataRequestProducerService;
 
     public ConfigurationValidatorFacory(
             ValidatorFactory validatorFactory,
             IntegrationRequestProducerService integrationRequestProducerService,
             MetadataRequestProducerService metadataRequestProducerService,
-            InstanceElementMetadataRequestProducerService instanceElementMetadataRequestProducerService
+            InstanceMetadataRequestProducerService instanceMetadataRequestProducerService
     ) {
         this.validatorFactory = validatorFactory;
         this.integrationRequestProducerService = integrationRequestProducerService;
         this.metadataRequestProducerService = metadataRequestProducerService;
-        this.instanceElementMetadataRequestProducerService = instanceElementMetadataRequestProducerService;
+        this.instanceMetadataRequestProducerService = instanceMetadataRequestProducerService;
     }
 
     public Validator getValidator(Long integrationId, Long metadataId) {
@@ -56,23 +59,23 @@ public class ConfigurationValidatorFacory {
                 .get(metadataId)
                 .orElseThrow(() -> new CouldNotFindMetadataException(metadataId));
 
-        Collection<InstanceElementMetadata> instanceElementMetadata = instanceElementMetadataRequestProducerService
+        InstanceMetadataContent instanceMetadata = instanceMetadataRequestProducerService
                 .get(metadataId)
-                .orElseThrow(() -> new CouldNotFindInstanceElementMetadataException(metadataId));
+                .orElseThrow(() -> new CouldNotFindInstanceMetadataException(metadataId));
 
         return ConfigurationValidationContext
                 .builder()
                 .integration(integration)
                 .metadata(metadata)
-                .metadataInstanceFieldTypePerKey(getInstanceFieldTypePerKey(instanceElementMetadata))
+                .instanceValueTypePerKey(getInstanceValueTypePerKey(instanceMetadata))
                 .build();
 
     }
 
-    private Map<String, InstanceElementMetadata.Type> getInstanceFieldTypePerKey(
-            Collection<InstanceElementMetadata> instanceElementMetadata
+    private Map<String, InstanceValueMetadata.Type> getInstanceValueTypePerKey(
+            InstanceMetadataContent instanceMetadata
     ) {
-        return getInstanceFieldTypePerKeyEntries(instanceElementMetadata)
+        return getInstanceValueTypePerKeyEntries(instanceMetadata)
                 .stream()
                 .collect(Collectors.toMap(
                         AbstractMap.SimpleEntry::getKey,
@@ -80,26 +83,25 @@ public class ConfigurationValidatorFacory {
                 ));
     }
 
-    private List<AbstractMap.SimpleEntry<String, InstanceElementMetadata.Type>> getInstanceFieldTypePerKeyEntries(
-            Collection<InstanceElementMetadata> instanceElementMetadata
+    private List<AbstractMap.SimpleEntry<String, InstanceValueMetadata.Type>> getInstanceValueTypePerKeyEntries(
+            InstanceMetadataContent instanceMetadataContent
     ) {
-        return instanceElementMetadata.stream()
-                .map(this::getInstanceFieldTypePerKeyEntries)
-                .flatMap(Collection::stream)
-                .collect(Collectors.toList());
+        return Stream.concat(
+                        instanceMetadataContent
+                                .getCategories()
+                                .stream()
+                                .map(InstanceMetadataCategory::getContent)
+                                .map(this::getInstanceValueTypePerKeyEntries)
+                                .flatMap(Collection::stream),
+                        instanceMetadataContent
+                                .getInstanceValueMetadata()
+                                .stream()
+                                .map(instanceValueMetadata -> new AbstractMap.SimpleEntry<>(
+                                        instanceValueMetadata.getKey(),
+                                        instanceValueMetadata.getType()
+                                ))
+                )
+                .toList();
     }
 
-    private List<AbstractMap.SimpleEntry<String, InstanceElementMetadata.Type>> getInstanceFieldTypePerKeyEntries(
-            InstanceElementMetadata instanceElementMetadata
-    ) {
-        List<AbstractMap.SimpleEntry<String, InstanceElementMetadata.Type>> typesPerKey =
-                getInstanceFieldTypePerKeyEntries(instanceElementMetadata.getChildren());
-        if (instanceElementMetadata.getKey().isPresent() && instanceElementMetadata.getType().isPresent()) {
-            typesPerKey.add(new AbstractMap.SimpleEntry<>(
-                    instanceElementMetadata.getKey().get(),
-                    instanceElementMetadata.getType().get()
-            ));
-        }
-        return typesPerKey;
-    }
 }
