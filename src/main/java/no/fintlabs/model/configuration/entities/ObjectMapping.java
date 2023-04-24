@@ -1,6 +1,7 @@
 package no.fintlabs.model.configuration.entities;
 
 import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.model.configuration.entities.collection.ObjectCollectionMapping;
 import no.fintlabs.model.configuration.entities.collection.ValueCollectionMapping;
 
@@ -9,7 +10,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Map;
 
-@Data
+@Getter
+@EqualsAndHashCode
+@Jacksonized
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -2,6 +2,7 @@ package no.fintlabs.model.configuration.entities.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.model.configuration.entities.ObjectMapping;
 
 import javax.persistence.*;
@@ -10,8 +11,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
-@Data
+@Getter
 @Builder
+@Jacksonized
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity

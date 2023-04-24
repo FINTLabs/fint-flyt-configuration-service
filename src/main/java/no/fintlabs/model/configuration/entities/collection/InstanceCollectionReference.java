@@ -2,6 +2,7 @@ package no.fintlabs.model.configuration.entities.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import lombok.extern.jackson.Jacksonized;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,8 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
-@Data
+@Getter
+@EqualsAndHashCode
 @Builder
+@Jacksonized
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
