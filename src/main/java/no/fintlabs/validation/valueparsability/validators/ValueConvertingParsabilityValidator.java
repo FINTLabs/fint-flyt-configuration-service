@@ -21,7 +21,7 @@ public class ValueConvertingParsabilityValidator implements ValueParsabilityVali
 
     @Override
     public ValueMapping.Type getTypeToValidate() {
-        return ValueMapping.Type.DYNAMIC_STRING;
+        return ValueMapping.Type.VALUE_CONVERTING;
     }
 
     @Override
