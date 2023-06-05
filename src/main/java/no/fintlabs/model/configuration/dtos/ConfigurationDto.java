@@ -36,8 +36,8 @@ public class ConfigurationDto {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private final Integer version;
 
-    //@JsonInclude(Include.NON_NULL)
-    //@Valid
+    @JsonInclude(Include.NON_NULL)
+    @Valid
     @NotNull
     private final ObjectMappingDto mapping;
 
