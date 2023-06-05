@@ -23,7 +23,7 @@ public class ValueMapping {
     private long id;
 
     public enum Type {
-        STRING, URL, BOOLEAN, DYNAMIC_STRING, FILE
+        STRING, URL, BOOLEAN, DYNAMIC_STRING, FILE, VALUE_CONVERTING
     }
 
     @NotNull
