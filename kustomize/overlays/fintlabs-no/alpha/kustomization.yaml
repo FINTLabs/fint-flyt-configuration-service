@@ -22,7 +22,7 @@ patches:
         value: "/alpha/fintlabs-no"
       - op: replace
         path: "/spec/ingress/basePath"
-        value: "/beta/fintlabs-no/api/intern/konfigurasjoner"
+        value: "/alpha/fintlabs-no/api/intern/konfigurasjoner"
       - op: replace
         path: "/spec/env/1/value"
         value: "fintlabs.no, vigo.no"
