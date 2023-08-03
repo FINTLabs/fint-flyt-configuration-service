@@ -2,7 +2,7 @@ package no.fintlabs;
 
 import no.fintlabs.model.configuration.dtos.ConfigurationDto;
 import no.fintlabs.model.configuration.dtos.ConfigurationPatchDto;
-import no.fintlabs.validation.ConfigurationValidatorFacory;
+import no.fintlabs.validation.ConfigurationValidatorFactory;
 import no.fintlabs.validation.ValidationErrorsFormattingService;
 import no.fintlabs.validation.groups.Completed;
 import org.springframework.data.domain.Page;
@@ -26,16 +26,16 @@ import static no.fintlabs.resourceserver.UrlPaths.INTERNAL_API;
 public class ConfigurationController {
 
     private final ConfigurationService configurationService;
-    private final ConfigurationValidatorFacory configurationValidatorFacory;
+    private final ConfigurationValidatorFactory configurationValidatorFactory;
     private final ValidationErrorsFormattingService validationErrorsFormattingService;
 
     public ConfigurationController(
             ConfigurationService configurationService,
-            ConfigurationValidatorFacory configurationValidatorFacory,
+            ConfigurationValidatorFactory configurationValidatorFactory,
             ValidationErrorsFormattingService validationErrorsFormattingService
     ) {
         this.configurationService = configurationService;
-        this.configurationValidatorFacory = configurationValidatorFacory;
+        this.configurationValidatorFactory = configurationValidatorFactory;
         this.validationErrorsFormattingService = validationErrorsFormattingService;
     }
 
@@ -134,7 +134,7 @@ public class ConfigurationController {
     }
 
     private void validateBeanConstraints(long integrationId, long metadataId, ConfigurationDto configurationDto) {
-        Validator validator = configurationValidatorFacory.getValidator(
+        Validator validator = configurationValidatorFactory.getValidator(
                 integrationId, metadataId
         );
         Set<ConstraintViolation<ConfigurationDto>> constraintViolations = configurationDto.isCompleted()
