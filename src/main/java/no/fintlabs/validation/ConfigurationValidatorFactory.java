@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
-public class ConfigurationValidatorFacory {
+public class ConfigurationValidatorFactory {
 
     private final ValidatorFactory validatorFactory;
 
@@ -29,7 +29,7 @@ public class ConfigurationValidatorFacory {
     private final MetadataRequestProducerService metadataRequestProducerService;
     private final InstanceMetadataRequestProducerService instanceMetadataRequestProducerService;
 
-    public ConfigurationValidatorFacory(
+    public ConfigurationValidatorFactory(
             ValidatorFactory validatorFactory,
             IntegrationRequestProducerService integrationRequestProducerService,
             MetadataRequestProducerService metadataRequestProducerService,

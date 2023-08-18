@@ -1,16 +1,21 @@
-package no.fintlabs.mapping
+package no.fintlabs.mapping;
 
+import no.fintlabs.model.configuration.dtos.*;
+import no.fintlabs.model.configuration.entities.Configuration;
+import no.fintlabs.model.configuration.entities.ObjectMapping;
+import no.fintlabs.model.configuration.entities.ValueMapping;
+import no.fintlabs.model.configuration.entities.collection.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import no.fintlabs.model.configuration.dtos.*
-import no.fintlabs.model.configuration.entities.Configuration
-import no.fintlabs.model.configuration.entities.ObjectMapping
-import no.fintlabs.model.configuration.entities.ValueMapping
-import no.fintlabs.model.configuration.entities.collection.*
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.test.context.ContextConfiguration
-import spock.lang.Specification
+import java.util.List;
+import java.util.Map;
 
-@ContextConfiguration(classes = [
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@SpringBootTest(classes = {
         ObjectsFromCollectionMappingMappingService.class,
         ObjectCollectionMappingMappingService.class,
         ValuesFromCollectionMappingMappingService.class,
@@ -22,24 +27,25 @@ import spock.lang.Specification
         ObjectMappingMappingService.class,
         ObjectCollectionMappingMappingService.class,
         ConfigurationMappingService.class
-])
-class ConfigurationMappingIntegrationSpec extends Specification {
+})
+public class ConfigurationMappingIntegrationTest {
 
     @Autowired
-    ConfigurationMappingService configurationMappingService
-    Configuration configuration
-    ConfigurationDto configurationDto
+    ConfigurationMappingService configurationMappingService;
+    Configuration configuration;
+    ConfigurationDto configurationDto;
 
-    def setup() {
-        configuration = createConfiguration()
-        configurationDto = createConfigurationDto()
+    @BeforeEach
+    public void setup() {
+        configuration = createConfiguration();
+        configurationDto = createConfigurationDto();
     }
 
-    Configuration createConfiguration() {
+    private Configuration createConfiguration() {
         return Configuration
                 .builder()
-                .integrationId(1)
-                .integrationMetadataId(2)
+                .integrationId(1L)
+                .integrationMetadataId(2L)
                 .mapping(
                         ObjectMapping
                                 .builder()
@@ -75,8 +81,8 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                 .builder()
                                                                                 .type(ValueMapping.Type.STRING)
                                                                                 .mappingString("text1")
-                                                                                .build(),
-                                                                ))
+                                                                                .build()
+                                                                        ))
                                                                 .valueCollectionMappingPerKey(Map.of(
                                                                         "object2object1valueCollection1",
                                                                         ValueCollectionMapping
@@ -132,8 +138,8 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                                                 .mappingString("text3")
                                                                                                                 .build()
                                                                                                 )
-                                                                                                .build(),
-                                                                                ))
+                                                                                                .build()
+                                                                                        ))
                                                                                 .build()
                                                                 ))
                                                                 .objectMappingPerKey(Map.of(
@@ -209,14 +215,14 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                 ))
                                 .build()
                 )
-                .build()
+                .build();
     }
 
-    ConfigurationDto createConfigurationDto() {
+    private ConfigurationDto createConfigurationDto() {
         return ConfigurationDto
                 .builder()
-                .integrationId(1)
-                .integrationMetadataId(2)
+                .integrationId(1L)
+                .integrationMetadataId(2L)
                 .mapping(
                         ObjectMappingDto
                                 .builder()
@@ -252,8 +258,8 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                 .builder()
                                                                                 .type(ValueMapping.Type.STRING)
                                                                                 .mappingString("text1")
-                                                                                .build(),
-                                                                ))
+                                                                                .build()
+                                                                        ))
                                                                 .valueCollectionMappingPerKey(Map.of(
                                                                         "object2object1valueCollection1",
                                                                         CollectionMappingDto
@@ -299,8 +305,8 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                                                                                 )
                                                                                                 .build()
                                                                                 ))
-                                                                                .build(),
-                                                                ))
+                                                                                .build()
+                                                                        ))
                                                                 .objectMappingPerKey(Map.of(
                                                                         "object2object1object1",
                                                                         ObjectMappingDto
@@ -366,36 +372,31 @@ class ConfigurationMappingIntegrationSpec extends Specification {
                                 ))
                                 .build()
                 )
-                .build()
+                .build();
     }
 
-    def 'should keep all values when mapping to dto with mapping'() {
-        when:
-        ConfigurationDto result = configurationMappingService.toDto(configuration, false)
-
-        then:
-        result == configurationDto
+    @Test
+    public void shouldKeepAllValuesWhenMappingToDtoWithMapping() {
+        ConfigurationDto result = configurationMappingService.toDto(configuration, false);
+        assertEquals(configurationDto, result);
     }
 
-    def 'should keep all values when mapping to dto without mapping'() {
-        when:
-        ConfigurationDto result = configurationMappingService.toDto(configuration, true)
-
-        then:
-        result == ConfigurationDto
-                .builder()
-                .integrationId(1)
-                .integrationMetadataId(2)
-                .build()
+    @Test
+    public void shouldKeepAllValuesWhenMappingToDtoWithoutMapping() {
+        ConfigurationDto result = configurationMappingService.toDto(configuration, true);
+        assertEquals(
+                ConfigurationDto.builder()
+                        .integrationId(1L)
+                        .integrationMetadataId(2L)
+                        .build(),
+                result
+        );
     }
 
-    def 'should keep all values when mapping to configuration and then back to dto'() {
-        when:
-        Configuration firstResult = configurationMappingService.toEntity(configurationDto)
-        ConfigurationDto secondResult = configurationMappingService.toDto(firstResult, false)
-
-        then:
-        secondResult == configurationDto
+    @Test
+    public void shouldKeepAllValuesWhenMappingToConfigurationAndThenBackToDto() {
+        Configuration firstResult = configurationMappingService.toEntity(configurationDto);
+        ConfigurationDto secondResult = configurationMappingService.toDto(firstResult, false);
+        assertEquals(configurationDto, secondResult);
     }
-
 }
