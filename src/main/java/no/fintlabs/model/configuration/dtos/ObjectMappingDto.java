@@ -38,4 +38,9 @@ public class ObjectMappingDto {
     private final Map<String, @Valid @NotNull ObjectMappingDto> objectMappingPerKey;
     private final Map<String, @Valid @NotNull CollectionMappingDto<ObjectMappingDto>> objectCollectionMappingPerKey;
 
+    @Override
+    public String toString() {
+        return "Sensitive data omitted";
+    }
+
 }
