@@ -30,4 +30,9 @@ public class InstanceCollectionReference {
     @NotBlank
     private String reference;
 
+    @Override
+    public String toString() {
+        return "Sensitive data omitted";
+    }
+
 }

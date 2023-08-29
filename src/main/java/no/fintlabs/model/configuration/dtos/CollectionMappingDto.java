@@ -29,4 +29,9 @@ public class CollectionMappingDto<T> {
 
     private final Collection<@Valid @NotNull FromCollectionMappingDto<T>> fromCollectionMappings;
 
+    @Override
+    public String toString() {
+        return "Sensitive data omitted";
+    }
+
 }

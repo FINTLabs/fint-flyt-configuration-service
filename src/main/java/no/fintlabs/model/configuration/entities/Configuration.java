@@ -42,4 +42,9 @@ public class Configuration {
     @NotNull
     ObjectMapping mapping;
 
+    @Override
+    public String toString() {
+        return "Sensitive data omitted";
+    }
+
 }

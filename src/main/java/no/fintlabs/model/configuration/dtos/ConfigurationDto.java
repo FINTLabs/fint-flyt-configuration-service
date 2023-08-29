@@ -41,4 +41,9 @@ public class ConfigurationDto {
     @NotNull
     private final ObjectMappingDto mapping;
 
+    @Override
+    public String toString() {
+        return "Sensitive data omitted";
+    }
+
 }

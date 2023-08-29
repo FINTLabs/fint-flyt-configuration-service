@@ -31,4 +31,9 @@ public class FromCollectionMappingDto<T> {
     @NotNull
     private final T elementMapping;
 
+    @Override
+    public String toString() {
+        return "Sensitive data omitted";
+    }
+
 }

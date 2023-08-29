@@ -56,4 +56,9 @@ public class ObjectMapping {
     @MapKeyColumn(name = "key")
     private Map<String, @Valid @NotNull ObjectCollectionMapping> objectCollectionMappingPerKey;
 
+    @Override
+    public String toString() {
+        return "Sensitive data omitted";
+    }
+
 }
