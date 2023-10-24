@@ -35,9 +35,4 @@ public class ConfigurationPatchDto {
         return Optional.ofNullable(mapping);
     }
 
-    @Override
-    public String toString() {
-        return "Sensitive data omitted";
-    }
-
 }

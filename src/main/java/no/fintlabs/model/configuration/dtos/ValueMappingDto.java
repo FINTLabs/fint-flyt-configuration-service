@@ -29,9 +29,4 @@ public class ValueMappingDto {
     @NotNull
     private final String mappingString;
 
-    @Override
-    public String toString() {
-        return "Sensitive data omitted";
-    }
-
 }

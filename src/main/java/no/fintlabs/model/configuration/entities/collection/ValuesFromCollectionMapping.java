@@ -40,9 +40,4 @@ public class ValuesFromCollectionMapping {
     @NotNull
     private ValueMapping valueMapping;
 
-    @Override
-    public String toString() {
-        return "Sensitive data omitted";
-    }
-
 }

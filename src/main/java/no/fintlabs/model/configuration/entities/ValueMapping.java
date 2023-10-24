@@ -32,9 +32,4 @@ public class ValueMapping {
 
     private String mappingString;
 
-    @Override
-    public String toString() {
-        return "Sensitive data omitted";
-    }
-
 }
