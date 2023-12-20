@@ -52,38 +52,25 @@ jobs:
       packages: write
     strategy:
       matrix:
-        include:
-          # Define default clusters
-          - &default_clusters
-            clusters:
-              - aks-api-fint-2022-02-08
-              - aks-beta-fint-2021-11-23
-          # Orgs using default clusters
-          - <<: *default_clusters
-            org: afk-no
-          - <<: *default_clusters
-            org: bfk-no
-          - <<: *default_clusters
-            org: innlandetfylke-no
-          - <<: *default_clusters
-            org: mrfylke-no
-          - <<: *default_clusters
-            org: nfk-no
-          - <<: *default_clusters
-            org: viken-no
-          - <<: *default_clusters
-            org: vlfk-no
-          - <<: *default_clusters
-            org: trondelagfylke-no
-          - <<: *default_clusters
-            org: tfk-no
-          - <<: *default_clusters
-            org: vfk-no
-
-          # Org with custom cluster setup
+        org:
+          - afk-no
+          - bfk-no
+          - fintlabs-no
+          - innlandetfylke-no
+          - mrfylke-no
+          - nfk-no
+          - ofk-no
+          - tfk-no
+          - vfk-no
+          - viken-no
+          - vlfk-no
+          - trondelagfylke-no
+        cluster:
+          - aks-beta-fint-2021-11-23
+          - aks-api-fint-2022-02-08
+        exclude:
           - org: fintlabs-no
-            clusters:
-              - aks-beta-fint-2021-11-23
+            cluster: aks-alpha-fint-2021-11-18
 
     steps:
       - name: Checkout repository
