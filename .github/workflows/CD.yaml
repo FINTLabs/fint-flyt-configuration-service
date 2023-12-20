@@ -53,52 +53,51 @@ jobs:
     strategy:
       matrix:
         include:
+          # Define default clusters
+          - &default_clusters
+            clusters:
+              - aks-api-fint-2022-02-08
+              - aks-beta-fint-2021-11-23
+          # Orgs using default clusters
+          - <<: *default_clusters
+            org: afk-no
+          - <<: *default_clusters
+            org: bfk-no
+          - <<: *default_clusters
+            org: innlandetfylke-no
+          - <<: *default_clusters
+            org: mrfylke-no
+          - <<: *default_clusters
+            org: nfk-no
+          - <<: *default_clusters
+            org: viken-no
+          - <<: *default_clusters
+            org: vlfk-no
+          - <<: *default_clusters
+            org: trondelagfylke-no
+          - <<: *default_clusters
+            org: tfk-no
+          - <<: *default_clusters
+            org: vfk-no
+
+          # Org with custom cluster setup
           - org: fintlabs-no
-            cluster: aks-beta-fint-2021-11-23
-
-          - org: innlandetfylke-no
-            cluster: aks-api-fint-2022-02-08
-          - org: innlandetfylke-no
-            cluster: aks-beta-fint-2021-11-23
-
-          - org: mrfylke-no
-            cluster: aks-api-fint-2022-02-08
-          - org: mrfylke-no
-            cluster: aks-beta-fint-2021-11-23
-
-          - org: nfk-no
-            cluster: aks-api-fint-2022-02-08
-          - org: nfk-no
-            cluster: aks-beta-fint-2021-11-23
-
-          - org: viken-no
-            cluster: aks-api-fint-2022-02-08
-          - org: viken-no
-            cluster: aks-beta-fint-2021-11-23
-
-          - org: vlfk-no
-            cluster: aks-api-fint-2022-02-08
-          - org: vlfk-no
-            cluster: aks-beta-fint-2021-11-23
-
-          - org: trondelagfylke-no
-            cluster: aks-api-fint-2022-02-08
-          - org: trondelagfylke-no
-            cluster: aks-beta-fint-2021-11-23
+            clusters:
+              - aks-beta-fint-2021-11-23
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Get environment
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: environment
         with:
           script: return '${{ matrix.cluster }}'.split('-')[1]
           result-encoding: string
 
       - name: Get resource group name
-        uses: actions/github-script@v6
+        uses: actions/github-script@v7
         id: resource-group
         with:
           script: return 'rg-aks-${{ steps.environment.outputs.result }}'
