@@ -11,7 +11,6 @@ import no.fintlabs.model.configuration.dtos.ObjectMappingDto;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.listener.CommonLoggingErrorHandler;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 
 @Configuration
@@ -32,14 +31,13 @@ public class ConfigurationRequestConsumerConfiguration {
         requestTopicService
                 .ensureTopic(requestTopicNameParameters, 0, TopicCleanupPolicyParameters.builder().build());
 
-        return requestConsumerFactoryService.createFactory(
+        return requestConsumerFactoryService.createRecordConsumerFactory(
                 Long.class,
                 ConfigurationDto.class,
                 (ConsumerRecord<String, Long> consumerRecord) -> ReplyProducerRecord
                         .<ConfigurationDto>builder()
                         .value(configurationService.findById(consumerRecord.value(), true).orElse(null))
-                        .build(),
-                new CommonLoggingErrorHandler()
+                        .build()
         ).createContainer(requestTopicNameParameters);
     }
 
@@ -58,7 +56,7 @@ public class ConfigurationRequestConsumerConfiguration {
         requestTopicService
                 .ensureTopic(requestTopicNameParameters, 0, TopicCleanupPolicyParameters.builder().build());
 
-        return requestConsumerFactoryService.createFactory(
+        return requestConsumerFactoryService.createRecordConsumerFactory(
                 Long.class,
                 ObjectMappingDto.class,
                 (ConsumerRecord<String, Long> consumerRecord) -> ReplyProducerRecord
@@ -68,8 +66,7 @@ public class ConfigurationRequestConsumerConfiguration {
                                         .findById(consumerRecord.value(), false)
                                         .map(ConfigurationDto::getMapping)
                                         .orElse(null))
-                        .build(),
-                new CommonLoggingErrorHandler()
+                        .build()
         ).createContainer(requestTopicNameParameters);
     }
 
