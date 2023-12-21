@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Getter
-@EqualsAndHashCode
 @Builder
 @Jacksonized
 @AllArgsConstructor
