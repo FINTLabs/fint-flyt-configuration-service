@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 
 @Getter
-@EqualsAndHashCode
 @Builder
 @Jacksonized
 @AllArgsConstructor

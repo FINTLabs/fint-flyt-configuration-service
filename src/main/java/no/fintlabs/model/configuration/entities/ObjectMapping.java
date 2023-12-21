@@ -11,7 +11,6 @@ import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 @Getter
-@EqualsAndHashCode
 @Jacksonized
 @Builder
 @AllArgsConstructor
