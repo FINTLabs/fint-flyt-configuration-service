@@ -54,7 +54,7 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
 
-    implementation 'org.glassfish:javax.el:3.0.0'
+    implementation 'org.glassfish:jakarta.el:3.0.4'
 
     implementation 'org.springframework.kafka:spring-kafka'
     implementation 'no.fintlabs:fint-kafka:4.0.1'
