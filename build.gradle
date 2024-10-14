@@ -41,7 +41,7 @@ dependencies {
     implementation 'javax.validation:validation-api'
     implementation 'org.hibernate.validator:hibernate-validator'
 
-    implementation 'no.fintlabs:fint-flyt-resource-server:2.0.0'
+    implementation 'no.fintlabs:fint-flyt-resource-server:5.0.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'org.postgresql:postgresql'
