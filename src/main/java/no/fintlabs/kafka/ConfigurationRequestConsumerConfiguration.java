@@ -29,7 +29,7 @@ public class ConfigurationRequestConsumerConfiguration {
                 .parameterName("configuration-id")
                 .build();
         requestTopicService
-                .ensureTopic(requestTopicNameParameters, 345600000, TopicCleanupPolicyParameters.builder().build());
+                .ensureTopic(requestTopicNameParameters, 0, TopicCleanupPolicyParameters.builder().build());
 
         return requestConsumerFactoryService.createRecordConsumerFactory(
                 Long.class,
@@ -54,7 +54,7 @@ public class ConfigurationRequestConsumerConfiguration {
                 .parameterName("configuration-id")
                 .build();
         requestTopicService
-                .ensureTopic(requestTopicNameParameters, 345600000, TopicCleanupPolicyParameters.builder().build());
+                .ensureTopic(requestTopicNameParameters, 0, TopicCleanupPolicyParameters.builder().build());
 
         return requestConsumerFactoryService.createRecordConsumerFactory(
                 Long.class,
