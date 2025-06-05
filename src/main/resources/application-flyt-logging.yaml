@@ -1,11 +1,5 @@
 management:
-  endpoint:
-    health:
-      show-details: always
-  health:
-    readinessState:
-      enabled: true
   endpoints:
     web:
       exposure:
-        include: health,info,prometheus,readiness
+        include: health,info,prometheus
