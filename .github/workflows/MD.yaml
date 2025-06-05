@@ -151,16 +151,17 @@ jobs:
           exit 1
 
       - name: Add readiness probe to Deployment
+        if: success()
         run: |
-          kubectl patch deployment fint-flyt-configuration-service -n ${{ env.ORG }} --type=json -p='[{
+          kubectl patch deployment fint-flyt-configuration-service -n ${{ matrix.org }} --type=json -p='[{
             "op": "add",
             "path": "/spec/template/spec/containers/0/readinessProbe",
             "value": {
               "httpGet": {
-                "path": "/actuator/health",
+                "path": "/actuator/health/readiness",
                 "port": 8080
               },
-              "initialDelaySeconds": 10,
+              "initialDelaySeconds": 120,
               "periodSeconds": 5,
               "timeoutSeconds": 3,
               "failureThreshold": 6
