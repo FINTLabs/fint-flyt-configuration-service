@@ -1,9 +1,6 @@
-apiVersion: fintlabs.no/v1alpha1
-kind: Application
-metadata:
-  name: fint-flyt-configuration-service
-spec:
-  readiness:
+- op: add
+  path: /spec/template/spec/containers/0/readinessProbe
+  value:
     httpGet:
       path: /actuator/health
       port: 8080
