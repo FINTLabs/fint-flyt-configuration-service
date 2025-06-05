@@ -130,34 +130,3 @@ jobs:
           images: ${{ needs.build-and-push.outputs.tags }}
           namespace: ${{ matrix.org }}
 
-      - name: Wait for Deployment to be ready
-        run: |
-          for i in {1..10}; do
-            if kubectl get deployment fint-flyt-configuration-service -n ${{ matrix.org }} > /dev/null 2>&1; then
-              echo "Deployment is present."
-              exit 0
-            fi
-            echo "Waiting for Deployment..."
-            sleep 5
-          done
-          echo "Deployment did not appear in time"
-          exit 1
-
-
-      - name: Add readiness probe to Deployment
-        if: success()
-        run: |
-          kubectl patch deployment fint-flyt-configuration-service -n ${{ matrix.org }} --type=json -p='[{
-            "op": "add",
-            "path": "/spec/template/spec/containers/0/readinessProbe",
-            "value": {
-              "httpGet": {
-                "path": "/actuator/health/readiness",
-                "port": 8080
-              },
-              "initialDelaySeconds": 120,
-              "periodSeconds": 5,
-              "timeoutSeconds": 3,
-              "failureThreshold": 6
-            }
-          }]'
