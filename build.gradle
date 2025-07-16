@@ -8,9 +8,7 @@ group = 'no.fintlabs'
 sourceCompatibility = '17'
 
 jar {
-    enabled = true
-    archiveVersion = ""
-    archiveClassifier = ""
+    enabled = false
 }
 
 configurations {
