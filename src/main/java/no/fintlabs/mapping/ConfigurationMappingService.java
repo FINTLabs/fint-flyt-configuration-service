@@ -35,6 +35,9 @@ public class ConfigurationMappingService {
                 .completed(configuration.isCompleted())
                 .comment(configuration.getComment())
                 .version(configuration.getVersion())
+                .lastModifiedBy(configuration.getLastModifiedBy())
+                .lastModifiedAt(configuration.getLastModifiedAt())
+                .version(configuration.getVersion())
                 .mapping(excludeMapping
                         ? null
                         : toDto(configuration.getMapping())
