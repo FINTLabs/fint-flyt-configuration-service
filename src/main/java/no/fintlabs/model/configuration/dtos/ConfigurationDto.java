@@ -11,6 +11,8 @@ import no.fintlabs.validation.constraints.IntegrationAndMetadataMatches;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import java.time.Instant;
+
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @Getter
@@ -40,5 +42,11 @@ public class ConfigurationDto {
     @Valid
     @NotNull
     private final ObjectMappingDto mapping;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private Instant lastModifiedAt;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String lastModifiedBy;
 
 }
