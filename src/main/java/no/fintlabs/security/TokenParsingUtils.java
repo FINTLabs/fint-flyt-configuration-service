@@ -19,10 +19,7 @@ public class TokenParsingUtils {
 
     public AuditorScope bindAuditor(Authentication authentication) {
         tryGetUser(authentication)
-                .map(u -> {
-                    String name = toTitleCase(u.getName());
-                    return StringUtils.hasText(name) ? name : u.getEmail();
-                })
+                .map(u -> firstNonBlank(toTitleCase(u.getName()), u.getEmail()))
                 .filter(StringUtils::hasText)
                 .ifPresent(CurrentAuditor::set);
 
@@ -38,14 +35,9 @@ public class TokenParsingUtils {
 
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
-
             if (Character.isLetter(c)) {
-                if (startOfWord) {
-                    out.append(Character.toTitleCase(c));
-                    startOfWord = false;
-                } else {
-                    out.append(Character.toLowerCase(c));
-                }
+                out.append(startOfWord ? Character.toTitleCase(c) : Character.toLowerCase(c));
+                startOfWord = false;
             } else {
                 out.append(c);
                 startOfWord = Character.isWhitespace(c) || c == '-' || c == '\'' || c == '’';
@@ -88,18 +80,24 @@ public class TokenParsingUtils {
 
     private static String text(Object o) {
         if (o == null) return null;
-        String s = o.toString().trim();
-        return s.isEmpty() ? null : s;
+        String s = StringUtils.trimWhitespace(String.valueOf(o));
+        return StringUtils.hasText(s) ? s : null;
     }
 
     private static String firstNonBlank(String... vals) {
         if (vals == null) return null;
-        for (String v : vals) if (v != null && !v.isBlank()) return v;
+        for (String v : vals) {
+            if (StringUtils.hasText(v)) return v;
+        }
         return null;
     }
 
     private static UUID parseUuid(String s) {
         if (s == null) return null;
-        try { return UUID.fromString(s); } catch (Exception ignore) { return null; }
+        try {
+            return UUID.fromString(s);
+        } catch (IllegalArgumentException ignore) {
+            return null;
+        }
     }
 }

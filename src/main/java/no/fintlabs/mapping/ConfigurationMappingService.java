@@ -32,16 +32,15 @@ public class ConfigurationMappingService {
                 .id(configuration.getId())
                 .integrationId(configuration.getIntegrationId())
                 .integrationMetadataId(configuration.getIntegrationMetadataId())
+                .version(configuration.getVersion())
                 .completed(configuration.isCompleted())
                 .comment(configuration.getComment())
-                .version(configuration.getVersion())
-                .lastModifiedBy(configuration.getLastModifiedBy())
-                .lastModifiedAt(configuration.getLastModifiedAt())
-                .version(configuration.getVersion())
                 .mapping(excludeMapping
                         ? null
                         : toDto(configuration.getMapping())
                 )
+                .lastModifiedBy(configuration.getLastModifiedBy())
+                .lastModifiedAt(configuration.getLastModifiedAt())
                 .build();
     }
 
