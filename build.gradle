@@ -1,11 +1,17 @@
 plugins {
     id 'org.springframework.boot' version '2.7.18'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
+    id 'com.github.ben-manes.versions' version '0.52.0'
 }
 
 group = 'no.fintlabs'
-sourceCompatibility = '17'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 jar {
     enabled = false
@@ -19,10 +25,8 @@ configurations {
 
 repositories {
     mavenCentral()
-    repositories {
-        maven {
-            url "https://repo.fintlabs.no/releases"
-        }
+    maven {
+        url "https://repo.fintlabs.no/releases"
     }
     mavenLocal()
 }
@@ -40,7 +44,7 @@ dependencies {
     implementation 'no.fintlabs:fint-flyt-resource-server:5.1.0'
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql:42.7.7'
 
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
