@@ -2,6 +2,8 @@ package no.fintlabs;
 
 import no.fintlabs.model.configuration.dtos.ConfigurationDto;
 import no.fintlabs.model.configuration.dtos.ConfigurationPatchDto;
+import no.fintlabs.security.AuditorScope;
+import no.fintlabs.security.TokenParsingUtils;
 import no.fintlabs.validation.ConfigurationValidatorFactory;
 import no.fintlabs.validation.ValidationErrorsFormattingService;
 import no.fintlabs.validation.groups.Completed;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -28,15 +31,18 @@ public class ConfigurationController {
     private final ConfigurationService configurationService;
     private final ConfigurationValidatorFactory configurationValidatorFactory;
     private final ValidationErrorsFormattingService validationErrorsFormattingService;
+    private final TokenParsingUtils tokenParsingUtils;
 
     public ConfigurationController(
             ConfigurationService configurationService,
             ConfigurationValidatorFactory configurationValidatorFactory,
-            ValidationErrorsFormattingService validationErrorsFormattingService
+            ValidationErrorsFormattingService validationErrorsFormattingService,
+            TokenParsingUtils tokenParsingUtils
     ) {
         this.configurationService = configurationService;
         this.configurationValidatorFactory = configurationValidatorFactory;
         this.validationErrorsFormattingService = validationErrorsFormattingService;
+        this.tokenParsingUtils = tokenParsingUtils;
     }
 
     @GetMapping
@@ -76,14 +82,17 @@ public class ConfigurationController {
 
     @PostMapping
     public ResponseEntity<ConfigurationDto> postConfiguration(
+            Authentication authentication,
             @RequestBody ConfigurationDto configurationDto
     ) {
-        validateBeanConstraints(
-                configurationDto.getIntegrationId(),
-                configurationDto.getIntegrationMetadataId(),
-                configurationDto
-        );
-        return ResponseEntity.ok(configurationService.save(configurationDto));
+        try (AuditorScope ignored = tokenParsingUtils.bindAuditor(authentication)) {
+            validateBeanConstraints(
+                    configurationDto.getIntegrationId(),
+                    configurationDto.getIntegrationMetadataId(),
+                    configurationDto
+            );
+            return ResponseEntity.ok(configurationService.save(configurationDto));
+        }
     }
 
     @PatchMapping("{configurationId}")
