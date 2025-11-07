@@ -1,6 +1,5 @@
 package no.fintlabs;
 
-
 import no.fintlabs.model.configuration.entities.Configuration;
 import org.springframework.data.jpa.repository.JpaRepository;
 

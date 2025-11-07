@@ -1,56 +1,88 @@
 package no.fintlabs.kafka;
 
-import no.fintlabs.kafka.common.topic.TopicCleanupPolicyParameters;
-import no.fintlabs.kafka.requestreply.RequestProducer;
-import no.fintlabs.kafka.requestreply.RequestProducerFactory;
+import no.fintlabs.kafka.consuming.ListenerConfiguration;
 import no.fintlabs.kafka.requestreply.RequestProducerRecord;
-import no.fintlabs.kafka.requestreply.topic.ReplyTopicNameParameters;
+import no.fintlabs.kafka.requestreply.RequestTemplate;
+import no.fintlabs.kafka.requestreply.RequestTemplateFactory;
 import no.fintlabs.kafka.requestreply.topic.ReplyTopicService;
-import no.fintlabs.kafka.requestreply.topic.RequestTopicNameParameters;
+import no.fintlabs.kafka.requestreply.topic.configuration.ReplyTopicConfiguration;
+import no.fintlabs.kafka.requestreply.topic.name.ReplyTopicNameParameters;
+import no.fintlabs.kafka.requestreply.topic.name.RequestTopicNameParameters;
+import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters;
 import no.fintlabs.model.integration.Integration;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.Optional;
 
 @Service
 public class IntegrationRequestProducerService {
 
     private final RequestTopicNameParameters requestTopicNameParameters;
-    private final RequestProducer<Long, Integration> requestProducer;
+    private final RequestTemplate<Long, Integration> requestTemplate;
+
+    private static final Duration RETENTION_TIME = Duration.ofMinutes(5);
+    private static final Duration REPLY_TIMEOUT = Duration.ofSeconds(5);
 
     public IntegrationRequestProducerService(
             @Value("${fint.kafka.application-id}") String applicationId,
-            RequestProducerFactory requestProducerFactory,
+            RequestTemplateFactory requestTemplateFactory,
             ReplyTopicService replyTopicService
     ) {
-        ReplyTopicNameParameters replyTopicNameParameters = ReplyTopicNameParameters.builder()
+        ReplyTopicNameParameters replyTopicNameParameters = ReplyTopicNameParameters
+                .builder()
+                .topicNamePrefixParameters(TopicNamePrefixParameters
+                        .builder()
+                        .orgIdApplicationDefault()
+                        .domainContextApplicationDefault()
+                        .build()
+                )
                 .applicationId(applicationId)
-                .resource("integration")
+                .resourceName("integration")
                 .build();
 
-        replyTopicService.ensureTopic(replyTopicNameParameters, 0, TopicCleanupPolicyParameters.builder().build());
+        replyTopicService.createOrModifyTopic(replyTopicNameParameters, ReplyTopicConfiguration
+                .builder()
+                .retentionTime(RETENTION_TIME)
+                .build());
 
-        this.requestTopicNameParameters = RequestTopicNameParameters.builder()
-                .resource("integration")
+        this.requestTopicNameParameters = RequestTopicNameParameters
+                .builder()
+                .topicNamePrefixParameters(TopicNamePrefixParameters
+                        .builder()
+                        .orgIdApplicationDefault()
+                        .domainContextApplicationDefault()
+                        .build()
+                )
+                .resourceName("integration")
                 .parameterName("integration-id")
                 .build();
 
-        this.requestProducer = requestProducerFactory.createProducer(
+        this.requestTemplate = requestTemplateFactory.createTemplate(
                 replyTopicNameParameters,
                 Long.class,
-                Integration.class
+                Integration.class,
+                REPLY_TIMEOUT,
+                ListenerConfiguration
+                        .stepBuilder()
+                        .groupIdApplicationDefault()
+                        .maxPollRecordsKafkaDefault()
+                        .maxPollIntervalKafkaDefault()
+                        .continueFromPreviousOffsetOnAssignment()
+                        .build()
         );
     }
 
     public Optional<Integration> get(Long integrationId) {
-        return requestProducer.requestAndReceive(
-                RequestProducerRecord.<Long>builder()
-                        .topicNameParameters(requestTopicNameParameters)
-                        .value(integrationId)
-                        .build()
-        ).map(ConsumerRecord::value);
+        return Optional.ofNullable(
+                requestTemplate.requestAndReceive(
+                        RequestProducerRecord.<Long>builder()
+                                .topicNameParameters(requestTopicNameParameters)
+                                .value(integrationId)
+                                .build()
+                ).value()
+        );
     }
 
 }

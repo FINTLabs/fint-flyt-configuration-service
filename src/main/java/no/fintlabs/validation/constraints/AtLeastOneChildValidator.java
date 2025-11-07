@@ -7,10 +7,10 @@ public class AtLeastOneChildValidator implements HibernateConstraintValidator<At
 
     @Override
     public boolean isValid(ObjectMappingDto value, HibernateConstraintValidatorContext hibernateConstraintValidatorContext) {
-        return value.getValueMappingPerKey().size() > 0
-                || value.getValueCollectionMappingPerKey().size() > 0
-                || value.getObjectMappingPerKey().size() > 0
-                || value.getObjectCollectionMappingPerKey().size() > 0;
+        return !value.getValueMappingPerKey().isEmpty()
+                || !value.getValueCollectionMappingPerKey().isEmpty()
+                || !value.getObjectMappingPerKey().isEmpty()
+                || !value.getObjectCollectionMappingPerKey().isEmpty();
     }
 
 }

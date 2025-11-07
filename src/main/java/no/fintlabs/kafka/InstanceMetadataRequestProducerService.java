@@ -1,57 +1,89 @@
 package no.fintlabs.kafka;
 
-import no.fintlabs.kafka.common.topic.TopicCleanupPolicyParameters;
-import no.fintlabs.kafka.requestreply.RequestProducer;
-import no.fintlabs.kafka.requestreply.RequestProducerFactory;
+import no.fintlabs.kafka.consuming.ListenerConfiguration;
 import no.fintlabs.kafka.requestreply.RequestProducerRecord;
-import no.fintlabs.kafka.requestreply.topic.ReplyTopicNameParameters;
+import no.fintlabs.kafka.requestreply.RequestTemplate;
+import no.fintlabs.kafka.requestreply.RequestTemplateFactory;
 import no.fintlabs.kafka.requestreply.topic.ReplyTopicService;
-import no.fintlabs.kafka.requestreply.topic.RequestTopicNameParameters;
+import no.fintlabs.kafka.requestreply.topic.configuration.ReplyTopicConfiguration;
+import no.fintlabs.kafka.requestreply.topic.name.ReplyTopicNameParameters;
+import no.fintlabs.kafka.requestreply.topic.name.RequestTopicNameParameters;
+import no.fintlabs.kafka.topic.name.TopicNamePrefixParameters;
 import no.fintlabs.model.metadata.InstanceMetadataContent;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.Optional;
 
 @Service
 public class InstanceMetadataRequestProducerService {
 
-
     private final RequestTopicNameParameters requestTopicNameParameters;
-    private final RequestProducer<Long, InstanceMetadataContent> requestProducer;
+    private final RequestTemplate<Long, InstanceMetadataContent> requestTemplate;
+
+    private static final Duration RETENTION_TIME = Duration.ofMinutes(5);
+    private static final Duration REPLY_TIMEOUT = Duration.ofSeconds(5);
 
     public InstanceMetadataRequestProducerService(
             @Value("${fint.kafka.application-id}") String applicationId,
-            RequestProducerFactory requestProducerFactory,
+            RequestTemplateFactory requestTemplateFactory,
             ReplyTopicService replyTopicService
     ) {
-        ReplyTopicNameParameters replyTopicNameParameters = ReplyTopicNameParameters.builder()
+        ReplyTopicNameParameters replyTopicNameParameters = ReplyTopicNameParameters
+                .builder()
+                .topicNamePrefixParameters(TopicNamePrefixParameters
+                        .builder()
+                        .orgIdApplicationDefault()
+                        .domainContextApplicationDefault()
+                        .build()
+                )
                 .applicationId(applicationId)
-                .resource("instance-metadata")
+                .resourceName("instance-metadata")
                 .build();
 
-        replyTopicService.ensureTopic(replyTopicNameParameters, 0, TopicCleanupPolicyParameters.builder().build());
+        replyTopicService.createOrModifyTopic(replyTopicNameParameters, ReplyTopicConfiguration
+                .builder()
+                .retentionTime(RETENTION_TIME)
+                .build()
+        );
 
-        this.requestTopicNameParameters = RequestTopicNameParameters.builder()
-                .resource("instance-metadata")
+        this.requestTopicNameParameters = RequestTopicNameParameters
+                .builder()
+                .topicNamePrefixParameters(TopicNamePrefixParameters
+                        .builder()
+                        .orgIdApplicationDefault()
+                        .domainContextApplicationDefault()
+                        .build()
+                )
+                .resourceName("instance-metadata")
                 .parameterName("metadata-id")
                 .build();
 
-        this.requestProducer = requestProducerFactory.createProducer(
+        this.requestTemplate = requestTemplateFactory.createTemplate(
                 replyTopicNameParameters,
                 Long.class,
-                InstanceMetadataContent.class
+                InstanceMetadataContent.class,
+                REPLY_TIMEOUT,
+                ListenerConfiguration
+                        .stepBuilder()
+                        .groupIdApplicationDefault()
+                        .maxPollRecordsKafkaDefault()
+                        .maxPollIntervalKafkaDefault()
+                        .continueFromPreviousOffsetOnAssignment()
+                        .build()
         );
     }
 
     public Optional<InstanceMetadataContent> get(Long metadataId) {
-        return requestProducer.requestAndReceive(
-                RequestProducerRecord.<Long>builder()
-                        .topicNameParameters(requestTopicNameParameters)
-                        .value(metadataId)
-                        .build()
-        ).map(ConsumerRecord::value);
+        return Optional.ofNullable(
+                requestTemplate.requestAndReceive(
+                        RequestProducerRecord.<Long>builder()
+                                .topicNameParameters(requestTopicNameParameters)
+                                .value(metadataId)
+                                .build()
+                ).value()
+        );
     }
 
 }

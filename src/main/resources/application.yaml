@@ -1,9 +1,15 @@
 fint:
   application-id: fint-flyt-configuration-service
+
+  cache:
+    defaultCacheEntryTimeToLiveMillis: 518400000
+    defaultCacheHeapSize: 1000000
+
 server:
-  max-http-header-size: 40KB
   error:
     include-message: always
+  max-http-request-header-size: 40KB
+
 spring:
   profiles:
     include:

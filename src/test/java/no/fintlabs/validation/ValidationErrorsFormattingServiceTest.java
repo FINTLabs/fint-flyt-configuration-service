@@ -3,8 +3,8 @@ package no.fintlabs.validation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Path;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Path;
 import java.util.HashSet;
 import java.util.Set;
 

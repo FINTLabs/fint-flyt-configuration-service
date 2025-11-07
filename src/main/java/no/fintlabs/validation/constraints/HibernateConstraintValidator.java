@@ -2,8 +2,8 @@ package no.fintlabs.validation.constraints;
 
 import org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import java.lang.annotation.Annotation;
 
 public interface HibernateConstraintValidator<A extends Annotation, T> extends ConstraintValidator<A, T> {

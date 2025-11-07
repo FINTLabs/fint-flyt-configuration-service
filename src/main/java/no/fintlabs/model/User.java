@@ -1,6 +1,6 @@
 package no.fintlabs.model;
 
-import com.sun.istack.NotNull;
+import jakarta.annotation.Nonnull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -15,14 +15,15 @@ import java.util.UUID;
 @EqualsAndHashCode
 @Jacksonized
 public class User {
-    @NotNull
+
+    @Nonnull
     private UUID objectIdentifier;
 
     private String email;
 
     private String name;
 
-    @NotNull
+    @Nonnull
     @Builder.Default
     private List<Long> sourceApplicationIds = new ArrayList<>();
 }

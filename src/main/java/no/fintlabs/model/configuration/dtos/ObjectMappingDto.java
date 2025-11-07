@@ -7,8 +7,8 @@ import lombok.extern.jackson.Jacksonized;
 import no.fintlabs.validation.constraints.AtLeastOneChild;
 import no.fintlabs.validation.constraints.UniqueChildrenKeys;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

@@ -12,7 +12,7 @@ import no.fintlabs.validation.groups.InstanceValueKeys;
 import no.fintlabs.validation.groups.InstanceValueTypes;
 import no.fintlabs.validation.groups.ValueParsability;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 @ValueParsableAsType(groups = ValueParsability.class)
 @InstanceValueKeysAreDefinedInMetadata(groups = InstanceValueKeys.class)

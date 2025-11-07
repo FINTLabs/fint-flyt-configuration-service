@@ -1,5 +1,7 @@
 package no.fintlabs.validation;
 
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import no.fintlabs.kafka.InstanceMetadataRequestProducerService;
 import no.fintlabs.kafka.IntegrationRequestProducerService;
 import no.fintlabs.kafka.MetadataRequestProducerService;
@@ -11,8 +13,6 @@ import no.fintlabs.model.metadata.IntegrationMetadata;
 import org.hibernate.validator.HibernateValidatorFactory;
 import org.springframework.stereotype.Service;
 
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.AbstractMap;
 import java.util.Collection;
 import java.util.List;
