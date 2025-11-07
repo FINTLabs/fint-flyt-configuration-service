@@ -1,5 +1,5 @@
 fint:
-  org-id: fintlabs.no
+  org-id: novari.no
   flyt:
     resource-server:
       security:
@@ -10,7 +10,7 @@ fint:
   kafka:
     default-replicas: 1
     topic:
-      org-id: fintlabs-no
+      org-id: novari-no
 
 spring:
   kafka:
