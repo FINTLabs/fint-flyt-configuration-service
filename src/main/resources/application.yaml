@@ -17,3 +17,6 @@ spring:
       - flyt-logging
       - flyt-resource-server
       - flyt-postgres
+  output:
+    ansi:
+      enabled: always
