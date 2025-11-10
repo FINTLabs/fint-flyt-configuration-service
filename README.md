@@ -72,14 +72,14 @@ Spring profiles include common Flyt layers: `flyt-kafka`, `flyt-logging`, `flyt-
 
 Key properties:
 
-| Property | Description |
-|----------|-------------|
-| `fint.application-id` | Used for Kafka client IDs, request/reply reply topics, and default topic prefixes. |
-| `fint.kafka.topic.org-id` | Scoped per kustomize overlay to control Kafka ACLs and topic names. |
+| Property                                                                | Description |
+|-------------------------------------------------------------------------|-------------|
+| `fint.application-id`                                                   | Used for Kafka client IDs, request/reply reply topics, and default topic prefixes. |
+| `fint.kafka.topic.org-id`                                               | Scoped per kustomize overlay to control Kafka ACLs and topic names. |
 | `fint.database.url`, `fint.database.username`, `fint.database.password` | PostgreSQL connection parameters injected from secrets. |
-| `spring.security.oauth2.resourceserver.jwt.issuer-uri` | Identity provider for validating OAuth2 JWTs. |
-| `management.endpoints.web.exposure.include` | Actuator endpoints exposed (health, info, prometheus). |
-| `fint.flyt.resource-server.security.api.internal.*` | Toggles the internal API and per-org authorization matrix. |
+| `spring.security.oauth2.resourceserver.jwt.issuer-uri`                  | Identity provider for validating OAuth2 JWTs. |
+| `management.endpoints.web.exposure.include`                             | Actuator endpoints exposed (health, info, prometheus). |
+| `novari.flyt.resource-server.security.api.internal.*`                   | Toggles the internal API and per-org authorization matrix. |
 
 Secrets referenced by the base manifest must supply database credentials and OAuth client configuration.
 
@@ -126,7 +126,7 @@ The script walks all overlay directories, injects org/env-specific values (names
 ## Security
 
 - OAuth2 resource server that validates JWTs against `https://idp.felleskomponent.no`.
-- Internal API gated by `fint.flyt.resource-server.security.api.internal` with optional per-org role mappings.
+- Internal API gated by `novari.flyt.resource-server.security.api.internal` with optional per-org role mappings.
 - `TokenAuditorAware` and `AuditorScope` tie JWT claims to Spring Data auditing so updates are traceable.
 
 ## Observability & Operations
