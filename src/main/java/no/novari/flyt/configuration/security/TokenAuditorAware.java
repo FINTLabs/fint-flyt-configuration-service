@@ -1,8 +1,8 @@
 package no.novari.flyt.configuration.security;
 
 import org.springframework.data.domain.AuditorAware;
-import org.springframework.stereotype.Component;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 

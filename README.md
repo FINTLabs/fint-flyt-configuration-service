@@ -75,7 +75,7 @@ Key properties:
 | Property                                                                | Description |
 |-------------------------------------------------------------------------|-------------|
 | `fint.application-id`                                                   | Used for Kafka client IDs, request/reply reply topics, and default topic prefixes. |
-| `fint.kafka.topic.org-id`                                               | Scoped per kustomize overlay to control Kafka ACLs and topic names. |
+| `novari.kafka.topic.org-id`                                             | Scoped per kustomize overlay to control Kafka ACLs and topic names. |
 | `fint.database.url`, `fint.database.username`, `fint.database.password` | PostgreSQL connection parameters injected from secrets. |
 | `spring.security.oauth2.resourceserver.jwt.issuer-uri`                  | Identity provider for validating OAuth2 JWTs. |
 | `management.endpoints.web.exposure.include`                             | Actuator endpoints exposed (health, info, prometheus). |

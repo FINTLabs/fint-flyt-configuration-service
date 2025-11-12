@@ -1,5 +1,7 @@
 package no.novari.flyt.configuration.validation;
 
+import jakarta.validation.Validator;
+import jakarta.validation.ValidatorFactory;
 import no.novari.flyt.configuration.kafka.InstanceMetadataRequestProducerService;
 import no.novari.flyt.configuration.kafka.IntegrationRequestProducerService;
 import no.novari.flyt.configuration.kafka.MetadataRequestProducerService;
@@ -12,18 +14,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
-import jakarta.validation.Validator;
-import jakarta.validation.ValidatorFactory;
 import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Answers.RETURNS_DEEP_STUBS;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
 
 class ConfigurationValidatorFactoryTest {
 

@@ -1,9 +1,5 @@
 fint:
   org-id: novari.no
-  kafka:
-    default-replicas: 1
-    topic:
-      org-id: novari-no
 
 novari:
   flyt:
@@ -13,6 +9,12 @@ novari:
           internal:
             enabled: true
             authorized-org-id-role-pairs-json: "{\"vigo.no\":[\"DEVELOPER\",\"USER\"]}"
+
+  kafka:
+    default-replicas: 1
+    topic:
+      org-id: novari-no
+
 
 spring:
   kafka:

@@ -1,5 +1,6 @@
 package no.novari.flyt.configuration.model.configuration.dtos;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -11,8 +12,6 @@ import no.novari.flyt.configuration.validation.constraints.ValueParsableAsType;
 import no.novari.flyt.configuration.validation.groups.InstanceValueKeys;
 import no.novari.flyt.configuration.validation.groups.InstanceValueTypes;
 import no.novari.flyt.configuration.validation.groups.ValueParsability;
-
-import jakarta.validation.constraints.NotNull;
 
 @ValueParsableAsType(groups = ValueParsability.class)
 @InstanceValueKeysAreDefinedInMetadata(groups = InstanceValueKeys.class)

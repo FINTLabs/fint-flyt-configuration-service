@@ -1,10 +1,10 @@
 package no.novari.flyt.configuration.validation;
 
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.Path;
 import java.util.HashSet;
 import java.util.Set;
 

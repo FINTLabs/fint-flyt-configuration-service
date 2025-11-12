@@ -2,14 +2,13 @@ package no.novari.flyt.configuration.model.configuration.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 import no.novari.flyt.configuration.validation.constraints.IntegrationAndMetadataMatches;
-
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.Instant;
 

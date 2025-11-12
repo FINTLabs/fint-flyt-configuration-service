@@ -1,5 +1,7 @@
 package no.novari.flyt.configuration.model.configuration.dtos;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -7,8 +9,6 @@ import lombok.extern.jackson.Jacksonized;
 import no.novari.flyt.configuration.validation.constraints.AtLeastOneChild;
 import no.novari.flyt.configuration.validation.constraints.UniqueChildrenKeys;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

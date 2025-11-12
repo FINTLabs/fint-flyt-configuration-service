@@ -6,7 +6,11 @@ import no.novari.flyt.configuration.model.metadata.InstanceValueMetadata;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public interface InstanceValueTypeCompatibilityValidator {
 

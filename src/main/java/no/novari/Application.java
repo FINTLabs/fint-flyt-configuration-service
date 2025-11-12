@@ -1,13 +1,10 @@
-package no.novari.flyt.configuration;
+package no.novari;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-@SpringBootApplication(scanBasePackages = {
-        "no.novari",
-        "no.fintlabs"
-})
+@SpringBootApplication
 @EnableJpaAuditing(auditorAwareRef = "tokenAuditorAware")
 public class Application {
 

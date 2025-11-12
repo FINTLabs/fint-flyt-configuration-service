@@ -1,12 +1,12 @@
 package no.novari.flyt.configuration.model.configuration.dtos;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.extern.jackson.Jacksonized;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;

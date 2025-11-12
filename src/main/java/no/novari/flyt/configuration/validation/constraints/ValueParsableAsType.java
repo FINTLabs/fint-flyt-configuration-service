@@ -2,6 +2,7 @@ package no.novari.flyt.configuration.validation.constraints;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
+
 import java.lang.annotation.Retention;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
