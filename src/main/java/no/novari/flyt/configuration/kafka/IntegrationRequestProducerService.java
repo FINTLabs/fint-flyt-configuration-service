@@ -33,7 +33,7 @@ public class IntegrationRequestProducerService {
         ReplyTopicNameParameters replyTopicNameParameters = ReplyTopicNameParameters
                 .builder()
                 .topicNamePrefixParameters(TopicNamePrefixParameters
-                        .builder()
+                        .stepBuilder()
                         .orgIdApplicationDefault()
                         .domainContextApplicationDefault()
                         .build()
@@ -50,7 +50,7 @@ public class IntegrationRequestProducerService {
         this.requestTopicNameParameters = RequestTopicNameParameters
                 .builder()
                 .topicNamePrefixParameters(TopicNamePrefixParameters
-                        .builder()
+                        .stepBuilder()
                         .orgIdApplicationDefault()
                         .domainContextApplicationDefault()
                         .build()

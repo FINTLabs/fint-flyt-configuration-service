@@ -34,7 +34,7 @@ public class ConfigurationRequestConsumerConfiguration {
         RequestTopicNameParameters requestTopicNameParameters = RequestTopicNameParameters
                 .builder()
                 .topicNamePrefixParameters(TopicNamePrefixParameters
-                        .builder()
+                        .stepBuilder()
                         .orgIdApplicationDefault()
                         .domainContextApplicationDefault()
                         .build()
@@ -81,7 +81,7 @@ public class ConfigurationRequestConsumerConfiguration {
         RequestTopicNameParameters requestTopicNameParameters = RequestTopicNameParameters
                 .builder()
                 .topicNamePrefixParameters(TopicNamePrefixParameters
-                        .builder()
+                        .stepBuilder()
                         .orgIdApplicationDefault()
                         .domainContextApplicationDefault()
                         .build()

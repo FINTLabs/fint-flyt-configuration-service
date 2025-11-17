@@ -33,7 +33,7 @@ public class InstanceMetadataRequestProducerService {
         ReplyTopicNameParameters replyTopicNameParameters = ReplyTopicNameParameters
                 .builder()
                 .topicNamePrefixParameters(TopicNamePrefixParameters
-                        .builder()
+                        .stepBuilder()
                         .orgIdApplicationDefault()
                         .domainContextApplicationDefault()
                         .build()
@@ -51,7 +51,7 @@ public class InstanceMetadataRequestProducerService {
         this.requestTopicNameParameters = RequestTopicNameParameters
                 .builder()
                 .topicNamePrefixParameters(TopicNamePrefixParameters
-                        .builder()
+                        .stepBuilder()
                         .orgIdApplicationDefault()
                         .domainContextApplicationDefault()
                         .build()
