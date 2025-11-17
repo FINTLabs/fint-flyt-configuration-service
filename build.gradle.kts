@@ -44,9 +44,9 @@ dependencies {
     implementation("org.flywaydb:flyway-core")
     implementation("org.flywaydb:flyway-database-postgresql")
 
-    implementation("no.novari:flyt-resource-server:6.0.0-rc-20")
+    implementation("no.novari:flyt-resource-server:6.0.0-rc-22")
 
-    implementation("no.novari:kafka:5.0.0-rc-16")
+    implementation("no.novari:kafka:5.0.0-rc-18")
 
     implementation("no.fint:fint-arkiv-resource-model-java:$apiVersion")
     implementation("no.fint:fint-administrasjon-resource-model-java:$apiVersion")
