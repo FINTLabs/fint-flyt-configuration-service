@@ -22,7 +22,7 @@ public class MetadataRequestProducerService {
     private final RequestTopicNameParameters requestTopicNameParameters;
     private final RequestTemplate<Long, IntegrationMetadata> requestTemplate;
 
-    private static final Duration RETENTION_TIME = Duration.ofMinutes(5);
+    private static final Duration RETENTION_TIME = Duration.ofMinutes(10);
     private static final Duration REPLY_TIMEOUT = Duration.ofSeconds(5);
 
     public MetadataRequestProducerService(
