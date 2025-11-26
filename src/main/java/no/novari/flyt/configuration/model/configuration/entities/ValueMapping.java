@@ -7,6 +7,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,7 @@ public class ValueMapping {
     @Enumerated(value = EnumType.STRING)
     private Type type;
 
+    @Column(columnDefinition = "text")
     private String mappingString;
 
 }

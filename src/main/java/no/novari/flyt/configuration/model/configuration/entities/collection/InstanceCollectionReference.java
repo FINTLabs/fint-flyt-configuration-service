@@ -1,6 +1,7 @@
 package no.novari.flyt.configuration.model.configuration.entities.collection;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +32,7 @@ public class InstanceCollectionReference {
     private int index;
 
     @NotBlank
+    @Column(columnDefinition = "text")
     private String reference;
 
 }
