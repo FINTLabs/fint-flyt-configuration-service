@@ -35,7 +35,7 @@ public class ValidatorConfiguration {
 
     @Bean
     public HibernatePropertiesCustomizer hibernatePropertiesCustomizer(ValidatorFactory validatorFactory) {
-        return hibernateProperties -> hibernateProperties.put("javax.persistence.validation.factory", validatorFactory);
+        return hibernateProperties -> hibernateProperties.put("jakarta.persistence.validation.factory", validatorFactory);
     }
 
 }
