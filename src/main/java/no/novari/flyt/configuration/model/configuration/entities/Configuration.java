@@ -65,7 +65,7 @@ public class Configuration {
     @Column(name = "completed", nullable = false)
     private boolean completed;
 
-    @Column(name = "comment")
+    @Column(name = "comment", columnDefinition = "text")
     private String comment;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
