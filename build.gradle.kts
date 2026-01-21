@@ -7,7 +7,6 @@ plugins {
 
 group = "no.novari"
 version = "0.0.1-SNAPSHOT"
-var apiVersion = "3.21.10"
 
 java {
     toolchain {
@@ -47,9 +46,6 @@ dependencies {
     implementation("no.novari:flyt-resource-server:6.0.0")
 
     implementation("no.novari:kafka:5.0.0")
-
-    implementation("no.fint:fint-arkiv-resource-model-java:$apiVersion")
-    implementation("no.fint:fint-administrasjon-resource-model-java:$apiVersion")
 
     runtimeOnly("org.postgresql:postgresql")
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
