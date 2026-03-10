@@ -28,6 +28,10 @@ tasks.jar {
     isEnabled = false
 }
 
+springBoot {
+    mainClass.set("no.novari.ApplicationKt")
+}
+
 sourceSets {
     named("main") {
         java.setSrcDirs(emptyList<String>())
