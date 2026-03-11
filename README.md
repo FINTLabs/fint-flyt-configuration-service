@@ -4,7 +4,7 @@ Spring Boot service that stores and validates configuration documents for FINT F
 
 ## Highlights
 
-- **RESTful configuration registry** — Spring WebFlux controller under `/internal/api/konfigurasjoner` for paginated listings, detail fetch, create, patch, and delete operations.
+- **RESTful configuration registry** — Spring MVC controller under `/internal/api/konfigurasjoner` for paginated listings, detail fetch, create, patch, and delete operations.
 - **Versioned persistence** — JPA repository backed by PostgreSQL automatically increments a configuration version when a document is marked as completed.
 - **Kafka request/reply bridges** — Consumers expose configuration and mapping lookups, while producers fetch integrations, integration metadata, and instance metadata used during validation.
 - **Context-aware validation** — Custom Jakarta Bean Validation constraints ensure integration↔metadata consistency, key uniqueness, type compatibility, and value parsability before persisting.
@@ -68,7 +68,7 @@ The service does not define scheduled jobs; validation and versioning happen inl
 
 ## Configuration
 
-Spring profiles include common Flyt layers: `flyt-kafka`, `flyt-logging`, `flyt-resource-server`, and `flyt-postgres`.
+Spring profiles include common Flyt layers: `flyt-kafka`, `flyt-logging`, `flyt-web-resource-server`, and `flyt-postgres`.
 
 Key properties:
 
@@ -79,7 +79,7 @@ Key properties:
 | `fint.database.url`, `fint.database.username`, `fint.database.password` | PostgreSQL connection parameters injected from secrets. |
 | `spring.security.oauth2.resourceserver.jwt.issuer-uri`                  | Identity provider for validating OAuth2 JWTs. |
 | `management.endpoints.web.exposure.include`                             | Actuator endpoints exposed (health, info, prometheus). |
-| `novari.flyt.resource-server.security.api.internal.*`                   | Toggles the internal API and per-org authorization matrix. |
+| `novari.flyt.web-resource-server.security.api.internal.*`               | Toggles the internal API and per-org authorization matrix. |
 
 Secrets referenced by the base manifest must supply database credentials and OAuth client configuration.
 
@@ -87,7 +87,7 @@ Secrets referenced by the base manifest must supply database credentials and OAu
 
 Prerequisites:
 
-- Java 21+
+- Java 25+
 - Docker (used by `start-postgres` helper)
 - Local Kafka broker (e.g., `docker compose` or existing dev cluster)
 
@@ -126,14 +126,14 @@ The script walks all overlay directories, injects org/env-specific values (names
 ## Security
 
 - OAuth2 resource server that validates JWTs against `https://idp.felleskomponent.no`.
-- Internal API gated by `novari.flyt.resource-server.security.api.internal` with optional per-org role mappings.
+- Internal API gated by `novari.flyt.web-resource-server.security.api.internal` with optional per-org role mappings.
 - `TokenAuditorAware` and `AuditorScope` tie JWT claims to Spring Data auditing so updates are traceable.
 
 ## Observability & Operations
 
 - Liveness/readiness probe: `/actuator/health`.
 - Prometheus metrics: `/actuator/prometheus`.
-- Spring Boot + Reactor structured logging; leverage Flyt log conventions for correlation IDs.
+- Spring Boot structured logging; leverage Flyt log conventions for correlation IDs.
 
 ## Development Tips
 
