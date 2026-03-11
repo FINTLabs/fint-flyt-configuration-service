@@ -122,7 +122,7 @@ class ConfigurationController(
     }
 
     private fun validateIsNotCompleted(configurationDto: ConfigurationDto) {
-        if (configurationDto.isCompleted) {
+        if (configurationDto.completed) {
             throw ResponseStatusException(
                 HttpStatus.FORBIDDEN,
                 "Configuration is completed, and cannot be altered",
@@ -137,7 +137,7 @@ class ConfigurationController(
     ) {
         val validator: Validator = configurationValidatorFactory.getValidator(integrationId, metadataId)
         val constraintViolations: Set<ConstraintViolation<ConfigurationDto>> =
-            if (configurationDto.isCompleted) {
+            if (configurationDto.completed) {
                 validator.validate(configurationDto, Default::class.java, Completed::class.java)
             } else {
                 validator.validate(configurationDto, Default::class.java)

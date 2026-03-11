@@ -15,7 +15,7 @@ data class ConfigurationDto(
     var integrationId: Long? = null,
     @field:NotNull
     var integrationMetadataId: Long? = null,
-    var isCompleted: Boolean = false,
+    var completed: Boolean = false,
     var comment: String? = null,
     @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var version: Int? = null,
@@ -38,7 +38,7 @@ data class ConfigurationDto(
             .id(id)
             .integrationId(integrationId)
             .integrationMetadataId(integrationMetadataId)
-            .completed(isCompleted)
+            .completed(completed)
             .comment(comment)
             .version(version)
             .mapping(mapping)
@@ -80,7 +80,7 @@ data class ConfigurationDto(
                 id = id,
                 integrationId = integrationId,
                 integrationMetadataId = integrationMetadataId,
-                isCompleted = completed,
+                completed = completed,
                 comment = comment,
                 version = version,
                 mapping = mapping,

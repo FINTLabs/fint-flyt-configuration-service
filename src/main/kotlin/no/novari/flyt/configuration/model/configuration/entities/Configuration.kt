@@ -45,7 +45,7 @@ class Configuration(
     @field:Column(name = "version")
     var version: Int? = null,
     @field:Column(name = "completed", nullable = false)
-    var isCompleted: Boolean = false,
+    var completed: Boolean = false,
     @field:Column(name = "comment", columnDefinition = "text")
     var comment: String? = null,
     @field:OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
@@ -114,7 +114,7 @@ class Configuration(
                 integrationId = integrationId,
                 integrationMetadataId = integrationMetadataId,
                 version = version,
-                isCompleted = completed,
+                completed = completed,
                 comment = comment,
                 mapping = mapping,
                 lastModifiedAt = lastModifiedAt,

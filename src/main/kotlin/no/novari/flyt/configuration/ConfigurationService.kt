@@ -32,7 +32,7 @@ class ConfigurationService(
         val configurationExample =
             Configuration().apply {
                 filter.integrationId?.let { integrationId = it }
-                filter.completed?.let { isCompleted = it }
+                filter.completed?.let { completed = it }
             }
 
         return configurationRepository
@@ -55,7 +55,7 @@ class ConfigurationService(
         val configuration = requireNotNull(configurationRepository.findByIdOrNull(configurationId))
 
         configurationPatchDto.integrationMetadataId?.let { configuration.integrationMetadataId = it }
-        configurationPatchDto.completed?.takeIf { it }?.let { configuration.isCompleted = it }
+        configurationPatchDto.completed?.takeIf { it }?.let { configuration.completed = it }
         configurationPatchDto.comment?.let { configuration.comment = it }
         configurationPatchDto.mapping
             ?.let(configurationMappingService::toEntity)

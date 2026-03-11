@@ -5,7 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 
 interface ConfigurationRepository : JpaRepository<Configuration, Long> {
     fun saveWithVersion(configuration: Configuration): Configuration {
-        if (configuration.isCompleted) {
+        if (configuration.completed) {
             val nextVersion = getNextVersionForIntegrationId(requireNotNull(configuration.integrationId))
             configuration.version = nextVersion
         }

@@ -16,7 +16,7 @@ class ConfigurationMappingService(
             .integrationId(configurationDto.integrationId)
             .integrationMetadataId(configurationDto.integrationMetadataId)
             .comment(configurationDto.comment)
-            .completed(configurationDto.isCompleted)
+            .completed(configurationDto.completed)
             .mapping(toEntity(requireNotNull(configurationDto.mapping)))
             .build()
 
@@ -30,7 +30,7 @@ class ConfigurationMappingService(
             .integrationId(configuration.integrationId)
             .integrationMetadataId(configuration.integrationMetadataId)
             .version(configuration.version)
-            .completed(configuration.isCompleted)
+            .completed(configuration.completed)
             .comment(configuration.comment)
             .mapping(configuration.mapping?.takeUnless { excludeMapping }?.let(::toDto))
             .lastModifiedBy(configuration.lastModifiedBy)
