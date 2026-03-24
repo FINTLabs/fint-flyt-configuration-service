@@ -151,3 +151,4 @@ The script walks all overlay directories, injects org/env-specific values (names
 ———
 
 FINT Flyt Configuration Service is maintained by the FINT Flyt team. Reach out on the internal Slack channel or open an issue in this repository for questions or enhancement requests.
+
