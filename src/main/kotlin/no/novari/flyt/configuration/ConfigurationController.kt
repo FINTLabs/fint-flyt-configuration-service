@@ -81,31 +81,34 @@ class ConfigurationController(
     @PatchMapping("{configurationId}")
     fun patchConfiguration(
         @PathVariable configurationId: Long,
+        authentication: Authentication,
         @RequestBody configurationPatchDto: ConfigurationPatchDto,
     ): ResponseEntity<ConfigurationDto> {
-        val configurationDto =
-            configurationService.findById(configurationId, false)
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
+        tokenParsingUtils.bindAuditor(authentication).use {
+            val configurationDto =
+                configurationService.findById(configurationId, false)
+                    ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
-        validateIsNotCompleted(configurationDto)
+            validateIsNotCompleted(configurationDto)
 
-        val configurationDtoBuilder =
-            configurationDto.toBuilder().apply {
-                configurationPatchDto.integrationMetadataId?.let(this::integrationMetadataId)
-                configurationPatchDto.completed?.takeIf { it }?.let(this::completed)
-                configurationPatchDto.comment?.let(this::comment)
-                configurationPatchDto.mapping?.let(this::mapping)
-            }
+            val configurationDtoBuilder =
+                configurationDto.toBuilder().apply {
+                    configurationPatchDto.integrationMetadataId?.let(this::integrationMetadataId)
+                    configurationPatchDto.completed?.takeIf { it }?.let(this::completed)
+                    configurationPatchDto.comment?.let(this::comment)
+                    configurationPatchDto.mapping?.let(this::mapping)
+                }
 
-        val newConfigurationDto = configurationDtoBuilder.build()
+            val newConfigurationDto = configurationDtoBuilder.build()
 
-        validateBeanConstraints(
-            requireNotNull(newConfigurationDto.integrationId),
-            requireNotNull(newConfigurationDto.integrationMetadataId),
-            newConfigurationDto,
-        )
+            validateBeanConstraints(
+                requireNotNull(newConfigurationDto.integrationId),
+                requireNotNull(newConfigurationDto.integrationMetadataId),
+                newConfigurationDto,
+            )
 
-        return ResponseEntity.ok(configurationService.updateById(configurationId, configurationPatchDto))
+            return ResponseEntity.ok(configurationService.updateById(configurationId, configurationPatchDto))
+        }
     }
 
     @DeleteMapping("{configurationId}")

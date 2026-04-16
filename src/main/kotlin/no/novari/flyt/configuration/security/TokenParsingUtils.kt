@@ -9,12 +9,32 @@ import java.util.UUID
 @Service
 class TokenParsingUtils {
     fun bindAuditor(authentication: Authentication): AuditorScope {
-        tryGetUser(authentication)
-            ?.let { user -> firstNonBlank(toTitleCase(user.name), user.email) }
+        tryGetAuditorName(authentication)
             ?.takeUnless(String::isBlank)
             ?.let(CurrentAuditor::set)
 
         return AuditorScope { CurrentAuditor.clear() }
+    }
+
+    fun tryGetAuditorName(authentication: Authentication): String? {
+        if (authentication !is JwtAuthenticationToken) {
+            return null
+        }
+
+        val attrs = authentication.tokenAttributes
+        val displayName =
+            firstNonBlank(
+                text(attrs["displayname"]),
+                text(attrs["name"]),
+            )
+        val email =
+            firstNonBlank(
+                text(attrs["email"]),
+                text(attrs["preferred_username"]),
+                text(attrs["principalName"]),
+            )
+
+        return firstNonBlank(toTitleCase(displayName), email)
     }
 
     fun tryGetUser(authentication: Authentication): User? {

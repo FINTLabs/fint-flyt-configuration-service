@@ -123,6 +123,35 @@ class TokenParsingUtilsTest {
     }
 
     @Test
+    fun shouldReturnAuditorNameWhenOidIsMissing() {
+        val jwt = mock<JwtAuthenticationToken>()
+        whenever(jwt.tokenAttributes).thenReturn(
+            mapOf(
+                "displayname" to "Jane Smith",
+                "email" to "jane.smith@org.no",
+            ),
+        )
+
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
+
+        assertThat(result).isEqualTo("Jane Smith")
+    }
+
+    @Test
+    fun shouldReturnEmailAsAuditorNameWhenOnlyPrincipalNameIsPresent() {
+        val jwt = mock<JwtAuthenticationToken>()
+        whenever(jwt.tokenAttributes).thenReturn(
+            mapOf(
+                "principalName" to "jane.smith@org.no",
+            ),
+        )
+
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
+
+        assertThat(result).isEqualTo("jane.smith@org.no")
+    }
+
+    @Test
     fun shouldConvertToTitleCaseCorrectly() {
         val input = "john DOE"
         val result = invokeToTitleCase(input)
