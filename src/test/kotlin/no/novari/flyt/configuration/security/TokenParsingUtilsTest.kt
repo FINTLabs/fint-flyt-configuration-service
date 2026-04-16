@@ -1,6 +1,5 @@
 package no.novari.flyt.configuration.security
 
-import no.novari.flyt.configuration.model.User
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -8,7 +7,6 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
-import java.util.UUID
 
 class TokenParsingUtilsTest {
     private lateinit var tokenParsingUtils: TokenParsingUtils
@@ -22,7 +20,7 @@ class TokenParsingUtilsTest {
     fun shouldReturnEmptyWhenAuthenticationIsNotJwt() {
         val authentication = mock<Authentication>()
 
-        val result: User? = tokenParsingUtils.tryGetUser(authentication)
+        val result = tokenParsingUtils.tryGetAuditorName(authentication)
 
         assertThat(result).isNull()
     }
@@ -32,94 +30,115 @@ class TokenParsingUtilsTest {
         val jwt = mock<JwtAuthenticationToken>()
         whenever(jwt.tokenAttributes).thenReturn(mapOf())
 
-        val result: User? = tokenParsingUtils.tryGetUser(jwt)
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
 
         assertThat(result).isNull()
     }
 
     @Test
-    fun shouldReturnUserWhenDisplayNameEmailAndOidArePresent() {
-        val oid = UUID.randomUUID()
+    fun shouldReturnDisplayNameWhenDisplayNameAndEmailArePresent() {
         val jwt = mock<JwtAuthenticationToken>()
         whenever(jwt.tokenAttributes).thenReturn(
             mapOf(
                 "displayname" to "John Doe",
                 "email" to "john@example.com",
-                "objectidentifier" to oid.toString(),
             ),
         )
 
-        val result = tokenParsingUtils.tryGetUser(jwt)
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
 
-        val user = requireNotNull(result)
-        assertThat(user.name).isEqualTo("John Doe")
-        assertThat(user.email).isEqualTo("john@example.com")
-        assertThat(user.objectIdentifier).isEqualTo(oid)
+        assertThat(result).isEqualTo("John Doe")
     }
 
     @Test
-    fun shouldReturnEmptyWhenEmailIsMissing() {
+    fun shouldReturnDisplayNameWhenPrincipalNameIsMissingButNameExists() {
         val jwt = mock<JwtAuthenticationToken>()
         whenever(jwt.tokenAttributes).thenReturn(
             mapOf(
                 "displayname" to "Jane Smith",
-                "principalName" to "jane.smith@org.no",
             ),
         )
 
-        val result = tokenParsingUtils.tryGetUser(jwt)
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
 
-        assertThat(result).isNull()
+        assertThat(result).isEqualTo("Jane Smith")
     }
 
     @Test
-    fun shouldReturnEmptyWhenOidIsInvalid() {
-        val jwt = mock<JwtAuthenticationToken>()
-        whenever(jwt.tokenAttributes).thenReturn(
-            mapOf(
-                "displayname" to "Broken UUID",
-                "objectidentifier" to "not-a-uuid",
-            ),
-        )
-
-        val result = tokenParsingUtils.tryGetUser(jwt)
-
-        assertThat(result).isNull()
-    }
-
-    @Test
-    fun shouldParseUserWhenOnlyEmailAndOidArePresent() {
-        val oid = UUID.randomUUID()
-        val jwt = mock<JwtAuthenticationToken>()
-        whenever(jwt.tokenAttributes).thenReturn(
-            mapOf(
-                "email" to "test@domain.no",
-                "objectidentifier" to oid.toString(),
-            ),
-        )
-
-        val result = tokenParsingUtils.tryGetUser(jwt)
-
-        val user = requireNotNull(result)
-        assertThat(user.name).isNull()
-        assertThat(user.email).isEqualTo("test@domain.no")
-        assertThat(user.objectIdentifier).isEqualTo(oid)
-    }
-
-    @Test
-    fun shouldIgnoreBlankOrWhitespaceAttributes() {
-        val oid = UUID.randomUUID()
+    fun shouldReturnNullWhenNameAndEmailAttributesAreBlank() {
         val jwt = mock<JwtAuthenticationToken>()
         whenever(jwt.tokenAttributes).thenReturn(
             mapOf(
                 "displayname" to "  ",
                 "email" to " ",
-                "objectidentifier" to oid.toString(),
+                "preferred_username" to " ",
+                "principalName" to " ",
             ),
         )
 
-        val result = tokenParsingUtils.tryGetUser(jwt)
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
+
         assertThat(result).isNull()
+    }
+
+    @Test
+    fun shouldReturnEmailWhenOnlyEmailIsPresent() {
+        val jwt = mock<JwtAuthenticationToken>()
+        whenever(jwt.tokenAttributes).thenReturn(
+            mapOf(
+                "email" to "test@domain.no",
+            ),
+        )
+
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
+
+        assertThat(result).isEqualTo("test@domain.no")
+    }
+
+    @Test
+    fun shouldPreferDisplayNameOverEmailBasedFields() {
+        val jwt = mock<JwtAuthenticationToken>()
+        whenever(jwt.tokenAttributes).thenReturn(
+            mapOf(
+                "displayname" to "Jane Smith",
+                "email" to "jane.smith@org.no",
+                "preferred_username" to "jsmith",
+                "principalName" to "fallback@org.no",
+            ),
+        )
+
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
+
+        assertThat(result).isEqualTo("Jane Smith")
+    }
+
+    @Test
+    fun shouldReturnAuditorNameWhenOidIsMissing() {
+        val jwt = mock<JwtAuthenticationToken>()
+        whenever(jwt.tokenAttributes).thenReturn(
+            mapOf(
+                "displayname" to "Jane Smith",
+                "email" to "jane.smith@org.no",
+            ),
+        )
+
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
+
+        assertThat(result).isEqualTo("Jane Smith")
+    }
+
+    @Test
+    fun shouldReturnEmailAsAuditorNameWhenOnlyPrincipalNameIsPresent() {
+        val jwt = mock<JwtAuthenticationToken>()
+        whenever(jwt.tokenAttributes).thenReturn(
+            mapOf(
+                "principalName" to "jane.smith@org.no",
+            ),
+        )
+
+        val result = tokenParsingUtils.tryGetAuditorName(jwt)
+
+        assertThat(result).isEqualTo("jane.smith@org.no")
     }
 
     @Test

@@ -1,67 +1,43 @@
 package no.novari.flyt.configuration.security
 
-import no.novari.flyt.configuration.model.User
 import org.springframework.security.core.Authentication
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
 import org.springframework.stereotype.Service
-import java.util.UUID
 
 @Service
 class TokenParsingUtils {
     fun bindAuditor(authentication: Authentication): AuditorScope {
-        tryGetUser(authentication)
-            ?.let { user -> firstNonBlank(toTitleCase(user.name), user.email) }
+        tryGetAuditorName(authentication)
             ?.takeUnless(String::isBlank)
             ?.let(CurrentAuditor::set)
 
         return AuditorScope { CurrentAuditor.clear() }
     }
 
-    fun tryGetUser(authentication: Authentication): User? {
+    fun tryGetAuditorName(authentication: Authentication): String? {
         if (authentication !is JwtAuthenticationToken) {
             return null
         }
 
         val attrs = authentication.tokenAttributes
-
-        val name =
+        val displayName =
             firstNonBlank(
                 text(attrs["displayname"]),
                 text(attrs["name"]),
+            )
+        val email =
+            firstNonBlank(
+                text(attrs["email"]),
                 text(attrs["preferred_username"]),
                 text(attrs["principalName"]),
             )
 
-        val email =
-            firstNonBlank(
-                text(attrs["email"]),
-                text(attrs["principalName"]),
-            )
-
-        val oid = parseUuid(text(attrs["objectidentifier"]))
-
-        if ((name == null && email == null) || oid == null) {
-            return null
-        }
-
-        return User
-            .builder()
-            .objectIdentifier(oid)
-            .name(name)
-            .email(email)
-            .build()
+        return firstNonBlank(toTitleCase(displayName), email)
     }
 
     private fun text(value: Any?): String? = value?.toString()?.trim()?.takeUnless(String::isBlank)
 
     private fun firstNonBlank(vararg values: String?): String? = values.firstOrNull { !it.isNullOrBlank() }
-
-    private fun parseUuid(value: String?): UUID? =
-        try {
-            value?.let(UUID::fromString)
-        } catch (_: IllegalArgumentException) {
-            null
-        }
 
     private companion object {
         @JvmStatic
