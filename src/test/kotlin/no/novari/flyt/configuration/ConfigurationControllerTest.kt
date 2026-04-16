@@ -59,7 +59,9 @@ class ConfigurationControllerTest {
         whenever(configurationService.findById(123L, false)).thenReturn(existingConfiguration)
         whenever(configurationValidatorFactory.getValidator(1L, 2L)).thenReturn(validator)
         whenever(validator.validate(any<ConfigurationDto>(), eq(Default::class.java))).thenReturn(emptySet())
-        whenever(configurationService.updateById(123L, patchDto)).thenReturn(existingConfiguration.copy(comment = patchDto.comment))
+        whenever(
+            configurationService.updateById(123L, patchDto),
+        ).thenReturn(existingConfiguration.copy(comment = patchDto.comment))
 
         configurationController.patchConfiguration(123L, authentication, patchDto)
 
