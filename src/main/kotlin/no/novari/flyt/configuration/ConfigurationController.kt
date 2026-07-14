@@ -4,17 +4,16 @@ import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validator
 import jakarta.validation.groups.Default
 import no.novari.flyt.configuration.model.configuration.dtos.ConfigurationDto
+import no.novari.flyt.configuration.model.configuration.dtos.ConfigurationPageResponse
 import no.novari.flyt.configuration.model.configuration.dtos.ConfigurationPatchDto
 import no.novari.flyt.configuration.security.TokenParsingUtils
 import no.novari.flyt.configuration.validation.ConfigurationValidatorFactory
 import no.novari.flyt.configuration.validation.ValidationErrorsFormattingService
 import no.novari.flyt.configuration.validation.groups.Completed
 import no.novari.flyt.webresourceserver.UrlPaths.INTERNAL_API
-import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
+import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.server.ResponseStatusException
 
@@ -44,37 +44,40 @@ class ConfigurationController(
         @RequestParam(name = "integrasjonId", required = false) integrationId: Long?,
         @RequestParam(name = "ferdigstilt", required = false) complete: Boolean?,
         @RequestParam(name = "ekskluderMapping", required = false, defaultValue = "false") excludeMapping: Boolean,
-    ): ResponseEntity<Page<ConfigurationDto>> {
+    ): ConfigurationPageResponse {
         val filter = ConfigurationFilter(integrationId = integrationId, completed = complete)
         val pageRequest = PageRequest.of(page, size).withSort(sortDirection, sortProperty)
 
-        return ResponseEntity.ok(configurationService.findAll(filter, excludeMapping, pageRequest))
+        val configurations = configurationService.findAll(filter, excludeMapping, pageRequest)
+
+        return ConfigurationPageResponse(
+            content = configurations.content,
+            totalElements = configurations.totalElements,
+            totalPages = configurations.totalPages,
+        )
     }
 
     @GetMapping("{configurationId}")
     fun getConfiguration(
         @PathVariable configurationId: Long,
         @RequestParam(name = "ekskluderMapping", required = false, defaultValue = "false") excludeMapping: Boolean,
-    ): ResponseEntity<ConfigurationDto> {
-        val configuration =
-            configurationService.findById(configurationId, excludeMapping)
-                ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
-
-        return ResponseEntity.ok(configuration)
+    ): ConfigurationDto {
+        return configurationService.findById(configurationId, excludeMapping)
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
     }
 
     @PostMapping
     fun postConfiguration(
         authentication: Authentication,
         @RequestBody configurationDto: ConfigurationDto,
-    ): ResponseEntity<ConfigurationDto> {
+    ): ConfigurationDto {
         tokenParsingUtils.bindAuditor(authentication).use {
             validateBeanConstraints(
                 requireNotNull(configurationDto.integrationId),
                 requireNotNull(configurationDto.integrationMetadataId),
                 configurationDto,
             )
-            return ResponseEntity.ok(configurationService.save(configurationDto))
+            return configurationService.save(configurationDto)
         }
     }
 
@@ -83,7 +86,7 @@ class ConfigurationController(
         @PathVariable configurationId: Long,
         authentication: Authentication,
         @RequestBody configurationPatchDto: ConfigurationPatchDto,
-    ): ResponseEntity<ConfigurationDto> {
+    ): ConfigurationDto {
         tokenParsingUtils.bindAuditor(authentication).use {
             val configurationDto =
                 configurationService.findById(configurationId, false)
@@ -107,21 +110,21 @@ class ConfigurationController(
                 newConfigurationDto,
             )
 
-            return ResponseEntity.ok(configurationService.updateById(configurationId, configurationPatchDto))
+            return configurationService.updateById(configurationId, configurationPatchDto)
         }
     }
 
     @DeleteMapping("{configurationId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     fun deleteConfiguration(
         @PathVariable configurationId: Long,
-    ): ResponseEntity<Void> {
+    ) {
         val configurationDto =
             configurationService.findById(configurationId, true)
                 ?: throw ResponseStatusException(HttpStatus.NOT_FOUND)
 
         validateIsNotCompleted(configurationDto)
         configurationService.deleteById(configurationId)
-        return ResponseEntity.noContent().build()
     }
 
     private fun validateIsNotCompleted(configurationDto: ConfigurationDto) {
