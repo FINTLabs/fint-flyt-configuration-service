@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
+import no.novari.flyt.audit.actor.Actor
 import no.novari.flyt.configuration.validation.constraints.IntegrationAndMetadataMatches
 import java.time.Instant
 
@@ -24,9 +25,17 @@ data class ConfigurationDto(
     @field:NotNull
     var mapping: ObjectMappingDto? = null,
     @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    var createdAt: Instant? = null,
+    @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    var createdBy: String? = null,
+    @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    var createdByActor: Actor? = null,
+    @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var lastModifiedAt: Instant? = null,
     @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var lastModifiedBy: String? = null,
+    @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    var lastModifiedByActor: Actor? = null,
 ) {
     companion object {
         @JvmStatic
@@ -42,8 +51,12 @@ data class ConfigurationDto(
             .comment(comment)
             .version(version)
             .mapping(mapping)
+            .createdAt(createdAt)
+            .createdBy(createdBy)
+            .createdByActor(createdByActor)
             .lastModifiedAt(lastModifiedAt)
             .lastModifiedBy(lastModifiedBy)
+            .lastModifiedByActor(lastModifiedByActor)
 
     class Builder {
         private var id: Long? = null
@@ -53,8 +66,12 @@ data class ConfigurationDto(
         private var comment: String? = null
         private var version: Int? = null
         private var mapping: ObjectMappingDto? = null
+        private var createdAt: Instant? = null
+        private var createdBy: String? = null
+        private var createdByActor: Actor? = null
         private var lastModifiedAt: Instant? = null
         private var lastModifiedBy: String? = null
+        private var lastModifiedByActor: Actor? = null
 
         fun id(id: Long?) = apply { this.id = id }
 
@@ -71,9 +88,17 @@ data class ConfigurationDto(
 
         fun mapping(mapping: ObjectMappingDto?) = apply { this.mapping = mapping }
 
+        fun createdAt(createdAt: Instant?) = apply { this.createdAt = createdAt }
+
+        fun createdBy(createdBy: String?) = apply { this.createdBy = createdBy }
+
+        fun createdByActor(createdByActor: Actor?) = apply { this.createdByActor = createdByActor }
+
         fun lastModifiedAt(lastModifiedAt: Instant?) = apply { this.lastModifiedAt = lastModifiedAt }
 
         fun lastModifiedBy(lastModifiedBy: String?) = apply { this.lastModifiedBy = lastModifiedBy }
+
+        fun lastModifiedByActor(lastModifiedByActor: Actor?) = apply { this.lastModifiedByActor = lastModifiedByActor }
 
         fun build(): ConfigurationDto =
             ConfigurationDto(
@@ -84,8 +109,12 @@ data class ConfigurationDto(
                 comment = comment,
                 version = version,
                 mapping = mapping,
+                createdAt = createdAt,
+                createdBy = createdBy,
+                createdByActor = createdByActor,
                 lastModifiedAt = lastModifiedAt,
                 lastModifiedBy = lastModifiedBy,
+                lastModifiedByActor = lastModifiedByActor,
             )
     }
 }

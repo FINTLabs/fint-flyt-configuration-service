@@ -8,32 +8,34 @@ Spring Boot service that stores and validates configuration documents for FINT F
 - **Versioned persistence** — JPA repository backed by PostgreSQL automatically increments a configuration version when a document is marked as completed.
 - **Kafka request/reply bridges** — Consumers expose configuration and mapping lookups, while producers fetch integrations, integration metadata, and instance metadata used during validation.
 - **Context-aware validation** — Custom Jakarta Bean Validation constraints ensure integration↔metadata consistency, key uniqueness, type compatibility, and value parsability before persisting.
-- **Audited updates** — `AuditorScope` binds the calling principal from JWTs so `lastModifiedBy`/`lastModifiedAt` fields are populated through Spring Data auditing.
+- **Change log** — `flyt-audit-starter` populates `createdAt`/`createdBy` and `lastModifiedAt`/`lastModifiedBy` with a structured `Actor`, and Hibernate Envers records one revision per change, exposed through `/history` endpoints.
 
 ## Architecture Overview
 
-| Component | Responsibility |
-|-----------|----------------|
-| `ConfigurationController` | Handles internal HTTP requests, binds auditing context, orchestrates validation, and enforces completion rules. |
-| `ConfigurationService` | Wraps repository access, DTO ↔ entity mapping, and mapping persistence for CRUD flows. |
-| `ConfigurationRepository` & `ObjectMappingRepository` | Spring Data JPA repositories storing configurations and nested object mappings with custom versioning logic. |
-| `ConfigurationMappingService` & mapping helpers | Convert between DTO graphs and entity graphs for mappings, collections, and per-key values. |
-| `ConfigurationValidatorFactory` & constraints | Build validators with integration + metadata payload to validate references, keys, types, and completion-specific rules. |
-| `IntegrationRequestProducerService`, `MetadataRequestProducerService`, `InstanceMetadataRequestProducerService` | Perform Kafka request/reply lookups so validation has the latest integration and metadata context. |
-| `ConfigurationRequestConsumerConfiguration` | Registers Kafka consumers that answer configuration and mapping fetch requests by configuration ID for other Flyt services. |
-| `TokenParsingUtils`, `TokenAuditorAware` | Extract auditing data from OAuth2 tokens and plug into Spring Data’s `@EnableJpaAuditing`. |
+| Component                                                                                                       | Responsibility                                                                                                                    |
+|-----------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|
+| `ConfigurationController`                                                                                       | Handles internal HTTP requests, orchestrates validation, and enforces completion rules.                                           |
+| `ConfigurationService`                                                                                          | Wraps repository access, DTO ↔ entity mapping, and mapping persistence for CRUD flows.                                            |
+| `ConfigurationRepository` & `ObjectMappingRepository`                                                           | Spring Data JPA repositories storing configurations and nested object mappings with custom versioning logic.                      |
+| `ConfigurationMappingService` & mapping helpers                                                                 | Convert between DTO graphs and entity graphs for mappings, collections, and per-key values.                                       |
+| `ConfigurationValidatorFactory` & constraints                                                                   | Build validators with integration + metadata payload to validate references, keys, types, and completion-specific rules.          |
+| `IntegrationRequestProducerService`, `MetadataRequestProducerService`, `InstanceMetadataRequestProducerService` | Perform Kafka request/reply lookups so validation has the latest integration and metadata context.                                |
+| `ConfigurationRequestConsumerConfiguration`                                                                     | Registers Kafka consumers that answer configuration and mapping fetch requests by configuration ID for other Flyt services.       |
+| `ConfigurationHistoryController`, `ConfigurationHistoryService`                                                 | Expose Envers revisions for configurations, built on `HistoryControllerSupport`/`EnversHistoryService` from `flyt-audit-starter`. |
 
 ## HTTP API
 
 Base path: `/internal/api/konfigurasjoner`
 
-| Method | Path | Description | Request body | Response |
-|--------|------|-------------|--------------|----------|
-| `GET` | `/?side&antall&sorteringFelt&sorteringRetning&integrasjonId&ferdigstilt&ekskluderMapping` | Paginated listing filtered by integration and completion status. `ekskluderMapping=true` removes heavy mapping payloads. | – | `200 OK` with `Page<ConfigurationDto>`. |
-| `GET` | `/{configurationId}?ekskluderMapping` | Fetch a single configuration, optionally omitting the mapping section. | – | `200 OK` with `ConfigurationDto`, `404` when missing. |
-| `POST` | `/` | Create a configuration draft. Validates that integration and metadata IDs exist and mapping content passes structural checks. | `ConfigurationDto` JSON (see below). | `200 OK` with persisted `ConfigurationDto`; validation failures return `422`. |
-| `PATCH` | `/{configurationId}` | Update metadata reference, comment, mapping, or mark as completed. Completed configurations become immutable. | `ConfigurationPatchDto` JSON. | `200 OK` with updated `ConfigurationDto`, `404` when missing, `403` if already completed. |
-| `DELETE` | `/{configurationId}` | Remove a configuration that is still a draft (not completed). | – | `204 No Content`, `403` when completed, `404` when missing. |
+| Method   | Path                                                                                      | Description                                                                                                                                        | Request body                         | Response                                                                                  |
+|----------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|-------------------------------------------------------------------------------------------|
+| `GET`    | `/?side&antall&sorteringFelt&sorteringRetning&integrasjonId&ferdigstilt&ekskluderMapping` | Paginated listing filtered by integration and completion status. `ekskluderMapping=true` removes heavy mapping payloads.                           | –                                    | `200 OK` with `Page<ConfigurationDto>`.                                                   |
+| `GET`    | `/{configurationId}?ekskluderMapping`                                                     | Fetch a single configuration, optionally omitting the mapping section.                                                                             | –                                    | `200 OK` with `ConfigurationDto`, `404` when missing.                                     |
+| `POST`   | `/`                                                                                       | Create a configuration draft. Validates that integration and metadata IDs exist and mapping content passes structural checks.                      | `ConfigurationDto` JSON (see below). | `200 OK` with persisted `ConfigurationDto`; validation failures return `422`.             |
+| `PATCH`  | `/{configurationId}`                                                                      | Update metadata reference, comment, mapping, or mark as completed. Completed configurations become immutable.                                      | `ConfigurationPatchDto` JSON.        | `200 OK` with updated `ConfigurationDto`, `404` when missing, `403` if already completed. |
+| `DELETE` | `/{configurationId}`                                                                      | Remove a configuration that is still a draft (not completed).                                                                                      | –                                    | `204 No Content`, `403` when completed, `404` when missing.                               |
+| `GET`    | `/{configurationId}/history?page&size&from&to`                                            | Change log for one configuration, newest revision first. `snapshot` holds configuration metadata (no mapping) and is `null` for deleted revisions. | –                                    | `200 OK` with `HistoryPageDto<ConfigurationSnapshot>`.                                    |
+| `GET`    | `/history?page&size&from&to`                                                              | Change log across all configurations, same shape with an added `entityId`.                                                                         | –                                    | `200 OK` with `EntityHistoryPageDto<ConfigurationSnapshot, Long>`.                        |
 
 Example `ConfigurationDto` payload:
 
@@ -72,14 +74,14 @@ Spring profiles include common Flyt layers: `flyt-kafka`, `flyt-logging`, `flyt-
 
 Key properties:
 
-| Property                                                                | Description |
-|-------------------------------------------------------------------------|-------------|
+| Property                                                                | Description                                                                        |
+|-------------------------------------------------------------------------|------------------------------------------------------------------------------------|
 | `fint.application-id`                                                   | Used for Kafka client IDs, request/reply reply topics, and default topic prefixes. |
-| `novari.kafka.topic.org-id`                                             | Scoped per kustomize overlay to control Kafka ACLs and topic names. |
-| `fint.database.url`, `fint.database.username`, `fint.database.password` | PostgreSQL connection parameters injected from secrets. |
-| `spring.security.oauth2.resourceserver.jwt.issuer-uri`                  | Identity provider for validating OAuth2 JWTs. |
-| `management.endpoints.web.exposure.include`                             | Actuator endpoints exposed (health, info, prometheus). |
-| `novari.flyt.web-resource-server.security.api.internal.*`               | Toggles the internal API and per-org authorization matrix. |
+| `novari.kafka.topic.org-id`                                             | Scoped per kustomize overlay to control Kafka ACLs and topic names.                |
+| `fint.database.url`, `fint.database.username`, `fint.database.password` | PostgreSQL connection parameters injected from secrets.                            |
+| `spring.security.oauth2.resourceserver.jwt.issuer-uri`                  | Identity provider for validating OAuth2 JWTs.                                      |
+| `management.endpoints.web.exposure.include`                             | Actuator endpoints exposed (health, info, prometheus).                             |
+| `novari.flyt.web-resource-server.security.api.internal.*`               | Toggles the internal API and per-org authorization matrix.                         |
 
 Secrets referenced by the base manifest must supply database credentials and OAuth client configuration.
 
@@ -88,14 +90,14 @@ Secrets referenced by the base manifest must supply database credentials and OAu
 Prerequisites:
 
 - Java 25+
-- Docker (used by `start-postgres` helper)
+- Docker (used by the `start-postgres` helper and by Testcontainers in the test suite)
 - Local Kafka broker (e.g., `docker compose` or existing dev cluster)
 
 Helpful commands:
 
 ```shell
 ./gradlew clean build        # compile sources and run tests
-./gradlew test               # unit + validation tests
+./gradlew test               # unit + validation tests (requires a running Docker daemon)
 ./gradlew bootRun            # start with Flyt profiles
 ./start-postgres             # launch PostgreSQL on localhost:5434 (Ctrl+C/docker stop to tear down)
 ```
@@ -127,7 +129,8 @@ The script walks all overlay directories, injects org/env-specific values (names
 
 - OAuth2 resource server that validates JWTs against `https://idp.felleskomponent.no`.
 - Internal API gated by `novari.flyt.web-resource-server.security.api.internal` with optional per-org role mappings.
-- `TokenAuditorAware` and `AuditorScope` tie JWT claims to Spring Data auditing so updates are traceable.
+- `ActorAuditorAware` from `flyt-audit-starter` derives the acting `Actor` from the JWT (`objectidentifier` → user, `sub` → machine-to-machine, no JWT → system) for both Spring Data auditing and Envers revisions.
+- History endpoints are protected by the same internal path prefix as the rest of the API; they are not scoped per source application.
 
 ## Observability & Operations
 
@@ -138,7 +141,7 @@ The script walks all overlay directories, injects org/env-specific values (names
 ## Development Tips
 
 - Validators call Kafka services to verify metadata; stub `IntegrationRequestProducerService`, `MetadataRequestProducerService`, and `InstanceMetadataRequestProducerService` in tests when asserting validation rules.
-- Flyway migrations live in `src/main/resources/db/migration`; add new scripts for schema changes instead of altering existing ones.
+- Flyway migrations live in `src/main/resources/db/migration`; add new scripts for schema changes instead of altering existing ones. `ConfigurationAuditIntegrationTest` runs them against a Testcontainers PostgreSQL with `ddl-auto: none`, so a broken migration fails the build.
 - `ConfigurationMappingService` centralizes DTO/entity conversion—extend it instead of duplicating mapping logic in controllers or services.
 
 ## Contributing

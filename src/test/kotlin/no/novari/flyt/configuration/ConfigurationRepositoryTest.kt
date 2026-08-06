@@ -25,7 +25,7 @@ class ConfigurationRepositoryTest {
     }
 
     @Test
-    fun testSaveWithVersion() {
+    fun `saveWithVersion assigns the next version when the configuration is completed`() {
         val integrationId = requireNotNull(configuration.integrationId)
         whenever(configurationRepository.saveWithVersion(configuration)).thenCallRealMethod()
         whenever(configurationRepository.getNextVersionForIntegrationId(integrationId)).thenReturn(2)
@@ -37,7 +37,7 @@ class ConfigurationRepositoryTest {
     }
 
     @Test
-    fun testGetNextVersionForIntegrationId() {
+    fun `getNextVersionForIntegrationId increments the highest existing version`() {
         val integrationId = requireNotNull(configuration.integrationId)
         whenever(configurationRepository.getNextVersionForIntegrationId(integrationId)).thenCallRealMethod()
         whenever(configurationRepository.findFirstByIntegrationIdAndVersionNotNullOrderByVersionDesc(integrationId))

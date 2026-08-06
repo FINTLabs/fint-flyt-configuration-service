@@ -24,7 +24,7 @@ class InstanceValueTypesAreCompatibleValidatorTest {
     private lateinit var validator: InstanceValueTypesAreCompatibleValidator
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         instanceValueKeyExtractionService = mock()
         hibernateConstraintValidatorContext = mock()
 
@@ -40,7 +40,7 @@ class InstanceValueTypesAreCompatibleValidatorTest {
     }
 
     @Test
-    fun testIsValidTrue() {
+    fun `accepts instance value types that are compatible`() {
         val dto =
             ValueMappingDto
                 .builder()
@@ -68,7 +68,7 @@ class InstanceValueTypesAreCompatibleValidatorTest {
     }
 
     @Test
-    fun testIsValidFalse() {
+    fun `rejects instance value types that are incompatible`() {
         val dto =
             ValueMappingDto
                 .builder()

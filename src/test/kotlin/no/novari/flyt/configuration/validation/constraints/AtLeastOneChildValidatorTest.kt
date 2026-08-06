@@ -13,12 +13,12 @@ class AtLeastOneChildValidatorTest {
     private lateinit var atLeastOneChildValidator: AtLeastOneChildValidator
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         atLeastOneChildValidator = AtLeastOneChildValidator()
     }
 
     @Test
-    fun shouldReturnTrueWhenObjectMappingHasChildren() {
+    fun `accepts an object mapping that has children`() {
         val objectMappingDto = ObjectMappingDto.builder().build()
         objectMappingDto.valueMappingPerKey["valueMappingKey"] = mock<ValueMappingDto>()
 
@@ -32,7 +32,7 @@ class AtLeastOneChildValidatorTest {
     }
 
     @Test
-    fun shouldReturnFalseWhenObjectMappingHasNoChildren() {
+    fun `rejects an object mapping without children`() {
         val valid =
             atLeastOneChildValidator.isValid(
                 ObjectMappingDto.builder().build(),

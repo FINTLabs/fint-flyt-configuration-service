@@ -16,12 +16,12 @@ class UniqueChildrenKeysValidatorTest {
     private lateinit var uniqueChildrenKeysValidator: UniqueChildrenKeysValidator
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         uniqueChildrenKeysValidator = UniqueChildrenKeysValidator()
     }
 
     @Test
-    fun shouldReturnTrueWhenNoDuplicateKeysExist() {
+    fun `accepts children with unique keys`() {
         val objectMappingDto =
             ObjectMappingDto
                 .builder()
@@ -48,7 +48,7 @@ class UniqueChildrenKeysValidatorTest {
     }
 
     @Test
-    fun shouldReturnDuplicateKeysInASingleCollectionAndAcrossChildCollections() {
+    fun `reports duplicate keys within one collection and across child collections`() {
         val valueMappingPerKey = mutableMapOf<String, ValueMappingDto>()
         valueMappingPerKey["one"] = ValueMappingDto.builder().build()
         valueMappingPerKey["two"] = ValueMappingDto.builder().build()

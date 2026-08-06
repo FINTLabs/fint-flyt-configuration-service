@@ -55,7 +55,7 @@ class ConfigurationValidatorFactoryTest {
     }
 
     @Test
-    fun getValidatorTest() {
+    fun `getValidator builds a validator from integration and metadata context`() {
         val mockIntegration =
             Integration
                 .builder()
@@ -94,7 +94,7 @@ class ConfigurationValidatorFactoryTest {
     }
 
     @Test
-    fun getValidatorIntegrationNotFoundTest() {
+    fun `getValidator throws when the integration is not found`() {
         whenever(integrationRequestProducerService.get(any())).thenReturn(null)
 
         assertThrows(CouldNotFindIntegrationException::class.java) {
@@ -103,7 +103,7 @@ class ConfigurationValidatorFactoryTest {
     }
 
     @Test
-    fun getValidatorMetadataNotFoundTest() {
+    fun `getValidator throws when the metadata is not found`() {
         val mockIntegration =
             Integration
                 .builder()
@@ -123,7 +123,7 @@ class ConfigurationValidatorFactoryTest {
     }
 
     @Test
-    fun getValidatorInstanceMetadataNotFoundTest() {
+    fun `getValidator throws when the instance metadata is not found`() {
         val mockIntegration =
             Integration
                 .builder()
