@@ -45,6 +45,16 @@ class ConfigurationMappingServiceAuditTest {
     }
 
     @Test
+    fun `uses the current actor once a migrated row has been modified by a known user`() {
+        val configuration = configuration(Actor.Unknown, Actor.User(oid), legacyName = "Kari Nordmann")
+
+        val result = configurationMappingService.toDto(configuration, true)
+
+        assertEquals("Ola Nordmann", result.lastModifiedBy)
+        assertEquals(Actor.User(oid), result.lastModifiedByActor)
+    }
+
+    @Test
     fun `maps a snapshot with metadata only`() {
         val configuration =
             Configuration

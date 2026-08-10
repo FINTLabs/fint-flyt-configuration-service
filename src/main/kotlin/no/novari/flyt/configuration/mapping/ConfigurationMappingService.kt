@@ -57,9 +57,6 @@ class ConfigurationMappingService(
         excludeMapping: Boolean,
         displays: Map<Actor, String?>,
     ): ConfigurationDto {
-        val lastModifiedByDisplay =
-            configuration.lastModifiedByLegacy ?: configuration.lastModifiedBy?.let { displays[it] }
-
         return ConfigurationDto
             .builder()
             .id(configuration.id)
@@ -73,9 +70,25 @@ class ConfigurationMappingService(
             .createdBy(configuration.createdBy?.let { displays[it] })
             .createdByActor(configuration.createdBy)
             .lastModifiedAt(configuration.lastModifiedAt)
-            .lastModifiedBy(lastModifiedByDisplay)
+            .lastModifiedBy(lastModifiedByDisplay(configuration, displays))
             .lastModifiedByActor(configuration.lastModifiedBy)
             .build()
+    }
+
+    /**
+     * Rader fra før auditing ble innført fikk aktør `UNKNOWN`, men det opprinnelige navnet er bevart
+     * i `last_modified_by_legacy`. Legacy-navnet brukes derfor kun så lenge aktøren er ukjent — så
+     * snart raden endres av en identifisert aktør, er det den som skal vises.
+     */
+    private fun lastModifiedByDisplay(
+        configuration: Configuration,
+        displays: Map<Actor, String?>,
+    ): String? {
+        val actor = configuration.lastModifiedBy
+        if (actor != null && actor != Actor.Unknown) {
+            return displays[actor]
+        }
+        return configuration.lastModifiedByLegacy ?: actor?.let { displays[it] }
     }
 
     private fun actorsOf(configuration: Configuration): List<Actor?> =

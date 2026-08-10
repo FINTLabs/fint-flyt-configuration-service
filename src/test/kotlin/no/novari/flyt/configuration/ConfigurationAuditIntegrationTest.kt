@@ -144,6 +144,39 @@ class ConfigurationAuditIntegrationTest {
         }
     }
 
+    /**
+     * `mapping` er `targetAuditMode = NOT_AUDITED`, så gamle revisjoner peker på en `object_mapping`-rad
+     * som er orphan-removed. Relasjonen er en proxy som aldri dereferereres av det metadata-baserte
+     * snapshotet — legges mapping inn i [ConfigurationSnapshot] senere, feiler denne testen med
+     * EntityNotFoundException, og det er med vilje.
+     */
+    @Test
+    fun `history survives a mapping replacement that orphan removed the previous tree`() {
+        val id = requireNotNull(configurationService.save(configurationDto("v1")).id)
+        val replacedMappingId =
+            jdbcTemplate.queryForObject(
+                "select mapping_id from configuration where id = ?",
+                Long::class.java,
+                id,
+            )
+
+        configurationService.updateById(id, ConfigurationPatchDto(mapping = objectMappingDto("v2")))
+
+        val remainingRowsForReplacedMapping: Long? =
+            jdbcTemplate.queryForObject(
+                "select count(*) from object_mapping where id = ?",
+                Long::class.java,
+                requireNotNull(replacedMappingId),
+            )
+        assertThat(remainingRowsForReplacedMapping).isEqualTo(0L)
+
+        val page = findHistory(id)
+
+        assertThat(page.totalElements).isEqualTo(2)
+        assertThat(page.content.map { it.type })
+            .containsExactly(HistoryEventType.UPDATED, HistoryEventType.CREATED)
+    }
+
     @Test
     fun `delete gives a DELETED entry with null snapshot`() {
         val id = requireNotNull(configurationService.save(configurationDto("v1")).id)
@@ -195,19 +228,21 @@ class ConfigurationAuditIntegrationTest {
             .builder()
             .integrationId(1L)
             .integrationMetadataId(2L)
-            .mapping(
-                ObjectMappingDto
-                    .builder()
-                    .valueMappingPerKey(
-                        mutableMapOf(
-                            "felt" to
-                                ValueMappingDto
-                                    .builder()
-                                    .type(ValueMapping.Type.STRING)
-                                    .mappingString(mappingString)
-                                    .build(),
-                        ),
-                    ).build(),
+            .mapping(objectMappingDto(mappingString))
+            .build()
+
+    private fun objectMappingDto(mappingString: String): ObjectMappingDto =
+        ObjectMappingDto
+            .builder()
+            .valueMappingPerKey(
+                mutableMapOf(
+                    "felt" to
+                        ValueMappingDto
+                            .builder()
+                            .type(ValueMapping.Type.STRING)
+                            .mappingString(mappingString)
+                            .build(),
+                ),
             ).build()
 
     private fun setJwtWithOid(oid: UUID) {
