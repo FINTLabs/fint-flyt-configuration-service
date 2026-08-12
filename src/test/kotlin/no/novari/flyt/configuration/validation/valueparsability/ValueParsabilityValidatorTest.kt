@@ -16,14 +16,14 @@ class ValueParsabilityValidatorTest {
     private lateinit var valueParsabilityValidator: ValueParsabilityValidator
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         valueParsabilityValidator = mock()
         whenever(valueParsabilityValidator.getTypeToValidate()).thenReturn(ValueMapping.Type.STRING)
         whenever(valueParsabilityValidator.isValid(any<String>())).thenReturn(false)
     }
 
     @Test
-    fun shouldValidateValueIfValidatorTypeMatchesValueType() {
+    fun `validates the value when the validator type matches the value type`() {
         val valueMappingDto =
             ValueMappingDto
                 .builder()
@@ -39,7 +39,7 @@ class ValueParsabilityValidatorTest {
     }
 
     @Test
-    fun shouldReturnTrueIfValidatorTypeDoesNotMatchValueType() {
+    fun `accepts without validating when the validator type does not match the value type`() {
         val valueMappingDto =
             ValueMappingDto
                 .builder()
@@ -55,7 +55,7 @@ class ValueParsabilityValidatorTest {
     }
 
     @Test
-    fun shouldReturnTrueIfValueIsNull() {
+    fun `accepts a null value`() {
         val valueMappingDto =
             ValueMappingDto
                 .builder()

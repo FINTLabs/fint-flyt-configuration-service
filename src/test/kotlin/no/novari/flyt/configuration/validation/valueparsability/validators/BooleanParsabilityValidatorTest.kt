@@ -11,37 +11,37 @@ class BooleanParsabilityValidatorTest {
     private lateinit var booleanParsabilityValidator: BooleanParsabilityValidator
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         booleanParsabilityValidator = BooleanParsabilityValidator()
     }
 
     @Test
-    fun getTypeToValidate() {
+    fun `reports the value type it validates`() {
         assertEquals(ValueMapping.Type.BOOLEAN, booleanParsabilityValidator.getTypeToValidate())
     }
 
     @Test
-    fun shouldReturnTrueIfValueIsTrue() {
+    fun `accepts the value true`() {
         assertTrue(booleanParsabilityValidator.isValid("true"))
     }
 
     @Test
-    fun shouldReturnTrueIfValueIsFalse() {
+    fun `accepts the value false`() {
         assertTrue(booleanParsabilityValidator.isValid("false"))
     }
 
     @Test
-    fun shouldReturnFalseIfValueIsEmpty() {
+    fun `rejects an empty value`() {
         assertFalse(booleanParsabilityValidator.isValid(""))
     }
 
     @Test
-    fun shouldReturnFalseIfValueIsBlank() {
+    fun `rejects a blank value`() {
         assertFalse(booleanParsabilityValidator.isValid(" "))
     }
 
     @Test
-    fun shouldReturnFalseIfValueIsTruest() {
+    fun `rejects a value that only looks like a boolean`() {
         assertFalse(booleanParsabilityValidator.isValid("truest"))
     }
 }

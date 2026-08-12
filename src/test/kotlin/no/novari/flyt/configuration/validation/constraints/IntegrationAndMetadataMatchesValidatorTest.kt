@@ -16,7 +16,7 @@ class IntegrationAndMetadataMatchesValidatorTest {
     private lateinit var validator: IntegrationAndMetadataMatchesValidator
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         validator = IntegrationAndMetadataMatchesValidator()
     }
 
@@ -27,7 +27,7 @@ class IntegrationAndMetadataMatchesValidatorTest {
         "1,10,1,11,false",
         "1,10,2,11,false",
     )
-    fun shouldReturnTrueOnlyWhenBothIdsMatch(
+    fun `accepts only when both the source application id and integration id match`(
         integrationSaId: Long,
         integrationSaiId: String,
         metadataSaId: Long,

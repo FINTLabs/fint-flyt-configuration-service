@@ -6,6 +6,7 @@ plugins {
     kotlin("jvm") version "2.4.0"
     kotlin("plugin.spring") version "2.4.0"
     kotlin("plugin.jpa") version "2.4.0"
+    kotlin("kapt") version "2.4.0"
 }
 
 group = "no.novari"
@@ -44,6 +45,7 @@ sourceSets {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.security:spring-security-oauth2-jose")
@@ -59,18 +61,25 @@ dependencies {
 
     implementation("no.novari:flyt-web-resource-server:4.0.0")
     implementation("no.novari:flyt-kafka:7.2.0")
+    implementation("no.novari:flyt-audit-starter:1.1.0")
 
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.postgresql:postgresql")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.springframework.security:spring-security-core")
     testImplementation("org.springframework.security:spring-security-oauth2-jose")
     testImplementation("org.mockito.kotlin:mockito-kotlin:6.2.3")
+    testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.1"))
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:postgresql")
 
-    testRuntimeOnly("com.h2database:h2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    testImplementation(kotlin("test"))
 }
 
 tasks.test {

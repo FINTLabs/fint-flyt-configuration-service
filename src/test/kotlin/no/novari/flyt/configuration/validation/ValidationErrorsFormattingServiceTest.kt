@@ -17,14 +17,14 @@ class ValidationErrorsFormattingServiceTest {
     }
 
     @Test
-    fun formatNoErrors() {
+    fun `formats an empty violation set`() {
         val errors = mutableSetOf<ConstraintViolation<Any>>()
         val result = service.format(errors)
         assertEquals("Validation error: []", result)
     }
 
     @Test
-    fun formatSingleError() {
+    fun `formats a single violation with its property path`() {
         val errors = mutableSetOf<ConstraintViolation<Any>>()
 
         val mockViolation = mock<ConstraintViolation<Any>>()
@@ -40,7 +40,7 @@ class ValidationErrorsFormattingServiceTest {
     }
 
     @Test
-    fun formatMultipleErrors() {
+    fun `formats multiple violations as a list`() {
         val errors = mutableSetOf<ConstraintViolation<Any>>()
 
         val mockViolation1 = mock<ConstraintViolation<Any>>()
@@ -63,7 +63,7 @@ class ValidationErrorsFormattingServiceTest {
     }
 
     @Test
-    fun formatBlankPropertyPath() {
+    fun `formats a violation whose property path is blank`() {
         val errors = mutableSetOf<ConstraintViolation<Any>>()
 
         val mockViolation = mock<ConstraintViolation<Any>>()

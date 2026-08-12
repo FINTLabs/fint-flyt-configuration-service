@@ -17,12 +17,12 @@ class InstanceValueKeysAreDefinedInMetadataValidatorTest {
     private lateinit var validator: InstanceValueKeysAreDefinedInMetadataValidator
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         validator = InstanceValueKeysAreDefinedInMetadataValidator(InstanceValueKeyExtractionService())
     }
 
     @Test
-    fun shouldReturnTrueWhenValueContainsNoInstanceFieldReferences() {
+    fun `accepts a value without instance field references`() {
         val context =
             ConfigurationValidationContext
                 .builder()
@@ -51,7 +51,7 @@ class InstanceValueKeysAreDefinedInMetadataValidatorTest {
     }
 
     @Test
-    fun shouldReturnTrueWhenAllInstanceFieldReferenceKeysAreFoundInMetadata() {
+    fun `accepts a value where every instance field reference key exists in the metadata`() {
         val context =
             ConfigurationValidationContext
                 .builder()
@@ -79,7 +79,7 @@ class InstanceValueKeysAreDefinedInMetadataValidatorTest {
     }
 
     @Test
-    fun shouldReturnFalseWhenAnInstanceFieldReferenceKeyIsNotFoundInMetadata() {
+    fun `rejects a value with an instance field reference key that is missing from the metadata`() {
         val context =
             ConfigurationValidationContext
                 .builder()

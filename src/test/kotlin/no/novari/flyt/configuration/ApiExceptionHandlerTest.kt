@@ -14,7 +14,7 @@ class ApiExceptionHandlerTest {
     private val exceptionHandler = ApiExceptionHandler()
 
     @Test
-    fun shouldReturnExactMessageForResponseStatusException() {
+    fun `keeps the validation message verbatim in the error response`() {
         val request = mock<HttpServletRequest>()
         whenever(request.requestURI).thenReturn("/ofk-no/api/intern/konfigurasjoner/210")
 
@@ -38,7 +38,7 @@ class ApiExceptionHandlerTest {
     }
 
     @Test
-    fun shouldReturnExactMessageForMetadataLookupFailure() {
+    fun `keeps the message verbatim when a metadata lookup fails`() {
         val request = mock<HttpServletRequest>()
         whenever(request.requestURI).thenReturn("/ofk-no/api/intern/konfigurasjoner/210")
 

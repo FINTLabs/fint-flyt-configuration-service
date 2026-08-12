@@ -6,6 +6,7 @@ import no.novari.flyt.configuration.model.configuration.dtos.ConfigurationPatchD
 import no.novari.flyt.configuration.model.configuration.entities.Configuration
 import org.springframework.data.domain.Example
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -35,11 +36,10 @@ class ConfigurationService(
                 filter.completed?.let { completed = it }
             }
 
-        return configurationRepository
-            .findAll(Example.of(configurationExample), pageable)
-            .map { configuration ->
-                configurationMappingService.toDto(configuration, excludeMapping)
-            }
+        val configurations = configurationRepository.findAll(Example.of(configurationExample), pageable)
+        val dtos = configurationMappingService.toDtos(configurations.content, excludeMapping)
+
+        return PageImpl(dtos, pageable, configurations.totalElements)
     }
 
     fun save(configurationDto: ConfigurationDto): ConfigurationDto =

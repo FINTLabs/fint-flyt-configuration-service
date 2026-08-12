@@ -4,23 +4,22 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.EntityListeners
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.OneToOne
-import jakarta.persistence.PrePersist
 import jakarta.persistence.Table
 import jakarta.persistence.UniqueConstraint
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
-import org.springframework.data.annotation.LastModifiedBy
-import org.springframework.data.annotation.LastModifiedDate
-import org.springframework.data.jpa.domain.support.AuditingEntityListener
-import java.time.Instant
+import no.novari.flyt.audit.entity.AuditedEntity
+import org.hibernate.envers.Audited
+import org.hibernate.envers.NotAudited
+import org.hibernate.envers.RelationTargetAuditMode
 
 @Entity
+@Audited
 @Table(
     name = "configuration",
     uniqueConstraints = [
@@ -30,7 +29,6 @@ import java.time.Instant
         ),
     ],
 )
-@EntityListeners(AuditingEntityListener::class)
 class Configuration(
     @field:Id
     @field:GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,26 +48,14 @@ class Configuration(
     var comment: String? = null,
     @field:OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     @field:JoinColumn(name = "mapping_id", referencedColumnName = "id", nullable = false)
+    @field:Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     @field:Valid
     @field:NotNull
     var mapping: ObjectMapping? = null,
-    @field:LastModifiedDate
-    @field:Column(name = "last_modified_at", nullable = false)
-    var lastModifiedAt: Instant? = null,
-    @field:LastModifiedBy
-    @field:Column(name = "last_modified_by", nullable = false)
-    var lastModifiedBy: String? = null,
-) {
-    @PrePersist
-    fun prePersistDefaults() {
-        if (lastModifiedAt == null) {
-            lastModifiedAt = Instant.now()
-        }
-        if (lastModifiedBy.isNullOrBlank()) {
-            lastModifiedBy = "system"
-        }
-    }
-
+    @field:NotAudited
+    @field:Column(name = "last_modified_by_legacy", insertable = false, updatable = false)
+    var lastModifiedByLegacy: String? = null,
+) : AuditedEntity() {
     companion object {
         @JvmStatic
         fun builder(): Builder = Builder()
@@ -83,8 +69,6 @@ class Configuration(
         private var completed: Boolean = false
         private var comment: String? = null
         private var mapping: ObjectMapping? = null
-        private var lastModifiedAt: Instant? = null
-        private var lastModifiedBy: String? = null
 
         fun id(id: Long?) = apply { this.id = id }
 
@@ -104,10 +88,6 @@ class Configuration(
 
         fun mapping(mapping: ObjectMapping?) = apply { this.mapping = mapping }
 
-        fun lastModifiedAt(lastModifiedAt: Instant?) = apply { this.lastModifiedAt = lastModifiedAt }
-
-        fun lastModifiedBy(lastModifiedBy: String?) = apply { this.lastModifiedBy = lastModifiedBy }
-
         fun build(): Configuration =
             Configuration(
                 id = id,
@@ -117,8 +97,6 @@ class Configuration(
                 completed = completed,
                 comment = comment,
                 mapping = mapping,
-                lastModifiedAt = lastModifiedAt,
-                lastModifiedBy = lastModifiedBy,
             )
     }
 }

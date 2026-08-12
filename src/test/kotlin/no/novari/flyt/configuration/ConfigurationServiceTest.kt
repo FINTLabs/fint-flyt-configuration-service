@@ -36,7 +36,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun testFindById() {
+    fun `findById returns the configuration mapped to a dto`() {
         val configuration = Configuration().apply { integrationId = 123L }
         val configurationDto = ConfigurationDto.builder().integrationId(123L).build()
 
@@ -49,7 +49,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun testFindAll() {
+    fun `findAll returns a page of configurations mapped to dtos`() {
         val configuration = Configuration().apply { integrationId = 123L }
         val configurationDto = ConfigurationDto.builder().integrationId(123L).build()
 
@@ -60,7 +60,7 @@ class ConfigurationServiceTest {
             ),
         ).thenReturn(PageImpl(listOf(configuration)))
 
-        whenever(configurationMappingService.toDto(any(), any())).thenReturn(configurationDto)
+        whenever(configurationMappingService.toDtos(any(), any())).thenReturn(listOf(configurationDto))
 
         val filter = ConfigurationFilter(123L, null)
 
@@ -71,7 +71,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun testSave() {
+    fun `save persists the mapped entity and returns the resulting dto`() {
         val configurationDto = ConfigurationDto.builder().integrationId(123L).build()
         val configuration = Configuration.builder().integrationId(123L).build()
 
@@ -89,7 +89,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun testUpdateById() {
+    fun `updateById applies the patched fields before saving`() {
         val configurationPatchDto = ConfigurationPatchDto(null, null, "Test comment", null)
         val configuration = Configuration().apply { integrationId = 123L }
 
@@ -110,7 +110,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun testUpdateByIdNotFound() {
+    fun `updateById throws when the configuration does not exist`() {
         val configurationPatchDto = ConfigurationPatchDto(null, null, "Test comment", null)
 
         whenever(configurationRepository.findById(any())).thenReturn(Optional.empty())
@@ -121,7 +121,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    fun testDeleteById() {
+    fun `deleteById delegates to the repository`() {
         configurationService.deleteById(123L)
 
         verify(configurationRepository).deleteById(123L)

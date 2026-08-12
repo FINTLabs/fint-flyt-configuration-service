@@ -19,7 +19,7 @@ class ValueParsableAsTypeValidatorTest {
     private lateinit var hibernateContext: HibernateConstraintValidatorContext
 
     @BeforeEach
-    fun setup() {
+    fun setUp() {
         valueParsabilityValidator1 = mock()
         valueParsabilityValidator2 = mock()
         valueParsableAsTypeValidator =
@@ -29,7 +29,7 @@ class ValueParsableAsTypeValidatorTest {
     }
 
     @Test
-    fun shouldReturnTrueIfAllFieldParsabilityValidatorsReturnTrue() {
+    fun `accepts when every field parsability validator accepts`() {
         whenever(valueParsabilityValidator1.isValid(any<ValueMappingDto>())).thenReturn(true)
         whenever(valueParsabilityValidator2.isValid(any<ValueMappingDto>())).thenReturn(true)
 
@@ -43,7 +43,7 @@ class ValueParsableAsTypeValidatorTest {
     }
 
     @Test
-    fun shouldReturnFalseIfOneFieldParsabilityValidatorReturnsFalse() {
+    fun `rejects when a single field parsability validator rejects`() {
         whenever(valueParsabilityValidator1.isValid(any<ValueMappingDto>())).thenReturn(true)
         whenever(valueParsabilityValidator2.isValid(any<ValueMappingDto>())).thenReturn(false)
 
