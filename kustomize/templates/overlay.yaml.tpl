@@ -29,11 +29,16 @@ patches:
         value:
           name: "novari.flyt.web-resource-server.security.api.internal.authorized-org-id-role-pairs-json"
           value: |$ROLE_MAP
-      - op: add
+$OTEL_ENV_PATCH      - op: add
         path: "/spec/env/-"
         value:
          name: "novari.kafka.topic.orgId"
          value: "$FINT_KAFKA_TOPIC_ORGID"
+      - op: add
+        path: "/spec/env/-"
+        value:
+         name: "novari.telemetry.org-id"
+         value: "$ORG_ID"
       - op: add
         path: "/spec/env/-"
         value:
