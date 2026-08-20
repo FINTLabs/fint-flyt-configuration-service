@@ -5,6 +5,21 @@ ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 TEMPLATE_DIR="$ROOT/kustomize/templates"
 BASE_TEMPLATE="$TEMPLATE_DIR/overlay.yaml.tpl"
 
+OTEL_ENDPOINT_BETA="http://alloy.flais-system.svc.cluster.local:4318"
+
+# Base-URL uten /v1/traces: telemetry-starter legger på signal-stien selv.
+# Settes manuelt inntil FLAIS har konfigurert dette som plattform-standard, og kun i beta.
+build_otel_env_patch() {
+  local env_name="$1"
+
+  if [[ "$env_name" != "beta" ]]; then
+    return
+  fi
+
+  printf '      - op: add\n        path: "/spec/env/-"\n        value:\n          name: "OTEL_EXPORTER_OTLP_ENDPOINT"\n          value: "%s"' \
+    "$OTEL_ENDPOINT_BETA"
+}
+
 while IFS= read -r file; do
   rel="${file#"$ROOT/kustomize/overlays/"}"
   dir="$(dirname "$rel")"
@@ -58,6 +73,12 @@ EOF
   role_map_lines="$(printf '%s\n' "$role_map_json" | sed 's/^/          /')"
   ROLE_MAP=$'\n'"$role_map_lines"
 
+  OTEL_ENV_PATCH=""
+  otel_patch_body="$(build_otel_env_patch "$env_name")"
+  if [[ -n "$otel_patch_body" ]]; then
+    OTEL_ENV_PATCH="${otel_patch_body}"$'\n'
+  fi
+
   export NAMESPACE="$namespace"
   export ORG_ID="$org_id"
   export APP_INSTANCE="$app_instance"
@@ -70,6 +91,7 @@ EOF
   export METRICS_PATH="$metrics_path"
   export ROLE_MAP
   export FINT_KAFKA_TOPIC_ORGID="$namespace"
+  export OTEL_ENV_PATCH
 
   tmp="$(mktemp)"
   envsubst < "$BASE_TEMPLATE" > "$tmp"
