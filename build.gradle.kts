@@ -42,6 +42,10 @@ sourceSets {
     }
 }
 
+extra["jackson-bom.version"] = "2.21.5"
+extra["log4j2.version"] = "2.25.5"
+extra["postgresql.version"] = "42.7.12"
+
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
