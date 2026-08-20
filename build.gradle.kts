@@ -74,7 +74,7 @@ dependencies {
     testImplementation("org.springframework.security:spring-security-core")
     testImplementation("org.springframework.security:spring-security-oauth2-jose")
     testImplementation("org.mockito.kotlin:mockito-kotlin:6.2.3")
-    testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.1"))
+    testImplementation(platform("org.testcontainers:testcontainers-bom:2.0.5"))
     testImplementation("org.testcontainers:junit-jupiter")
     testImplementation("org.testcontainers:postgresql")
 
