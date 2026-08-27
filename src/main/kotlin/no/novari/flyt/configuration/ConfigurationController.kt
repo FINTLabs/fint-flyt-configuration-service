@@ -67,9 +67,11 @@ class ConfigurationController(
     fun postConfiguration(
         @RequestBody configurationDto: ConfigurationDto,
     ): ConfigurationDto {
+        val (integrationId, integrationMetadataId) = configurationDto.getRequiredIntegrationIds()
+
         validateBeanConstraints(
-            requireNotNull(configurationDto.integrationId),
-            requireNotNull(configurationDto.integrationMetadataId),
+            integrationId,
+            integrationMetadataId,
             configurationDto,
         )
         return configurationService.save(configurationDto)
@@ -95,10 +97,11 @@ class ConfigurationController(
             }
 
         val newConfigurationDto = configurationDtoBuilder.build()
+        val (integrationId, integrationMetadataId) = newConfigurationDto.getRequiredIntegrationIds()
 
         validateBeanConstraints(
-            requireNotNull(newConfigurationDto.integrationId),
-            requireNotNull(newConfigurationDto.integrationMetadataId),
+            integrationId,
+            integrationMetadataId,
             newConfigurationDto,
         )
 
@@ -146,5 +149,22 @@ class ConfigurationController(
                 validationErrorsFormattingService.format(constraintViolations),
             )
         }
+    }
+
+    private fun ConfigurationDto.getRequiredIntegrationIds(): Pair<Long, Long> {
+        val integrationId =
+            integrationId
+                ?: throw ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    "integrationId must not be null",
+                )
+        val integrationMetadataId =
+            integrationMetadataId
+                ?: throw ResponseStatusException(
+                    HttpStatus.UNPROCESSABLE_ENTITY,
+                    "integrationMetadataId must not be null",
+                )
+
+        return integrationId to integrationMetadataId
     }
 }
