@@ -11,9 +11,13 @@ class InstanceValueKeysAreDefinedInMetadataValidator(
     private val instanceValueKeyExtractionService: InstanceValueKeyExtractionService,
 ) : HibernateConstraintValidator<InstanceValueKeysAreDefinedInMetadata, ValueMappingDto> {
     override fun isValid(
-        value: ValueMappingDto,
+        value: ValueMappingDto?,
         hibernateConstraintValidatorContext: HibernateConstraintValidatorContext,
     ): Boolean {
+        if (value == null) {
+            return true
+        }
+
         val referencedInstanceValueKeys =
             instanceValueKeyExtractionService.extractIfReferenceKeys(value.mappingString)
 

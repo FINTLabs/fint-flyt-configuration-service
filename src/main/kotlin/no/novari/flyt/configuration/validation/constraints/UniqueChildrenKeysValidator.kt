@@ -6,9 +6,13 @@ import org.hibernate.validator.internal.util.CollectionHelper
 
 class UniqueChildrenKeysValidator : HibernateConstraintValidator<UniqueChildrenKeys, ObjectMappingDto> {
     override fun isValid(
-        value: ObjectMappingDto,
+        value: ObjectMappingDto?,
         hibernateConstraintValidatorContext: HibernateConstraintValidatorContext,
     ): Boolean {
+        if (value == null) {
+            return true
+        }
+
         val duplicateKeys = findDuplicateKeys(value)
         if (duplicateKeys.isEmpty()) {
             return true

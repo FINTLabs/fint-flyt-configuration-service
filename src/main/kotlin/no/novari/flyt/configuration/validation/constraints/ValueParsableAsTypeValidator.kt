@@ -10,9 +10,13 @@ class ValueParsableAsTypeValidator(
     private val valueParsabilityValidators: Collection<ValueParsabilityValidator>,
 ) : HibernateConstraintValidator<ValueParsableAsType, ValueMappingDto> {
     override fun isValid(
-        value: ValueMappingDto,
+        value: ValueMappingDto?,
         hibernateConstraintValidatorContext: HibernateConstraintValidatorContext,
     ): Boolean {
+        if (value == null) {
+            return true
+        }
+
         val valid = valueParsabilityValidators.all { it.isValid(value) }
         if (!valid) {
             hibernateConstraintValidatorContext.addMessageParameter(
