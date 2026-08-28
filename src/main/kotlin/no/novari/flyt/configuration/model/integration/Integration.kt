@@ -5,7 +5,7 @@ data class Integration(
     var sourceApplicationIntegrationId: String? = null,
     var destination: String? = null,
     var state: State? = null,
-    var activeConfigurationId: String? = null,
+    var activeConfigurationId: Long? = null,
 ) {
     enum class State {
         ACTIVE,
@@ -22,7 +22,7 @@ data class Integration(
         private var sourceApplicationIntegrationId: String? = null
         private var destination: String? = null
         private var state: State? = null
-        private var activeConfigurationId: String? = null
+        private var activeConfigurationId: Long? = null
 
         fun sourceApplicationId(sourceApplicationId: Long?) = apply { this.sourceApplicationId = sourceApplicationId }
 
@@ -33,7 +33,7 @@ data class Integration(
 
         fun state(state: State?) = apply { this.state = state }
 
-        fun activeConfigurationId(activeConfigurationId: String?) =
+        fun activeConfigurationId(activeConfigurationId: Long?) =
             apply { this.activeConfigurationId = activeConfigurationId }
 
         fun build(): Integration =

@@ -63,7 +63,7 @@ class ConfigurationValidatorFactoryTest {
                 .sourceApplicationIntegrationId("id")
                 .destination("destination")
                 .state(Integration.State.ACTIVE)
-                .activeConfigurationId("configId")
+                .activeConfigurationId(100L)
                 .build()
 
         val mockMetadata =
@@ -111,7 +111,7 @@ class ConfigurationValidatorFactoryTest {
                 .sourceApplicationIntegrationId("id")
                 .destination("destination")
                 .state(Integration.State.ACTIVE)
-                .activeConfigurationId("configId")
+                .activeConfigurationId(100L)
                 .build()
 
         whenever(integrationRequestProducerService.get(any())).thenReturn(mockIntegration)
@@ -131,7 +131,7 @@ class ConfigurationValidatorFactoryTest {
                 .sourceApplicationIntegrationId("id")
                 .destination("destination")
                 .state(Integration.State.ACTIVE)
-                .activeConfigurationId("configId")
+                .activeConfigurationId(100L)
                 .build()
 
         val mockMetadata =
