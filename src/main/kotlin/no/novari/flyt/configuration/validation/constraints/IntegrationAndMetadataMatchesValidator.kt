@@ -4,7 +4,7 @@ import no.novari.flyt.configuration.validation.ConfigurationValidationContext
 
 class IntegrationAndMetadataMatchesValidator : HibernateConstraintValidator<IntegrationAndMetadataMatches, Any> {
     override fun isValid(
-        value: Any,
+        value: Any?,
         hibernateConstraintValidatorContext:
             org.hibernate.validator.constraintvalidation.HibernateConstraintValidatorContext,
     ): Boolean {

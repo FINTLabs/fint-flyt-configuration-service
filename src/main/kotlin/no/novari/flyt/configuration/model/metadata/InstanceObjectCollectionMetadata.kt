@@ -1,6 +1,7 @@
 package no.novari.flyt.configuration.model.metadata
 
 data class InstanceObjectCollectionMetadata(
+    var displayName: String? = null,
     var key: String? = null,
     @Suppress("unused")
     var objectMetadata: InstanceMetadataContent? = null,
@@ -11,14 +12,17 @@ data class InstanceObjectCollectionMetadata(
     }
 
     class Builder {
+        private var displayName: String? = null
         private var key: String? = null
         private var objectMetadata: InstanceMetadataContent? = null
+
+        fun displayName(displayName: String?) = apply { this.displayName = displayName }
 
         fun key(key: String?) = apply { this.key = key }
 
         fun objectMetadata(objectMetadata: InstanceMetadataContent?) = apply { this.objectMetadata = objectMetadata }
 
         fun build(): InstanceObjectCollectionMetadata =
-            InstanceObjectCollectionMetadata(key = key, objectMetadata = objectMetadata)
+            InstanceObjectCollectionMetadata(displayName = displayName, key = key, objectMetadata = objectMetadata)
     }
 }

@@ -13,9 +13,13 @@ class InstanceValueTypesAreCompatibleValidator(
     private val instanceValueTypeCompatibilityValidators: Collection<InstanceValueTypeCompatibilityValidator>,
 ) : HibernateConstraintValidator<InstanceValueTypesAreCompatible, ValueMappingDto> {
     override fun isValid(
-        value: ValueMappingDto,
+        value: ValueMappingDto?,
         hibernateConstraintValidatorContext: HibernateConstraintValidatorContext,
     ): Boolean {
+        if (value == null) {
+            return true
+        }
+
         val referencedInstanceValueKeys =
             instanceValueKeyExtractionService.extractIfReferenceKeys(value.mappingString)
 
