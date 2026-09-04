@@ -21,15 +21,18 @@ import no.novari.flyt.configuration.validation.ConfigurationValidationContext
 import no.novari.flyt.configuration.validation.ConfigurationValidatorFactory
 import no.novari.flyt.configuration.validation.CouldNotFindIntegrationException
 import no.novari.flyt.configuration.validation.ValidationErrorsFormattingService
+import org.assertj.core.api.Assertions.assertThat
 import org.hibernate.validator.HibernateValidator
 import org.hibernate.validator.HibernateValidatorFactory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.MethodSource
 import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.isNull
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -88,6 +91,32 @@ class ConfigurationHttpContractTest {
             objectMapper = OBJECT_MAPPER,
             customizeRequest = { it.principal(authentication) },
         ).verify(fixture)
+
+        verifyDeserializedRequestFor(fixture)
+    }
+
+    /**
+     * Responsen kommer fra stubben, ikke fra det som ble lest inn, så den dekker ikke
+     * request-kontrakten. Mapping-treet er den delen som betyr mest her: det er hele nyttelasten
+     * frontend sender, og et tapt nivå ville blitt stille ignorert av Jackson.
+     */
+    private fun verifyDeserializedRequestFor(fixture: HttpContractFixture) {
+        if (fixture.id != "configuration/post/ok") {
+            return
+        }
+
+        val posted = argumentCaptor<ConfigurationDto>()
+        verify(configurationService).save(posted.capture())
+
+        assertThat(posted.firstValue).usingRecursiveComparison().isEqualTo(
+            ConfigurationDto(
+                integrationId = 10L,
+                integrationMetadataId = 100L,
+                completed = false,
+                comment = "Kommentar",
+                mapping = mappingTree(),
+            ),
+        )
     }
 
     private fun stubServiceLayerFor(fixture: HttpContractFixture) {
