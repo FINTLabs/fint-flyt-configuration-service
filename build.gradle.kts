@@ -100,6 +100,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("no.novari:flyt-catalog-contract-fixtures:1.0.0-rc-7")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.springframework.security:spring-security-core")
     testImplementation("org.springframework.security:spring-security-oauth2-jose")
