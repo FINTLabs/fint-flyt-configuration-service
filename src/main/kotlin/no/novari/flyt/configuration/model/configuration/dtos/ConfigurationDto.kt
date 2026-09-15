@@ -2,6 +2,7 @@ package no.novari.flyt.configuration.model.configuration.dtos
 
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.Valid
 import jakarta.validation.constraints.NotNull
 import no.novari.flyt.audit.actor.Actor
@@ -9,6 +10,7 @@ import no.novari.flyt.configuration.validation.constraints.IntegrationAndMetadat
 import java.time.Instant
 
 @IntegrationAndMetadataMatches
+@Schema(description = "A versioned Flyt integration configuration.")
 data class ConfigurationDto(
     @field:JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var id: Long? = null,
