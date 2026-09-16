@@ -1,5 +1,10 @@
 package no.novari.flyt.configuration
 
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.responses.ApiResponses
+import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.ConstraintViolation
 import jakarta.validation.Validator
 import jakarta.validation.groups.Default
@@ -27,19 +32,28 @@ import org.springframework.web.server.ResponseStatusException
 
 @RestController
 @RequestMapping("$INTERNAL_API/konfigurasjoner")
+@Tag(name = "Configurations", description = "Management of Flyt integration configurations.")
 class ConfigurationController(
     private val configurationService: ConfigurationService,
     private val configurationValidatorFactory: ConfigurationValidatorFactory,
     private val validationErrorsFormattingService: ValidationErrorsFormattingService,
 ) {
     @GetMapping
+    @Operation(summary = "List configurations")
     fun getConfigurations(
+        @Parameter(description = "Zero-based page number")
         @RequestParam(name = "side") page: Int,
+        @Parameter(description = "Number of configurations per page")
         @RequestParam(name = "antall") size: Int,
+        @Parameter(description = "Property to sort by")
         @RequestParam(name = "sorteringFelt") sortProperty: String,
+        @Parameter(description = "Sort direction")
         @RequestParam(name = "sorteringRetning") sortDirection: Sort.Direction,
+        @Parameter(description = "Filter by integration identifier")
         @RequestParam(name = "integrasjonId", required = false) integrationId: Long?,
+        @Parameter(description = "Filter by completion status")
         @RequestParam(name = "ferdigstilt", required = false) complete: Boolean?,
+        @Parameter(description = "Exclude mapping content from responses")
         @RequestParam(name = "ekskluderMapping", required = false, defaultValue = "false") excludeMapping: Boolean,
     ): ConfigurationPageResponse {
         val filter = ConfigurationFilter(integrationId = integrationId, completed = complete)
@@ -55,8 +69,17 @@ class ConfigurationController(
     }
 
     @GetMapping("{configurationId}")
+    @Operation(summary = "Get a configuration")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Configuration found"),
+            ApiResponse(responseCode = "404", description = "Configuration not found"),
+        ],
+    )
     fun getConfiguration(
+        @Parameter(description = "Configuration identifier")
         @PathVariable configurationId: Long,
+        @Parameter(description = "Exclude mapping content from the response")
         @RequestParam(name = "ekskluderMapping", required = false, defaultValue = "false") excludeMapping: Boolean,
     ): ConfigurationDto {
         return configurationService.findById(configurationId, excludeMapping)
@@ -64,6 +87,13 @@ class ConfigurationController(
     }
 
     @PostMapping
+    @Operation(summary = "Create a configuration")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Configuration created"),
+            ApiResponse(responseCode = "422", description = "Invalid configuration"),
+        ],
+    )
     fun postConfiguration(
         @RequestBody configurationDto: ConfigurationDto,
     ): ConfigurationDto {
@@ -76,7 +106,17 @@ class ConfigurationController(
     }
 
     @PatchMapping("{configurationId}")
+    @Operation(summary = "Update a configuration")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "200", description = "Configuration updated"),
+            ApiResponse(responseCode = "403", description = "Completed configuration cannot be changed"),
+            ApiResponse(responseCode = "404", description = "Configuration not found"),
+            ApiResponse(responseCode = "422", description = "Invalid configuration"),
+        ],
+    )
     fun patchConfiguration(
+        @Parameter(description = "Configuration identifier")
         @PathVariable configurationId: Long,
         @RequestBody configurationPatchDto: ConfigurationPatchDto,
     ): ConfigurationDto {
@@ -107,7 +147,16 @@ class ConfigurationController(
 
     @DeleteMapping("{configurationId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Delete a configuration")
+    @ApiResponses(
+        value = [
+            ApiResponse(responseCode = "204", description = "Configuration deleted"),
+            ApiResponse(responseCode = "403", description = "Completed configuration cannot be deleted"),
+            ApiResponse(responseCode = "404", description = "Configuration not found"),
+        ],
+    )
     fun deleteConfiguration(
+        @Parameter(description = "Configuration identifier")
         @PathVariable configurationId: Long,
     ) {
         val configurationDto =

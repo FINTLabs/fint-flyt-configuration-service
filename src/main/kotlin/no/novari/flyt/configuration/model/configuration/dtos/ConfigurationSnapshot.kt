@@ -1,5 +1,7 @@
 package no.novari.flyt.configuration.model.configuration.dtos
 
+import io.swagger.v3.oas.annotations.media.Schema
+
 /**
  * Tilstanden til en konfigurasjon slik den var i en gitt revisjon, brukt som `snapshot` i
  * historikk-API-et. Uten mapping: mapping-treet er ikke auditert, så innholdet finnes ikke i
@@ -7,6 +9,7 @@ package no.novari.flyt.configuration.model.configuration.dtos
  * og dermed alltid tomme i en rekonstruert revisjon, og hvem/når per revisjon eksponeres
  * allerede på historikk-rad-nivå (`actor`/`actorDisplay`/`timestamp`).
  */
+@Schema(description = "Configuration state recorded for an audit revision.")
 data class ConfigurationSnapshot(
     val id: Long?,
     val integrationId: Long?,

@@ -4,7 +4,7 @@ Spring Boot service that stores and validates configuration documents for FINT F
 
 ## Highlights
 
-- **RESTful configuration registry** — Spring MVC controller under `/internal/api/konfigurasjoner` for paginated listings, detail fetch, create, patch, and delete operations.
+- **RESTful configuration registry** — Spring MVC controller under `/api/intern/konfigurasjoner` for paginated listings, detail fetch, create, patch, and delete operations.
 - **Versioned persistence** — JPA repository backed by PostgreSQL automatically increments a configuration version when a document is marked as completed.
 - **Kafka request/reply bridges** — Consumers expose configuration and mapping lookups, while producers fetch integrations, integration metadata, and instance metadata used during validation.
 - **Context-aware validation** — Custom Jakarta Bean Validation constraints ensure integration↔metadata consistency, key uniqueness, type compatibility, and value parsability before persisting.
@@ -25,7 +25,7 @@ Spring Boot service that stores and validates configuration documents for FINT F
 
 ## HTTP API
 
-Base path: `/internal/api/konfigurasjoner`
+Base path: `/api/intern/konfigurasjoner`
 
 | Method   | Path                                                                                      | Description                                                                                                                                        | Request body                         | Response                                                                                  |
 |----------|-------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------|-------------------------------------------------------------------------------------------|
@@ -56,6 +56,24 @@ Example `ConfigurationDto` payload:
 ```
 
 Validation errors return `422 Unprocessable Entity` with aggregated constraint messages. When the resource-server permissions consumer is enabled, access to non-authorized orgs yields `403 Forbidden`.
+
+### OpenAPI Documentation
+
+Swagger UI and the generated OpenAPI specification are available only through direct service access, such as a
+Kubernetes port-forward. Their paths sit outside the external ingress route for `/api/intern/konfigurasjoner`:
+
+- Swagger UI: `/swagger-ui.html`
+- OpenAPI JSON: `/v3/api-docs`
+- OpenAPI YAML: `/v3/api-docs.yaml`
+
+For the FINTLabs beta deployment:
+
+```shell
+kubectl -n fintlabs-no port-forward service/fint-flyt-configuration-service 8080:8080
+```
+
+Swagger UI is then available at `http://localhost:8080/beta/fintlabs-no/swagger-ui.html`, and OpenAPI JSON at
+`http://localhost:8080/beta/fintlabs-no/v3/api-docs`.
 
 ## Kafka Integration
 
@@ -103,8 +121,6 @@ Helpful commands:
 ```
 
 Use `SPRING_PROFILES_ACTIVE=local-staging` to pick up overrides in `src/main/resources/application-local-staging.yaml`. The profile expects PostgreSQL on `jdbc:postgresql://localhost:5434/fint-flyt-configuration-service`, username `postgres`, password `password`, and Kafka on `localhost:9092`.
-
-Swagger UI is available at `http://localhost:8082/swagger-ui/index.html` when the application runs with the local profile.
 
 ## Deployment
 
@@ -154,4 +170,3 @@ The script walks all overlay directories, injects org/env-specific values (names
 ———
 
 FINT Flyt Configuration Service is maintained by the FINT Flyt team. Reach out on the internal Slack channel or open an issue in this repository for questions or enhancement requests.
-
