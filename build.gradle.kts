@@ -93,8 +93,8 @@ dependencies {
     implementation("org.flywaydb:flyway-database-postgresql")
 
     implementation("no.novari:flyt-web-resource-server:4.0.0")
-    implementation("no.novari:flyt-kafka:7.2.0")
-    implementation("no.novari:flyt-audit-starter:1.1.0")
+    implementation("no.novari:flyt-kafka:7.3.0")
+    implementation("no.novari:flyt-audit-starter:1.2.0")
 
     runtimeOnly("io.micrometer:micrometer-registry-prometheus")
     runtimeOnly("org.postgresql:postgresql")
@@ -103,7 +103,7 @@ dependencies {
     kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("no.novari:flyt-catalog-contract-fixtures:1.1.0")
+    testImplementation("no.novari:flyt-catalog-contract-fixtures:1.2.0")
     testImplementation("org.springframework.boot:spring-boot-testcontainers")
     testImplementation("org.springframework.security:spring-security-core")
     testImplementation("org.springframework.security:spring-security-oauth2-jose")
