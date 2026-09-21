@@ -26,7 +26,7 @@ plugins {
 
 group = "no.novari"
 
-var springdocOpenApiVersion = "2.8.17"
+var springdocOpenApiVersion = "2.9.1"
 
 kotlin {
     jvmToolchain(25)
