@@ -121,7 +121,7 @@ docker compose up -d         # start PostgreSQL on localhost:5434 and Kafka on l
 
 Use `SPRING_PROFILES_ACTIVE=local-staging` to pick up overrides in `src/main/resources/application-local-staging.yaml`. The profile expects PostgreSQL on `jdbc:postgresql://localhost:5434/fint-flyt-configuration-service`, username `postgres`, password `password`, and Kafka on `localhost:9092`.
 
-Add `--profile tools` to also start Kafdrop on http://localhost:19000. `docker compose down -v` stops everything and wipes the data.
+Add `--profile tools` to also start Kafdrop on http://localhost:19000. Kafka topics and the database are empty on every start.
 
 ## Deployment
 
