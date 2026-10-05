@@ -108,8 +108,7 @@ Secrets referenced by the base manifest must supply database credentials and OAu
 Prerequisites:
 
 - Java 25+
-- Docker (used by the `start-postgres` helper and by Testcontainers in the test suite)
-- Local Kafka broker (e.g., `docker compose` or existing dev cluster)
+- Docker (used by Docker Compose and by Testcontainers in the test suite)
 
 Helpful commands:
 
@@ -117,10 +116,12 @@ Helpful commands:
 ./gradlew clean build        # compile sources and run tests
 ./gradlew test               # unit + validation tests (requires a running Docker daemon)
 ./gradlew bootRun            # start with Flyt profiles
-./start-postgres             # launch PostgreSQL on localhost:5434 (Ctrl+C/docker stop to tear down)
+docker compose up -d         # start PostgreSQL on localhost:5434 and Kafka on localhost:9092
 ```
 
 Use `SPRING_PROFILES_ACTIVE=local-staging` to pick up overrides in `src/main/resources/application-local-staging.yaml`. The profile expects PostgreSQL on `jdbc:postgresql://localhost:5434/fint-flyt-configuration-service`, username `postgres`, password `password`, and Kafka on `localhost:9092`.
+
+Add `--profile tools` to also start Kafdrop on http://localhost:19000. Kafka topics and the database are empty on every start.
 
 ## Deployment
 
